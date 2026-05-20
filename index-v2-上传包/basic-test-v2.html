@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>热力学第一定律 · 基础检测 v2</title>
+<style>
+  :root {
+    --primary-blue: #00409A;
+    --secondary-blue: #0055B8;
+    --bright-blue: #006AD6;
+    --light-blue: #E6EEFF;
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-light: #86868b;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f7fa;
+    --bg-light: #fafbfc;
+    --border-color: #e5e5e7;
+    --shadow-sm: 0 2px 8px rgba(0, 64, 154, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 64, 154, 0.12);
+    --radius: 20px;
+    --radius-sm: 12px;
+    --accent: #e67e22;
+    --success: #27ae60;
+    --honor: #8e44ad;
+    --danger: #c0392b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  .container { max-width: 760px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 32px 16px;
+    background: linear-gradient(135deg, #00409A 0%, #0055B8 50%, #006AD6 100%);
+    color: #fff;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 6px; }
+  .header .subtitle { font-size: 0.95rem; opacity: 0.85; }
+  .header .school { font-size: 0.8rem; opacity: 0.65; margin-top: 8px; }
+
+  /* Entry card */
+  .entry-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+  }
+  .entry-card p { margin-bottom: 16px; color: var(--text-secondary); font-size: 0.95rem; }
+  .entry-card input[type="text"] {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .entry-card input[type="text"]:focus { border-color: var(--secondary-blue); }
+  .info-list {
+    text-align: left;
+    max-width: 460px;
+    margin: 20px auto;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    padding-left: 1.4em;
+  }
+  .info-list li { margin-bottom: 6px; }
+
+  /* Buttons */
+  .btn {
+    display: inline-block;
+    padding: 12px 36px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #fff;
+    margin-top: 16px;
+  }
+  .btn-primary { background: linear-gradient(90deg, var(--primary-blue), var(--bright-blue)); }
+  .btn-primary:hover { filter: brightness(1.05); }
+  .btn-primary:disabled { background: #bdc3c7; cursor: not-allowed; }
+  .btn-accent { background: var(--accent); }
+  .btn-accent:hover { background: #d35400; }
+  .btn-outline {
+    background: #fff;
+    color: var(--secondary-blue);
+    border: 1.5px solid var(--secondary-blue);
+  }
+  .btn-outline:hover { background: var(--light-blue); }
+
+  /* Question cards */
+  .question-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+    padding: 24px 22px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--secondary-blue);
+  }
+  .question-card.correct { border-left-color: var(--success); }
+  .question-card.wrong { border-left-color: var(--danger); }
+  .q-number {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--primary-blue), var(--bright-blue));
+    color: #fff;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+  .q-meta {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--secondary-blue);
+    background: rgba(0, 64, 154, 0.1);
+    padding: 3px 11px;
+    border-radius: 12px;
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+  .q-meta.diff-基础 { background: rgba(39,174,96,0.12); color: #1e8449; }
+  .q-meta.diff-中等 { background: rgba(230,126,34,0.12); color: #c0660e; }
+  .q-meta.diff-较难 { background: rgba(192,57,43,0.12); color: var(--danger); }
+  .q-meta.score { background: rgba(142,68,173,0.12); color: var(--honor); }
+  .q-header { margin-bottom: 14px; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+  .q-stem {
+    font-size: 0.97rem;
+    margin-bottom: 16px;
+    white-space: pre-line;
+    line-height: 1.8;
+  }
+  .q-stem .formula { font-family: "SF Mono", "Cascadia Code", "Consolas", monospace; font-size: 0.94em; }
+  .q-stem sub, .q-stem sup { font-size: 0.78em; }
+
+  /* Radio options */
+  .options { list-style: none; }
+  .options li { margin-bottom: 10px; }
+  .options label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.95rem;
+  }
+  .options label:hover { border-color: var(--secondary-blue); background: rgba(0, 64, 154, 0.03); }
+  .options input[type="radio"] {
+    margin-top: 3px;
+    accent-color: var(--secondary-blue);
+    flex-shrink: 0;
+  }
+  .options label.selected { border-color: var(--secondary-blue); background: rgba(0, 64, 154, 0.06); }
+  .opt-letter { font-weight: 700; margin-right: 4px; color: var(--secondary-blue); }
+
+  /* Fill-in */
+  .fill-group { margin-bottom: 12px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .fill-group .fill-label { font-size: 0.93rem; min-width: 90px; }
+  .fill-input {
+    flex: 1;
+    max-width: 220px;
+    padding: 10px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .fill-input:focus { border-color: var(--secondary-blue); }
+  .fill-unit { font-size: 0.88rem; color: var(--text-secondary); }
+  .text-answer {
+    width: 100%;
+    min-height: 84px;
+    padding: 10px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.93rem;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+  }
+  .text-answer:focus { border-color: var(--secondary-blue); }
+
+  /* Sub-question (structured) */
+  .sub-q { margin-bottom: 14px; padding: 12px 14px; border-left: 3px dashed var(--border-color); border-radius: 0 6px 6px 0; }
+  .sub-q-label { font-weight: 600; font-size: 0.93rem; margin-bottom: 8px; }
+
+  /* Result */
+  .result-banner {
+    text-align: center;
+    padding: 28px 20px;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    color: #fff;
+  }
+  .result-banner.pass { background: linear-gradient(135deg, var(--success), #2ecc71); }
+  .result-banner.honor { background: linear-gradient(135deg, var(--honor), #c879ec); }
+  .result-banner.fail { background: linear-gradient(135deg, var(--danger), #e74c3c); }
+  .result-banner h2 { font-size: 1.4rem; margin-bottom: 6px; }
+  .result-banner .score { font-size: 2.4rem; font-weight: 800; margin-top: 4px; }
+  .result-banner .verdict { font-size: 1rem; margin-top: 8px; opacity: 0.95; }
+
+  .feedback-box {
+    background: #f0f4f8;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 14px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  .feedback-box .answer-info { margin-bottom: 6px; }
+  .feedback-box .label-correct { color: var(--success); font-weight: 600; }
+  .feedback-box .label-wrong { color: var(--danger); font-weight: 600; }
+
+  .detail-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: none;
+    border: 1.5px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .detail-toggle:hover { border-color: var(--secondary-blue); color: var(--secondary-blue); }
+  .detail-content {
+    margin-top: 14px;
+    background: #f0f4f8;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 0.9rem;
+    line-height: 1.85;
+    display: none;
+  }
+  .detail-content.show { display: block; }
+  .detail-content .col-title {
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 6px;
+    margin-top: 10px;
+    font-size: 0.92rem;
+  }
+  .detail-content .col-title:first-child { margin-top: 0; }
+  .detail-content .col-body { margin-bottom: 4px; white-space: pre-line; }
+
+  /* Progress bar */
+  .progress-text {
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .progress-bar .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-blue), var(--bright-blue));
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  .hidden { display: none !important; }
+
+  .bottom-nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 2px solid #d5e8f0;
+    flex-wrap: wrap;
+  }
+  .bottom-nav a, .bottom-nav button {
+    color: var(--secondary-blue);
+    background: none;
+    border: none;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    font-family: inherit;
+  }
+  .bottom-nav a:hover, .bottom-nav button:hover {
+    background: #eaf2f8;
+    color: var(--primary-blue);
+  }
+
+  .reshuffle-btn {
+    background: var(--accent);
+    color: #fff !important;
+  }
+  .reshuffle-btn:hover { background: #d35400 !important; color: #fff !important; }
+
+  @media (max-width: 480px) {
+    .container { padding: 12px 10px 32px; }
+    .header { padding: 24px 12px; }
+    .header h1 { font-size: 1.25rem; }
+    .question-card { padding: 18px 14px; }
+    .options label { padding: 10px 12px; font-size: 0.9rem; }
+    .btn { padding: 12px 28px; font-size: 0.95rem; }
+  }
+
+  /* Inline SVG figures */
+  .figure { margin: 6px auto 14px; display: block; max-width: 100%; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>热力学第一定律 · 基础检测 v2</h1>
+    <div class="subtitle">板块 A · 概念建构（M 段）· 每次随机抽 7 题 · 满分 100 · 通过线 70 / 荣誉线 90</div>
+    <div class="school">蓝色诺瓦学院 · 物化融合大主题"热力学"</div>
+  </div>
+
+  <!-- Entry Screen -->
+  <div id="entry-screen" class="entry-card">
+    <p>请输入你的姓名开始检测</p>
+    <input type="text" id="student-name" placeholder="你的姓名" maxlength="20" value="student">
+    <ul class="info-list">
+      <li>共 <strong>7</strong> 道题（每个题型 T1-T7 各随机抽 1 道）</li>
+      <li>分值：T1=10 / T2=12 / T3=15 / T4=15 / T5=13 / T6=17 / T7=18，<strong>总分 100</strong></li>
+      <li>合格 ≥ 70 分；荣誉 ≥ 90 分</li>
+      <li><strong>不限时</strong>；选择题点击作答，计算题填空</li>
+      <li>提交后显示总分、错题三栏解析</li>
+      <li>请独立作答，不使用 AI 辅助</li>
+    </ul>
+    <button class="btn btn-primary" id="start-btn" onclick="startTest()">开始检测</button>
+  </div>
+
+  <!-- Test Screen -->
+  <div id="test-screen" class="hidden">
+    <div class="progress-text" id="progress-text">已答 0 / 7</div>
+    <div class="progress-bar"><div class="fill" id="progress-fill" style="width:0%"></div></div>
+    <div id="question-list"></div>
+    <div style="text-align:center; margin-top: 12px;">
+      <button class="btn btn-accent" onclick="submitTest()">提交检测</button>
+    </div>
+  </div>
+
+  <!-- Result Screen -->
+  <div id="result-screen" class="hidden"></div>
+</div>
+
+<script>
+/* ============================================================
+ * 题库：T1-T7 × 4 = 28 题，全部来自 v2.1 设计稿 §7
+ * 题面、考察点、解题思路、详细答案、易错点、拓展 逐字搬运
+ * ============================================================ */
+
+const QUESTION_BANK = {
+  T1: [
+    {
+      id: "T1-1", difficulty: "基础", score: 10, type: "choice",
+      stem: "以下说法中，哪一个是<strong>正确</strong>的？",
+      options: [
+        "一杯 80°C 的水含有的热量比一杯 20°C 的水多",
+        "热量是能量传递的方式，不是系统「拥有」的量",
+        "内能和热量是同一个物理量的不同说法",
+        "系统的热量等于所有粒子动能之和"
+      ],
+      correct: "B",
+      inspection: "考察点 1（内能本质与物理量类别）· 难度：基础\n区分<strong>状态量</strong>（内能 U）和<strong>过程量</strong>（热量 Q）。热量描述能量传递的过程，不能用「拥有」来描述。",
+      thinking: "1. 先识别每个选项把「热量」用作什么类别的物理量\n2. A 说「含有的热量」——这是错把热量当状态量\n3. C 把内能 = 热量——混淆两个不同物理量\n4. D 把热量 = 粒子动能之和——这是内能的（部分）描述，不是热量\n5. B 正确指出热量是「能量传递方式」",
+      answer: "<strong>B</strong>\n• A 错：正确说法是「内能更大」。不能说一个系统「含有多少热量」。\n• C 错：内能是状态量、热量是过程量。\n• D 错：粒子动能之和 ≈ 单原子理想气体的内能，与「热量」无关。",
+      mistakes: "A 是日常语言习惯，容易被认为是对的。要区分「日常语言中的热量」和「物理学中的 Q」。",
+      extension: ""
+    },
+    {
+      id: "T1-2", difficulty: "中等", score: 10, type: "choice",
+      stem: "下列关于「系统的内能」的说法中，<strong>错误</strong>的是：",
+      options: [
+        "单原子理想气体的内能等于所有粒子平动动能之和",
+        "双原子气体的内能除了平动动能还包含转动动能",
+        "一个系统的内能只能通过做功来改变",
+        "真实气体的内能既包含粒子动能也包含分子间势能"
+      ],
+      correct: "C",
+      inspection: "考察点 1 + 考察点 6 · 难度：中等\n辨析「改变内能的途径」——做功<strong>与</strong>热传递都能改变内能。",
+      thinking: "1. 题目问的是「错误」的说法\n2. A 与 B 是关于内能组成的正确陈述\n3. C「只能通过做功改变」—— 漏掉了热传递，错误\n4. D 真实气体的修正是正确的",
+      answer: "<strong>C</strong>\n• 改变内能的两条途径：<strong>做功（W）</strong>和<strong>热传递（Q）</strong>——这正是第一定律 ΔU = Q + W 的含义。\n• A 对：单原子理想气体满足 U = ³⁄₂ nRT，确实是平动动能之和。\n• B 对：双原子分子额外多了转动自由度。\n• D 对：真实气体由于有分子间作用力，内能含势能项。",
+      mistakes: "把「做功是改变内能的方式」误读为「唯一方式」。",
+      extension: ""
+    },
+    {
+      id: "T1-3", difficulty: "较难", score: 10, type: "choice",
+      stem: "一个绝热刚性容器被中间薄膜分成两部分：左侧装有理想气体，右侧是真空。突然刺破薄膜，气体充满整个容器（自由膨胀）。下列说法<strong>正确</strong>的是：",
+      options: [
+        "气体对真空做功，所以 W < 0",
+        "气体没有与外界交换能量，所以内能不变、温度也不变",
+        "气体膨胀必然温度降低，因为体积增大",
+        "气体内能减少，但因绝热 Q = 0，违反第一定律"
+      ],
+      correct: "B",
+      inspection: "考察点 1 + 考察点 6 + 考察点 7 · 难度：较难\n理想气体自由膨胀的高考反直觉考点：<strong>Q = 0、W = 0、ΔU = 0、ΔT = 0</strong>。",
+      thinking: "1. 绝热 ⇒ Q = 0\n2. 真空中没有阻力 ⇒ 气体不需要对外推任何东西 ⇒ W = 0\n3. ΔU = Q + W = 0 ⇒ 内能不变\n4. 理想气体 U = ³⁄₂ nRT ⇒ T 不变",
+      answer: "<strong>B</strong>\n• A 错：W 是外界对系统做的功；真空没有阻力，外界没对系统做功，W = 0\n• B 对：Q = W = 0 ⇒ ΔU = 0 ⇒ T 不变（理想气体）\n• C 错：日常直觉「膨胀降温」对<strong>绝热可逆</strong>膨胀对，对<strong>自由膨胀</strong>错\n• D 错：第一定律完全成立",
+      mistakes: "把「膨胀」与「对外做功」画等号——这是错的，做功要看是否有「反抗对方」。",
+      extension: "自由膨胀的不可逆性使熵增加（第二定律范畴）。"
+    },
+    {
+      id: "T1-4", difficulty: "中等", score: 10, type: "choice",
+      stem: "杯 A 装有 100 g、80°C 的水；杯 B 装有 500 g、20°C 的水。下列说法<strong>正确</strong>的是：",
+      options: [
+        "杯 A 含有的热量比杯 B 多，因为 A 的温度高",
+        "杯 A 含有的内能比杯 B 多，因为 A 的温度高",
+        "杯 B 的内能比杯 A 大，因为 B 含有的热量更多",
+        "无法用「含有」来描述两杯水的热量"
+      ],
+      correct: "D",
+      inspection: "考察点 1 · 难度：中等\n辨析两个易错点：（1）热量不能「含有」；（2）内能不只取决于温度，还取决于质量。注意 C 选项<strong>结论虽对，但理由用了「含有热量」</strong>——错误的物理量类别。",
+      thinking: "1. 排除 A：热量是过程量，不能用「含有」描述\n2. 排除 B：温度高 ≠ 内能高，要看质量（内能 ∝ m × T）\n3. 检查 C：结论「B 内能比 A 大」对，但<strong>理由用了「B 含有的热量更多」</strong>——同样犯了「热量可以含有」的错误，所以 C 错\n4. D 直接指出根本性的语言错误——这是最严谨的答案",
+      answer: "<strong>D</strong>\n• A 错：热量是过程量，不能「含有」\n• B 错：温度高 ≠ 内能高，要看质量\n• C 错：结论部分对（B 内能确实更大），但<strong>理由错</strong>（用了「含有热量」的错误概念）。一个选项的对错由「结论 + 理由」整体决定，理由错则整选项错\n• D 对：严格说，「含有多少热量」在物理上不成立——这是题目想要的最严谨判断",
+      mistakes: "（1）只看结论不看理由——C 是最易错的诱惑项；（2）把温度高直接等同于内能高，忽略质量。",
+      extension: "定量估算：A 杯内能 ∝ 100×353 ≈ 35300；B 杯 ∝ 500×293 ≈ 146500，B 是 A 的约 4 倍。"
+    }
+  ],
+  T2: [
+    {
+      id: "T2-1", difficulty: "基础", score: 12, type: "choice",
+      stem: "一个气体系统在等压过程中<strong>膨胀</strong>，同时从外界<strong>吸收</strong>了热量。\n在本板块约定 ΔU = Q + W 中，下列描述正确的是：",
+      options: [
+        "Q > 0, W > 0, ΔU 一定 > 0",
+        "Q > 0, W < 0, ΔU 可能 > 0、< 0 或 = 0",
+        "Q > 0, W < 0, ΔU 一定 > 0",
+        "Q < 0, W > 0, ΔU 一定 < 0"
+      ],
+      correct: "B",
+      inspection: "考察点 2（符号约定）+ 考察点 3（四过程辨析）· 难度：基础\n本板块约定 W = 外界对系统做功；气体<strong>膨胀</strong> ⇒ <strong>外界对系统做负功</strong> ⇒ W < 0。",
+      thinking: "1. 识别符号约定（板块统一 ΔU = Q + W）\n2. 吸热 → Q > 0\n3. 膨胀 → 系统对外做正功 → 外界对系统做负功 → W < 0\n4. ΔU = Q + W：Q > 0 且 W < 0，符号相反，ΔU 取决于两者大小\n5. 找符合「Q > 0、W < 0、ΔU 三种可能」的选项",
+      answer: "<strong>B</strong>\n• Q > 0（吸热）、W < 0（膨胀，外界对系统做负功）\n• ΔU = Q + W：|Q| > |W| 则 ΔU > 0；|Q| < |W| 则 ΔU < 0；|Q| = |W| 则 ΔU = 0（等温过程）",
+      mistakes: "（1）用错符号约定，把「膨胀」对应到 W > 0；（2）想当然认为「吸热一定温度升」，忽略了同时膨胀做功的能量去向。",
+      extension: "等温膨胀就是 |Q| = |W| 的情形，温度不变 ⇒ ΔU = 0。"
+    },
+    {
+      id: "T2-2", difficulty: "中等", score: 12, type: "choice",
+      stem: "某教材中写 ΔU = Q − W，其中 W 表示<strong>系统对外</strong>做的功。某学生按此约定算出某过程 Q = 100 J、W = 30 J、ΔU = 70 J。\n如果改用本板块约定 ΔU = Q + W（W = 外界对系统做的功），下列说法正确的是：",
+      options: [
+        "Q = 100 J、W = 30 J、ΔU = 70 J（数值完全相同）",
+        "Q = 100 J、W = −30 J、ΔU = 70 J",
+        "Q = −100 J、W = −30 J、ΔU = −70 J",
+        "Q = 100 J、W = 30 J、ΔU = 130 J"
+      ],
+      correct: "B",
+      inspection: "考察点 2（符号约定的互译）· 难度：中等\n两种符号约定的本质：W 在「外界对系统」和「系统对外」两种约定下符号相反，但 Q 和 ΔU 的物理符号不变。",
+      thinking: "1. ΔU 是状态变化，不依赖于约定 → ΔU = 70 J（不变）\n2. Q 是「系统吸收/放出」，不依赖于约定 → Q = 100 J（不变）\n3. W 的方向定义不同 → 数值相反 → 30 J 在新约定下变为 −30 J\n4. 验算：ΔU = Q + W = 100 + (−30) = 70 ✓",
+      answer: "<strong>B</strong>",
+      mistakes: "误以为换约定后 Q 也要变号。<strong>只有 W 变号</strong>。",
+      extension: "做高考题时，遇到「系统对外做了 X 焦的功」，在本板块约定下要直接读为 W = −X J。"
+    },
+    {
+      id: "T2-3", difficulty: "中等", score: 12, type: "choice",
+      stem: "一个气球放在太阳下，吸收了 200 J 的太阳辐射能并膨胀，对外做功 60 J。在本板块约定 ΔU = Q + W 下，求 ΔU。",
+      options: ["ΔU = 260 J", "ΔU = 140 J", "ΔU = −140 J", "ΔU = 60 J"],
+      correct: "B",
+      inspection: "考察点 2 · 难度：中等\n真实情境下识别 Q 和 W 的方向。",
+      thinking: "1. 吸热 ⇒ Q = +200 J\n2. 气球膨胀 = 系统对外做功 = 外界对系统做负功 ⇒ W = −60 J\n3. ΔU = Q + W = 200 + (−60) = 140 J",
+      answer: "<strong>B</strong>\n• ΔU = +140 J，气球内气体内能增加\n• 物理意义：吸收的 200 J 中，60 J 转为对外做功（推开周围空气），140 J 留在系统内能（温度升）",
+      mistakes: "把 W 写成 +60（容易忽视约定）。",
+      extension: "如果气球被晒爆破裂，相当于绝热自由膨胀，T 不变，但破裂瞬间外部空气会被推开（这是另一个系统的功）。"
+    },
+    {
+      id: "T2-4", difficulty: "较难", score: 12, type: "choice",
+      stem: "气体连续经历两个过程：\n（1）等容吸热 Q₁ = +300 J\n（2）绝热膨胀，对外做功 100 J\n\n求两个过程结束后气体内能的总变化 ΔU 总。",
+      options: ["+200 J", "+400 J", "−200 J", "+300 J"],
+      correct: "A",
+      inspection: "考察点 2 + 考察点 3 · 难度：较难\n连续过程的符号叠加；识别「绝热 Q=0」和「对外做功 W<0」。",
+      thinking: "1. 过程（1）等容：W₁ = 0、Q₁ = +300 ⇒ ΔU₁ = +300 J\n2. 过程（2）绝热：Q₂ = 0；对外做功 100 J ⇒ W₂ = −100 J ⇒ ΔU₂ = 0 + (−100) = −100 J\n3. ΔU 总 = ΔU₁ + ΔU₂ = +300 + (−100) = +200 J",
+      answer: "<strong>A. +200 J</strong>\n• ΔU₁ = Q₁ + W₁ = 300 + 0 = 300 J\n• ΔU₂ = Q₂ + W₂ = 0 + (−100) = −100 J\n• ΔU 总 = 200 J",
+      mistakes: "（1）把绝热的 W₂ 误算为 +100；（2）忘了等容时 W = 0；（3）误把两段 Q 相加（=300）当 ΔU 总。",
+      extension: "本题验证 ΔU 是状态量——也可以用 ΔU 总 = ³⁄₂ nR × (T末 − T初) 计算，结果一致。"
+    }
+  ],
+  T3: [
+    {
+      id: "T3-1", difficulty: "基础", score: 15, type: "choice",
+      stem: "理想气体在以下过程中，<strong>内能不变</strong>的是：",
+      options: ["等容吸热", "等压吸热", "等温吸热", "绝热压缩"],
+      correct: "C",
+      inspection: "考察点 3（四过程）+ 考察点 6（U 只与 T 有关）· 难度：基础",
+      thinking: "1. 理想气体内能只与温度有关\n2. 内能不变 ⇔ 温度不变 ⇔ 等温过程\n3. 等温吸热即 C",
+      answer: "<strong>C</strong>\n• 等温过程 ⇒ ΔT = 0 ⇒ ΔU = 0；吸热 Q > 0 全部用于对外做功（W = −Q）\n• A 等容：W = 0，ΔU = Q > 0，温度升\n• B 等压吸热：Q > 0，膨胀做功 W < 0，但 ΔU 仍 > 0（高考典型）\n• D 绝热压缩：Q = 0，W > 0，ΔU > 0，温度升",
+      mistakes: "把「吸热」等同于「温度升」——只对等容过程成立。",
+      extension: ""
+    },
+    {
+      id: "T3-2", difficulty: "较难", score: 15, type: "choice",
+      stem: "一定质量的理想气体经历下列四个过程：\n（甲）绝热自由膨胀至 2 倍体积\n（乙）等温膨胀至 2 倍体积\n（丙）绝热可逆膨胀至 2 倍体积\n（丁）等压加热膨胀至 2 倍体积\n\n下列说法<strong>正确</strong>的是：",
+      options: [
+        "四个过程的 ΔU 都等于 0",
+        "（甲）和（乙）的 ΔU 都等于 0",
+        "（甲）的 Q = 0、W = 0、ΔU = 0",
+        "（丙）的温度不变"
+      ],
+      correct: "C",
+      inspection: "考察点 3 + 考察点 7（自由膨胀的特殊性）· 难度：较难",
+      thinking: "1. （甲）绝热自由膨胀：Q = 0（绝热）+ W = 0（膨胀到真空，外界没对它做功）⇒ ΔU = 0 ⇒ T 不变（<strong>关键反直觉点</strong>）\n2. （乙）等温膨胀：T 不变 ⇒ ΔU = 0；Q > 0，W < 0，|Q| = |W|\n3. （丙）绝热可逆膨胀：Q = 0，气体对外做功 W < 0 ⇒ ΔU < 0 ⇒ T 降低\n4. （丁）等压加热膨胀：Q > 0，W < 0，但 ΔU > 0，T 升",
+      answer: "<strong>C</strong>\n• A 错：（丙）（丁）的 ΔU 不为 0\n• B 部分对（甲乙 ΔU=0），但 C 是更强的说法（同时给出 Q、W、ΔU 三项=0）\n• C 对：自由膨胀的三个量都=0\n• D 错：绝热可逆膨胀气体对外做功，温度降低",
+      mistakes: "（1）绝热自由膨胀与绝热可逆膨胀的区别（前者 W = 0，后者 W < 0）；（2）「自由膨胀温度不变」是高考反直觉考点。",
+      extension: ""
+    },
+    {
+      id: "T3-3", difficulty: "中等", score: 15, type: "choice",
+      stem: "[配图：PV 图上从同一初态 A 出发的四条曲线：① 水平向右（等压膨胀）② 竖直向下（等容降压）③ 双曲线向右下方（等温膨胀）④ 比 ③ 更陡的曲线向右下方（绝热膨胀）]\n\n下列对应<strong>错误</strong>的是：",
+      figureSvg: `<svg class="figure" viewBox="0 0 320 220" style="max-width:320px;">
+        <line x1="50" y1="180" x2="300" y2="180" stroke="#2c3e50" stroke-width="2"/>
+        <line x1="50" y1="180" x2="50" y2="20" stroke="#2c3e50" stroke-width="2"/>
+        <text x="175" y="205" text-anchor="middle" font-size="14" fill="#2c3e50">V</text>
+        <text x="28" y="100" text-anchor="middle" font-size="14" fill="#2c3e50">P</text>
+        <circle cx="90" cy="60" r="4" fill="#2c3e50"/>
+        <text x="80" y="50" font-size="13" font-weight="bold" fill="#2c3e50">A</text>
+        <line x1="90" y1="60" x2="270" y2="60" stroke="#e74c3c" stroke-width="2"/>
+        <text x="180" y="55" font-size="12" fill="#e74c3c">① 等压</text>
+        <line x1="90" y1="60" x2="90" y2="160" stroke="#27ae60" stroke-width="2"/>
+        <text x="56" y="120" font-size="12" fill="#27ae60">② 等容</text>
+        <path d="M90,60 Q160,80 270,140" fill="none" stroke="#2980b9" stroke-width="2"/>
+        <text x="200" y="110" font-size="12" fill="#2980b9">③ 等温</text>
+        <path d="M90,60 Q140,90 270,170" fill="none" stroke="#8e44ad" stroke-width="2"/>
+        <text x="220" y="155" font-size="12" fill="#8e44ad">④ 绝热</text>
+      </svg>`,
+      options: ["① 是等压过程", "② 是等容过程", "③ 是等温过程", "④ 是等温过程"],
+      correct: "D",
+      inspection: "考察点 3 + 考察点 4 · 难度：中等\n四过程在 PV 图中的曲线形状识别。",
+      thinking: "1. 等压：P 不变 ⇒ 水平直线\n2. 等容：V 不变 ⇒ 竖直直线\n3. 等温：PV = nRT，P ∝ 1/V ⇒ 双曲线\n4. 绝热：PV^γ = const（γ > 1）⇒ 比等温线更陡的曲线",
+      answer: "<strong>D</strong>\n• ④ 不是等温过程，是绝热过程（绝热曲线比等温曲线更陡）",
+      mistakes: "等温线与绝热线都向右下方延伸的双曲线状，区别在陡峭度。",
+      extension: "γ = Cp/Cv，单原子理想气体 γ = 5/3 ≈ 1.67；双原子气体 γ ≈ 1.4。从同一初态出发，PV^γ 比 PV 下降更快，所以绝热线更陡。"
+    },
+    {
+      id: "T3-4", difficulty: "中等", score: 15, type: "choice",
+      stem: "理想气体在以下四个过程中，温度均<strong>升高</strong>。求每个过程中 ΔU 的正负号判断：\n（甲）等容吸热\n（乙）等压吸热\n（丙）绝热压缩\n（丁）等温压缩",
+      options: [
+        "四个过程 ΔU 都 > 0",
+        "仅（甲）（乙）（丙）ΔU > 0；（丁）ΔU = 0",
+        "仅（甲）（丙）ΔU > 0；（乙）（丁）ΔU = 0",
+        "四个过程 ΔU 都 = 0"
+      ],
+      correct: "B",
+      inspection: "考察点 6（U 只与 T 有关）+ 考察点 3 · 难度：中等",
+      thinking: "1. 理想气体 ΔU = ³⁄₂ nRΔT，<strong>完全由温度变化决定</strong>\n2. 题目说四个过程「温度均升高」——但（丁）等温压缩，T 不变\n3. 题目把（丁）放在四过程中，是测试学生识别这点：温度升高的过程是（甲）（乙）（丙），ΔU > 0；（丁）实际 ΔT = 0、ΔU = 0",
+      answer: "<strong>B</strong>\n• 关键认知：内能只与温度有关。温度升高 ⇒ ΔU > 0；温度不变 ⇒ ΔU = 0\n• （丁）等温压缩 T 不变 ⇒ ΔU = 0，与题目「温度均升高」矛盾",
+      mistakes: "把「等温压缩」想当然认为温度升高（因为压缩日常感觉升温）。等温压缩需要散热保持 T 不变。",
+      extension: "等温压缩 Q < 0（放热）、W > 0（外界做功）、|Q| = |W|、ΔU = 0。"
+    }
+  ],
+  T4: [
+    {
+      id: "T4-1", difficulty: "中等", score: 15, type: "choice",
+      stem: "[配图：PV 图，初态 A(P=4×10⁵ Pa, V=1×10⁻³ m³)，终态 B(P=1×10⁵ Pa, V=4×10⁻³ m³)，路径 ① 先等压膨胀后等容降压（A→C→B）；路径 ② 先等容降压后等压膨胀（A→D→B）]\n\n两条路径将气体从相同的初态带到相同的终态。下列说法正确的是：",
+      figureSvg: `<svg class="figure" viewBox="0 0 320 230" style="max-width:320px;">
+        <line x1="50" y1="190" x2="300" y2="190" stroke="#2c3e50" stroke-width="2"/>
+        <line x1="50" y1="190" x2="50" y2="20" stroke="#2c3e50" stroke-width="2"/>
+        <text x="175" y="215" text-anchor="middle" font-size="13" fill="#2c3e50">V</text>
+        <text x="28" y="100" text-anchor="middle" font-size="13" fill="#2c3e50">P</text>
+        <circle cx="80" cy="40" r="4" fill="#2c3e50"/><text x="60" y="36" font-size="12" font-weight="bold" fill="#2c3e50">A</text>
+        <circle cx="260" cy="160" r="4" fill="#2c3e50"/><text x="265" y="170" font-size="12" font-weight="bold" fill="#2c3e50">B</text>
+        <circle cx="260" cy="40" r="3" fill="#e74c3c"/><text x="263" y="32" font-size="11" fill="#e74c3c">C</text>
+        <line x1="80" y1="40" x2="260" y2="40" stroke="#e74c3c" stroke-width="2"/>
+        <line x1="260" y1="40" x2="260" y2="160" stroke="#e74c3c" stroke-width="2"/>
+        <text x="170" y="32" font-size="11" fill="#e74c3c">路径 ①</text>
+        <circle cx="80" cy="160" r="3" fill="#2980b9"/><text x="56" y="160" font-size="11" fill="#2980b9">D</text>
+        <line x1="80" y1="40" x2="80" y2="160" stroke="#2980b9" stroke-width="2"/>
+        <line x1="80" y1="160" x2="260" y2="160" stroke="#2980b9" stroke-width="2"/>
+        <text x="120" y="180" font-size="11" fill="#2980b9">路径 ②</text>
+      </svg>`,
+      options: [
+        "两条路径上气体对外做的功相同",
+        "两条路径上的 ΔU 相同",
+        "两条路径上系统吸热 Q 相同",
+        "路径 ① 上系统吸热较少"
+      ],
+      correct: "B",
+      inspection: "考察点 4（PV 图）+ 考察点 1（状态量 vs 过程量）· 难度：中等",
+      thinking: "1. 内能是状态量，只看初末态 → ΔU 路径无关\n2. 功 = PV 图下方面积，与路径有关\n3. Q = ΔU − W（本板块约定），W 不同则 Q 不同\n4. 路径 ① 面积 > 路径 ② 面积（先在高 P 区膨胀），所以路径 ① 系统对外做功多，W₁ < W₂（外界对系统做的功，路径 1 更负）",
+      answer: "<strong>B</strong>\n• A 错：路径不同则面积不同，气体对外做功不同\n• B 对：ΔU 只取决于初末状态\n• C 错：W 不同则 Q 不同\n• D 错：路径 ① 系统对外做功<strong>多</strong>，但既然 ΔU 一样，Q 必须<strong>更多</strong>（弥补做功的能量），所以路径 ① 吸热<strong>更多</strong>",
+      mistakes: "（1）把「做功多」等同于「吸热少」——忘了 ΔU 必须守恒；（2）把「对外做功 = W > 0」——本板块约定 W < 0。",
+      extension: "状态量 vs 过程量是热学最核心的辨析点。"
+    },
+    {
+      id: "T4-2", difficulty: "中等", score: 15, type: "choice",
+      stem: "[配图：PV 图上一条等温线从 A(P=2×10⁵ Pa, V=1×10⁻³ m³) 到 B(V=2×10⁻³ m³)，曲线下阴影]\n\n一定量理想气体沿等温线从状态 A 膨胀到状态 B，已知气体对外做功 138.6 J。下列说法<strong>错误</strong>的是：",
+      options: [
+        "该过程 ΔU = 0",
+        "该过程 Q = +138.6 J（系统吸热）",
+        "PV 图中曲线下阴影面积 = 138.6 J",
+        "该过程 W = +138.6 J（按本板块约定）"
+      ],
+      correct: "D",
+      inspection: "考察点 4（PV 图面积 = 功）+ 考察点 3（等温过程）· 难度：中等",
+      thinking: "1. 等温过程 ⇒ ΔU = 0\n2. ΔU = Q + W ⇒ Q = −W\n3. 气体对外做功 138.6 J ⇒ 外界对系统做功 W = −138.6 J（本板块约定）\n4. Q = −W = +138.6 J（吸热）",
+      answer: "<strong>D</strong>\n• A 对：等温 ⇒ ΔT = 0 ⇒ ΔU = 0\n• B 对：吸热 138.6 J\n• C 对：曲线下面积 = 气体对外做的功 = 138.6 J\n• D 错：W 在本板块约定下应为 −138.6 J（外界对系统做负功）",
+      mistakes: "（1）混淆 W 的两种符号约定；（2）忘了 PV 图面积是「气体对外做的功」，不是「外界对系统做的功」。",
+      extension: "等温过程对外做功 W对外 = nRT·ln(V₂/V₁)，本题约 nRT ≈ 200 J 对应 ln(2) ≈ 0.693。"
+    },
+    {
+      id: "T4-3", difficulty: "较难", score: 15, type: "choice",
+      stem: "[配图：PV 图上一个三角形循环 A→B→C→A，顺时针。A(P=1×10⁵, V=1×10⁻³)、B(P=3×10⁵, V=1×10⁻³)、C(P=1×10⁵, V=3×10⁻³)]\n\n气体经历该三角形循环一周。下列说法<strong>正确</strong>的是：",
+      figureSvg: `<svg class="figure" viewBox="0 0 320 230" style="max-width:320px;">
+        <line x1="50" y1="190" x2="300" y2="190" stroke="#2c3e50" stroke-width="2"/>
+        <line x1="50" y1="190" x2="50" y2="20" stroke="#2c3e50" stroke-width="2"/>
+        <text x="175" y="215" text-anchor="middle" font-size="13" fill="#2c3e50">V</text>
+        <text x="28" y="100" text-anchor="middle" font-size="13" fill="#2c3e50">P</text>
+        <line x1="100" y1="160" x2="100" y2="60" stroke="#e74c3c" stroke-width="2"/>
+        <line x1="100" y1="60" x2="240" y2="160" stroke="#e74c3c" stroke-width="2"/>
+        <line x1="240" y1="160" x2="100" y2="160" stroke="#e74c3c" stroke-width="2"/>
+        <polygon points="240,160 232,154 232,166" fill="#e74c3c"/>
+        <circle cx="100" cy="160" r="4" fill="#2c3e50"/><text x="82" y="178" font-size="12" font-weight="bold" fill="#2c3e50">A</text>
+        <circle cx="100" cy="60" r="4" fill="#2c3e50"/><text x="80" y="56" font-size="12" font-weight="bold" fill="#2c3e50">B</text>
+        <circle cx="240" cy="160" r="4" fill="#2c3e50"/><text x="248" y="172" font-size="12" font-weight="bold" fill="#2c3e50">C</text>
+      </svg>`,
+      options: [
+        "一周内 ΔU > 0",
+        "一周内气体对外做净功，数值等于三角形面积",
+        "一周内气体净放热",
+        "该循环过程效率为 100%"
+      ],
+      correct: "B",
+      inspection: "考察点 5（循环 ΔU = 0）+ 考察点 4 · 难度：较难",
+      thinking: "1. 循环过程 ΔU = 0（状态量回到原点）\n2. 顺时针循环 ⇒ 气体对外做净功 = 三角形面积\n3. 三角形面积 = ½ × 底 × 高 = ½ × 2×10⁻³ × 2×10⁵ = 200 J\n4. ΔU = 0 ⇒ Q净 = −W净 = +200 J（净吸热）",
+      answer: "<strong>B</strong>\n• A 错：循环 ΔU = 0\n• B 对：顺时针面积 = 净对外做功 = 200 J\n• C 错：净吸热 +200 J（不是放热）\n• D 错：效率 = 净功 / 总吸热 < 100%",
+      mistakes: "（1）误把 ΔU > 0；（2）混淆「净吸热」和「总吸热」；（3）认为热机效率可达 100%（违反第二定律）。",
+      extension: "顺时针 = 热机循环（向外做功）；逆时针 = 制冷循环（外界做功带走热）。"
+    },
+    {
+      id: "T4-4", difficulty: "较难", score: 15, type: "choice",
+      stem: "某理想气体过程在 P-T 图上是一条过原点的直线（即 P = kT，k 为常数）。下列说法<strong>正确</strong>的是：",
+      options: [
+        "这是一个等容过程",
+        "这是一个等压过程",
+        "这是一个等温过程",
+        "在 PV 图上该过程是一条曲线"
+      ],
+      correct: "A",
+      inspection: "考察点 4 · 难度：较难\nP-T 图与 PV 图的对应转换。",
+      thinking: "1. 理想气体 PV = nRT ⇒ V = nRT/P\n2. 若 P = kT（P 与 T 成正比）⇒ V = nRT/(kT) = nR/k = const\n3. V 不变 ⇒ 等容过程",
+      answer: "<strong>A</strong>\n• 在 P-T 图上「过原点的直线 P = kT」⇔「P/T = const」⇔「V = const」\n• A 对：是等容过程\n• B 错：等压过程在 P-T 图上是水平直线\n• C 错：等温过程在 P-T 图上是竖直直线\n• D 错：等容过程在 PV 图上是竖直直线",
+      mistakes: "（1）看到 P-T 图直线就联想到等压、等温；（2）忘了 PV = nRT 联立。",
+      extension: "等压过程在 V-T 图上是过原点直线；等容过程在 P-T 图上是过原点直线——这是高考常考的图像识别。"
+    }
+  ],
+  T5: [
+    {
+      id: "T5-1", difficulty: "基础", score: 13, type: "fill",
+      stem: "某气体在等压过程中吸收 800 J 的热量，同时对外做功 300 J。求气体的内能变化 ΔU。",
+      fills: [{ key: "deltaU", label: "ΔU =", correctValue: 500, unit: "J", tol: 5 }],
+      inspection: "考察点 2（符号约定）+ 单步代入 · 难度：基础",
+      thinking: "1. 识别 Q：吸热 Q = +800 J\n2. 识别 W：气体对外做功 300 J，外界对系统做功 −300 J，即 W = −300 J\n3. 代入 ΔU = Q + W",
+      answer: "<strong>ΔU = +500 J</strong>\n• ΔU = Q + W = 800 + (−300) = +500 J\n• 物理意义：气体内能增加 500 J，温度上升（等压加热膨胀的典型情形）",
+      mistakes: "未识别 W 的符号 ⇒ 算出 ΔU = 1100 J 是错的。",
+      extension: ""
+    },
+    {
+      id: "T5-2", difficulty: "基础", score: 13, type: "fill",
+      stem: "理想气体在绝热条件下被压缩，外界对气体做功 400 J。求气体的 ΔU 与温度变化方向（升/降/不变）。",
+      fills: [
+        { key: "deltaU", label: "ΔU =", correctValue: 400, unit: "J", tol: 5 },
+        { key: "T", label: "温度变化", choices: ["升高", "降低", "不变"], correctValue: "升高", unit: "" }
+      ],
+      inspection: "考察点 2 + 考察点 3（绝热过程）· 难度：基础",
+      thinking: "1. 绝热 ⇒ Q = 0\n2. 外界对气体做功 400 J ⇒ W = +400 J\n3. ΔU = Q + W = 0 + 400 = +400 J\n4. ΔU > 0 ⇒ T 升高",
+      answer: "<strong>Q = 0、ΔU = +400 J、温度升高</strong>\n• 物理意义：所有外界做的功都转化为内能 ⇒ 温度升高（柴油机点火原理）",
+      mistakes: "（1）W 符号写错；（2）把 Q = 0 误解为「温度不变」。",
+      extension: "与等温压缩对比——等温压缩 ΔU = 0、|Q| = |W|，所有做功转为放热。"
+    },
+    {
+      id: "T5-3", difficulty: "基础", score: 13, type: "fill",
+      stem: "某气体在等容过程中放出 250 J 的热量。求 W 和 ΔU。",
+      fills: [
+        { key: "W", label: "W =", correctValue: 0, unit: "J", tol: 2 },
+        { key: "deltaU", label: "ΔU =", correctValue: -250, unit: "J", tol: 5 }
+      ],
+      inspection: "考察点 2 + 考察点 3（等容过程）· 难度：基础",
+      thinking: "1. 等容 ⇒ ΔV = 0 ⇒ W = 0\n2. 放热 ⇒ Q = −250 J\n3. ΔU = Q + W = −250 + 0 = −250 J",
+      answer: "<strong>W = 0、ΔU = −250 J</strong>\n• 物理意义：温度下降",
+      mistakes: "（1）放热 Q 没写负号；（2）认为「放热温度也可能升」——对等容过程不对，等容 ΔU = Q，符号一致。",
+      extension: "等容降温过程是冰箱的冷凝侧典型情形。"
+    },
+    {
+      id: "T5-4", difficulty: "中等", score: 13, type: "fill",
+      stem: "理想气体在等温膨胀中对外做了 500 J 的功。求该过程的 Q 和 ΔU。",
+      fills: [
+        { key: "Q", label: "Q =", correctValue: 500, unit: "J", tol: 5 },
+        { key: "deltaU", label: "ΔU =", correctValue: 0, unit: "J", tol: 2 }
+      ],
+      inspection: "考察点 2 + 考察点 3（等温过程）+ 考察点 6 · 难度：中等",
+      thinking: "1. 等温 ⇒ ΔU = 0\n2. 对外做功 500 J ⇒ W = −500 J（外界对系统做负功）\n3. ΔU = Q + W ⇒ 0 = Q + (−500) ⇒ Q = +500 J",
+      answer: "<strong>Q = +500 J、ΔU = 0</strong>\n• 物理意义：吸收的所有热量都用于对外做功",
+      mistakes: "（1）误以为膨胀就 ΔU < 0；（2）漏掉等温过程 ΔU = 0 的关键。",
+      extension: "等温膨胀是卡诺循环高温段的典型过程。"
+    }
+  ],
+  T6: [
+    {
+      id: "T6-1", difficulty: "中等", score: 17, type: "fill",
+      stem: "某气体经历两个过程：\n（1）等容过程吸收 200 J 热量\n（2）等压过程膨胀，对外做功 80 J，同时吸收 150 J 热量\n\n求整个过程中系统内能的总变化 ΔU。",
+      fills: [{ key: "deltaU", label: "ΔU 总 =", correctValue: 270, unit: "J", tol: 5 }],
+      inspection: "考察点 2 + 考察点 3 + 多步代入 · 难度：中等",
+      thinking: "1. 分别处理两个过程\n2. 过程（1）等容：W₁ = 0、Q₁ = +200 J ⇒ ΔU₁ = 200 J\n3. 过程（2）等压：Q₂ = +150 J、W₂ = −80 J ⇒ ΔU₂ = 150 + (−80) = 70 J\n4. 总 ΔU = ΔU₁ + ΔU₂",
+      answer: "<strong>ΔU = +270 J</strong>\n• ΔU₁ = 200 + 0 = 200 J\n• ΔU₂ = 150 + (−80) = 70 J\n• ΔU 总 = 270 J",
+      mistakes: "（1）过程（2）W 的符号写成 +80；（2）忘了等容时 W = 0。",
+      extension: "本题可改用初末态法验算（ΔU 总 = 终态 U − 初态 U）。"
+    },
+    {
+      id: "T6-2", difficulty: "中等", score: 17, type: "fill",
+      stem: "[配图：PV 图上矩形循环 a→b→c→d→a，顺时针。a(V=1, P=3)、b(V=3, P=3)、c(V=3, P=1)、d(V=1, P=1)，单位 V 为 10⁻³ m³，P 为 10⁵ Pa]\n\n求一个循环周期内：\n（a）外界对系统做的净功 W\n（b）气体净吸的热量 Q",
+      figureSvg: `<svg class="figure" viewBox="0 0 320 230" style="max-width:320px;">
+        <line x1="50" y1="190" x2="300" y2="190" stroke="#2c3e50" stroke-width="2"/>
+        <line x1="50" y1="190" x2="50" y2="20" stroke="#2c3e50" stroke-width="2"/>
+        <text x="175" y="215" text-anchor="middle" font-size="13" fill="#2c3e50">V</text>
+        <text x="28" y="100" text-anchor="middle" font-size="13" fill="#2c3e50">P</text>
+        <rect x="100" y="50" width="140" height="110" fill="none" stroke="#e74c3c" stroke-width="2"/>
+        <polygon points="240,50 232,44 232,56" fill="#e74c3c"/>
+        <circle cx="100" cy="160" r="3" fill="#2c3e50"/><text x="82" y="178" font-size="11" font-weight="bold">d</text>
+        <circle cx="100" cy="50" r="3" fill="#2c3e50"/><text x="82" y="48" font-size="11" font-weight="bold">a</text>
+        <circle cx="240" cy="50" r="3" fill="#2c3e50"/><text x="248" y="48" font-size="11" font-weight="bold">b</text>
+        <circle cx="240" cy="160" r="3" fill="#2c3e50"/><text x="248" y="172" font-size="11" font-weight="bold">c</text>
+      </svg>`,
+      fills: [
+        { key: "W", label: "(a) W =", correctValue: -400, unit: "J", tol: 10 },
+        { key: "Q", label: "(b) Q =", correctValue: 400, unit: "J", tol: 10 }
+      ],
+      inspection: "考察点 5（循环过程）+ 考察点 4 · 难度：中等",
+      thinking: "1. 循环 ΔU = 0\n2. 顺时针 ⇒ 气体对外做正功 ⇒ 外界对系统做负功 W < 0\n3. 矩形面积 = 2×10⁻³ × 2×10⁵ = 400 J\n4. W = −400 J、Q = −W = +400 J",
+      answer: "<strong>(a) W = −400 J（外界对系统做净功为负 400 J，即系统对外做净功 400 J）\n(b) Q = +400 J（系统净吸热 400 J）</strong>\n• 验算：ΔU = Q + W = 400 + (−400) = 0 ✓",
+      mistakes: "（1）误把矩形面积当 Q；（2）忽略 W 的符号。",
+      extension: "本题是 §8 F2-1 矩形循环的弱化版（不含效率计算）。"
+    },
+    {
+      id: "T6-3", difficulty: "较难", score: 17, type: "fill",
+      stem: "一定量理想气体经历两个过程：\n（1）等温膨胀，对外做功 200 J\n（2）紧接着绝热压缩回到初体积，外界做功 300 J\n\n求两过程结束后：（a）ΔU 总  （b）总 Q",
+      fills: [
+        { key: "deltaU", label: "(a) ΔU 总 =", correctValue: 300, unit: "J", tol: 10 },
+        { key: "Q", label: "(b) Q 总 =", correctValue: 200, unit: "J", tol: 10 }
+      ],
+      inspection: "考察点 3 + 考察点 6 + 多步组合 · 难度：较难",
+      thinking: "1. 过程（1）等温：ΔU₁ = 0、W₁ = −200、Q₁ = +200\n2. 过程（2）绝热：Q₂ = 0、W₂ = +300、ΔU₂ = +300\n3. ΔU 总 = ΔU₁ + ΔU₂ = 0 + 300 = +300 J\n4. Q 总 = Q₁ + Q₂ = 200 + 0 = +200 J",
+      answer: "<strong>(a) ΔU 总 = +300 J（内能净增加）\n(b) Q 总 = +200 J（总吸热）</strong>\n• 验算：ΔU = Q + W ⇒ 300 = 200 + W 总 ⇒ W 总 = +100 J ⇒ W₁ + W₂ = −200 + 300 = +100 ✓\n• 物理意义：等温膨胀吸热 200 J 全部转为对外做功；绝热压缩 300 J 全部转为内能；最终温度比初态高。",
+      mistakes: "以为体积回到初态 ⇒ ΔU = 0（错！等温与绝热曲线不同，回到同体积时温度不同）。",
+      extension: "这是非可逆循环的典型——两过程后系统状态与初态不同。"
+    },
+    {
+      id: "T6-4", difficulty: "较难", score: 17, type: "fill",
+      stem: "0.5 mol 单原子理想气体初态温度 T₁ = 300 K。先等容吸热 Q₁ = +312.5 J，再等压吸热 Q₂ = +400 J。求末态温度 T₃。（R = 8.314 J/(mol·K)）",
+      fills: [{ key: "T3", label: "T₃ ≈", correctValue: 388.5, unit: "K", tol: 5 }],
+      inspection: "考察点 6 + 多步过程 · 难度：较难",
+      thinking: "1. 等容过程：W₁ = 0 ⇒ ΔU₁ = Q₁ = +312.5 J；由 ΔU = ³⁄₂ nRΔT 求 ΔT₁\n2. ΔT₁ = 312.5 / (³⁄₂ × 0.5 × 8.314) ≈ 50 K ⇒ T₂ ≈ 350 K\n3. 等压过程：Q₂ = ΔU₂ + |W对外| = ³⁄₂ nRΔT + nRΔT = ⁵⁄₂ nRΔT\n4. ΔT₂ = Q₂ / (⁵⁄₂ × nR) = 400 / (⁵⁄₂ × 0.5 × 8.314) ≈ 38.5 K ⇒ T₃ ≈ 388.5 K",
+      answer: "<strong>T₃ ≈ 388.5 K</strong>\n• 等容段：ΔT₁ ≈ 50.1 K ⇒ T₂ ≈ 350 K\n• 等压段：单原子等压 C_p = ⁵⁄₂ R；ΔT₂ ≈ 38.5 K ⇒ T₃ ≈ 388.5 K",
+      mistakes: "（1）等压用 ³⁄₂ R（错，应用 ⁵⁄₂ R）；（2）把 Q₂ 直接当 ΔU₂（忽略等压时 W₂ ≠ 0）。",
+      extension: "等容 C_v = ³⁄₂ R，等压 C_p = ⁵⁄₂ R，差 R（迈耶关系）。"
+    }
+  ],
+  T7: [
+    {
+      id: "T7-1", difficulty: "较难", score: 18, type: "structured",
+      stem: "[配图：竖直打气筒，内部空气虚线框标「系统」；活塞向下，筒壁向外散热]\n\n你用打气筒给自行车轮胎打气。打气过程中：",
+      figureSvg: `<svg class="figure" viewBox="0 0 220 250" style="max-width:200px;">
+        <rect x="60" y="60" width="100" height="160" rx="4" fill="#f3f4f6" stroke="#4b5563" stroke-width="2"/>
+        <rect x="65" y="50" width="90" height="15" rx="3" fill="#9ca3af" stroke="#4b5563" stroke-width="1.5"/>
+        <line x1="110" y1="50" x2="110" y2="15" stroke="#4b5563" stroke-width="3"/>
+        <rect x="100" y="6" width="20" height="12" rx="3" fill="#6b7280"/>
+        <rect x="68" y="70" width="84" height="144" rx="3" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,4"/>
+        <text x="110" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#ef4444">系统</text>
+        <text x="110" y="166" text-anchor="middle" font-size="10" fill="#ef4444">（筒内空气）</text>
+        <line x1="32" y1="20" x2="32" y2="60" stroke="#2563eb" stroke-width="2.5"/>
+        <polygon points="32,60 27,50 37,50" fill="#2563eb"/>
+        <text x="20" y="42" font-size="13" font-weight="bold" fill="#2563eb">W</text>
+        <line x1="160" y1="140" x2="195" y2="140" stroke="#d97706" stroke-width="2.5"/>
+        <polygon points="195,140 185,135 185,145" fill="#d97706"/>
+        <text x="200" y="136" font-size="13" font-weight="bold" fill="#d97706">Q</text>
+      </svg>`,
+      parts: [
+        {
+          kind: "choice", key: "a",
+          prompt: "（a）以打气筒内的空气为系统，<strong>用一句话描述你打完气后摸到筒壁的感觉</strong>，并由此判断 Q 的方向。Q 与 W 的符号是：",
+          options: ["Q > 0，W > 0", "Q < 0，W > 0", "Q > 0，W < 0", "Q < 0，W < 0"],
+          correct: "B"
+        },
+        {
+          kind: "text", key: "b",
+          prompt: "（b）请解释筒壁为什么会发热（用第一定律的语言）。",
+          keywords: ["做功", "压缩", "内能", "温度", "热传导", "热量", "动能"], minLen: 10, minKeywords: 2
+        },
+        {
+          kind: "choice", key: "c",
+          prompt: "（c）如果打气筒是完美绝热的（不散热），筒内空气的温度变化会<strong>比实际情况</strong>：",
+          options: ["更大", "更小", "一样大"],
+          correct: "更大"
+        }
+      ],
+      inspection: "考察点 7（真实情境的能量守恒应用）+ 考察点 2（符号判断）· 难度：较难",
+      thinking: "1. (a) 筒壁变热 ⇒ 热从气体传到筒壁（系统放热）⇒ Q < 0；活塞向下压 ⇒ 外界对系统做功 ⇒ W > 0\n2. (b) 压缩做功使内能增 ⇒ 温度高于筒壁 ⇒ 热传导散热 ⇒ 筒壁热\n3. (c) 绝热 Q = 0，做功全部留在系统内 ⇒ 内能增更多 ⇒ 温度升更多 ⇒ 比实际更大",
+      answer: "<strong>(a) B（Q < 0、W > 0） (b) 见参考解析 (c) 更大</strong>\n参考 (b)：压缩做功使气体内能增加 → 气体温度升高 → 气体温度高于筒壁温度 → 热量从气体传向筒壁（热传导）→ 筒壁变热。用第一定律：ΔU = Q + W，其中 W > 0，Q < 0，最终 ΔU > 0。",
+      mistakes: "（1）混淆「系统放热」与「系统温度升」——散热不一定使系统降温；（2）忘了 W 在本板块约定下的符号。",
+      extension: "这是热力学第一定律在真实工业场景的应用（压缩机为什么需要冷却）。"
+    },
+    {
+      id: "T7-2", difficulty: "较难", score: 18, type: "structured",
+      stem: "家用冰箱的工作原理是：压缩机将制冷剂气体<strong>压缩</strong>到高温高压状态 → 在冰箱<strong>背面</strong>（散热片）放热冷凝 → 经膨胀阀后<strong>绝热膨胀</strong>到低温低压 → 在冰箱<strong>内部</strong>（蒸发器）吸热蒸发。",
+      parts: [
+        {
+          kind: "choice", key: "a",
+          prompt: "（a）以「压缩机压缩制冷剂」段中制冷剂为系统，Q、W、ΔU 的符号是：",
+          options: ["Q > 0、W > 0、ΔU > 0", "Q ≈ 0 或 Q < 0、W > 0、ΔU > 0", "Q > 0、W < 0、ΔU > 0", "Q < 0、W < 0、ΔU < 0"],
+          correct: "B"
+        },
+        {
+          kind: "text", key: "b",
+          prompt: "（b）解释为什么冰箱<strong>背面会发烫</strong>。",
+          keywords: ["压缩", "高温", "放热", "冷凝", "环境", "空气"], minLen: 10, minKeywords: 2
+        },
+        {
+          kind: "choice", key: "c",
+          prompt: "（c）膨胀阀后绝热膨胀过程温度变化方向是：",
+          options: ["升高", "降低", "不变"],
+          correct: "降低"
+        }
+      ],
+      inspection: "考察点 7 + 考察点 3 + 真实情境综合 · 难度：较难",
+      thinking: "1. (a) 压缩机做功 → W > 0；同时压缩升温 → 略放热 Q < 0（但 W 占主导）；ΔU > 0\n2. (b) 背面是冷凝段，高温气体放热给空气\n3. (c) 绝热膨胀 Q = 0；气体对外做功 W < 0 ⇒ ΔU < 0 ⇒ T 降低",
+      answer: "<strong>(a) B (b) 见参考解析 (c) 降低</strong>\n参考 (b)：被压缩的高温制冷剂在冷凝段把热放给环境空气。冰箱整体来看：吸了冰箱内部的热 + 压缩机做的功，全部排到了背面散热片。",
+      mistakes: "（1）误以为「冰箱内变冷」是因为「压缩机产生冷」——冷不能「产生」，只能「被搬运」；（2）混淆冷凝段和蒸发段的位置。",
+      extension: "冰箱本质 = 用电能（压缩机做功）把热量从冷端搬到热端。能量守恒：冰箱总耗电 = 从食物吸的热 + 压缩机功 = 排到房间空气的总热。"
+    },
+    {
+      id: "T7-3", difficulty: "较难", score: 18, type: "structured",
+      stem: "[配图：自行车气筒打满气后突然开阀放气；放气瞬间瓶口结霜]\n\n你给自行车打完气，发现轮胎气压很高。突然把气嘴打开，气体迅速冲出。你注意到气嘴口<strong>结了一层薄霜</strong>。",
+      parts: [
+        {
+          kind: "choice", key: "a",
+          prompt: "（a）以快速冲出的气体为系统，这接近什么过程？",
+          options: ["绝热膨胀", "等温膨胀", "等压膨胀", "等容降压"],
+          correct: "绝热膨胀"
+        },
+        {
+          kind: "choice", key: "b",
+          prompt: "（b）该过程中 Q、W、ΔU 的符号：",
+          options: ["Q = 0，W < 0，ΔU < 0", "Q = 0，W > 0，ΔU > 0", "Q > 0，W < 0，ΔU = 0", "Q < 0，W = 0，ΔU < 0"],
+          correct: "Q = 0，W < 0，ΔU < 0"
+        },
+        {
+          kind: "text", key: "c",
+          prompt: "（c）解释为什么气嘴会结霜（结合温度变化和水蒸气）。",
+          keywords: ["温度", "下降", "降低", "水蒸气", "凝结", "结霜", "凝华"], minLen: 10, minKeywords: 2
+        }
+      ],
+      inspection: "考察点 3（绝热过程的实际近似）+ 考察点 7 · 难度：较难",
+      thinking: "1. (a) 放气速度快 ⇒ 来不及与环境换热 ⇒ 近似绝热膨胀\n2. (b) 绝热 Q = 0；气体冲出推开空气 ⇒ 系统对外做功 ⇒ W < 0；ΔU < 0\n3. (c) ΔU < 0 ⇒ T 下降 ⇒ 周围水蒸气凝结甚至结霜",
+      answer: "<strong>(a) 绝热膨胀 (b) Q = 0，W < 0，ΔU < 0 (c) 见参考解析</strong>\n参考 (c)：内能减少 ⇒ 温度大幅下降 ⇒ 接触到的水蒸气快速冷却凝结 ⇒ 凝华成霜。",
+      mistakes: "（1）把「放气」想当然认为是自由膨胀（ΔU = 0、ΔT = 0）——放气是冲入大气，不是冲入真空；（2）忽视「快」对应「绝热」。",
+      extension: "自由膨胀（冲入真空）vs 绝热可逆膨胀（缓慢推活塞）vs 绝热不可逆膨胀（冲入大气）。本题属第三种，最接近绝热可逆，温度下降明显。"
+    },
+    {
+      id: "T7-4", difficulty: "较难", score: 18, type: "structured",
+      stem: "一个密封的橡胶气球放在 25°C 的房间里。把它放到太阳下后，气球<strong>膨胀</strong>了，最终温度达到 40°C。假设气球内是 0.01 mol 单原子理想气体，气压近似恒定。",
+      parts: [
+        {
+          kind: "choice", key: "a",
+          prompt: "（a）膨胀过程中 ΔU、Q、W 的符号：",
+          options: ["Q > 0、W < 0、ΔU > 0", "Q > 0、W > 0、ΔU > 0", "Q < 0、W < 0、ΔU < 0", "Q = 0、W < 0、ΔU < 0"],
+          correct: "Q > 0、W < 0、ΔU > 0"
+        },
+        {
+          kind: "choice", key: "b",
+          prompt: "（b）这个过程接近什么理想过程？",
+          options: ["等压过程", "等温过程", "等容过程", "绝热过程"],
+          correct: "等压过程"
+        },
+        {
+          kind: "fill", key: "Q",
+          prompt: "（c）估算气体吸收的热量 Q（R = 8.314）：",
+          correctValue: 3.12, unit: "J", tol: 0.3
+        }
+      ],
+      inspection: "考察点 3（等压过程）+ 考察点 6 + 真实估算 · 难度：较难",
+      thinking: "1. (a) 太阳辐射加热 ⇒ Q > 0；体积膨胀 ⇒ W < 0；温度升 ⇒ ΔU > 0\n2. (b) 气压近似不变 = 等压过程\n3. (c) 等压 Q = ⁵⁄₂ nRΔT = ⁵⁄₂ × 0.01 × 8.314 × 15 ≈ 3.12 J",
+      answer: "<strong>(a) Q > 0、W < 0、ΔU > 0 (b) 等压过程 (c) Q ≈ 3.12 J</strong>\n• 验算：ΔU = ³⁄₂ nRΔT ≈ 1.87 J；|W对外| = nRΔT = 1.25 J；Q = ΔU + |W对外| ≈ 3.12 J ✓",
+      mistakes: "（1）误用 ³⁄₂ R 算 Q（这是等容情况）；（2）忘了气球膨胀涉及对外做功。",
+      extension: "实际气球内含双原子分子（N₂、O₂），应用 ⁷⁄₂ R 而非 ⁵⁄₂ R；本题简化为单原子是为了让计算清爽。"
+    }
+  ]
+};
+
+/* ============================================================
+ * 状态 + 抽题
+ * ============================================================ */
+let studentName = "";
+let selectedQuestions = []; // 本次抽中的 7 题
+const answers = {}; // 学生答案，按 qIndex 索引
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pickQuestions() {
+  selectedQuestions = [];
+  ["T1","T2","T3","T4","T5","T6","T7"].forEach(t => {
+    const pool = QUESTION_BANK[t];
+    selectedQuestions.push(pool[Math.floor(Math.random() * pool.length)]);
+  });
+}
+
+/* ============================================================
+ * 渲染
+ * ============================================================ */
+function renderQuestions() {
+  const root = document.getElementById("question-list");
+  let html = "";
+  selectedQuestions.forEach((q, idx) => {
+    const n = idx + 1;
+    html += `<div class="question-card" id="qcard-${n}">
+      <div class="q-header">
+        <span class="q-number">${n}</span>
+        <span class="q-meta">${q.id}</span>
+        <span class="q-meta diff-${q.difficulty}">${q.difficulty}</span>
+        <span class="q-meta score">${q.score} 分</span>
+      </div>
+      <div class="q-stem">${q.stem}</div>
+      ${q.figureSvg || ""}
+      ${renderQBody(q, n)}
+    </div>`;
+  });
+  root.innerHTML = html;
+}
+
+function renderQBody(q, n) {
+  if (q.type === "choice") {
+    return renderChoice(q, n);
+  } else if (q.type === "fill") {
+    return renderFills(q.fills, n);
+  } else if (q.type === "structured") {
+    let html = "";
+    q.parts.forEach(p => {
+      html += `<div class="sub-q"><div class="sub-q-label">${p.prompt}</div>`;
+      if (p.kind === "choice") {
+        html += renderChoiceOptions(p.options, `q${n}-${p.key}`, n, p.key);
+      } else if (p.kind === "text") {
+        html += `<textarea class="text-answer" data-q="${n}" data-k="${p.key}" placeholder="写下你的分析..." oninput="onAnswerChange(${n},'${p.key}',this.value)"></textarea>`;
+      } else if (p.kind === "fill") {
+        html += `<div class="fill-group">
+          <input type="text" class="fill-input" data-q="${n}" data-k="${p.key}" placeholder="数值" oninput="onAnswerChange(${n},'${p.key}',this.value)">
+          <span class="fill-unit">${p.unit || ""}</span>
+        </div>`;
+      }
+      html += `</div>`;
+    });
+    return html;
+  }
+  return "";
+}
+
+function renderChoice(q, n) {
+  return renderChoiceOptions(q.options, `q${n}`, n, "main");
+}
+
+function renderChoiceOptions(options, nameAttr, qIdx, key) {
+  const letters = ["A","B","C","D","E"];
+  let html = `<ul class="options">`;
+  options.forEach((txt, i) => {
+    const letter = letters[i];
+    // 选项值：单选用字母 (A/B/C/D)，多选项不是字母（如"升高"）时直接传文字
+    // 我们用字母索引，但 correct 字段如果不是字母则直接对应文字 → 评分时统一处理
+    html += `<li><label onclick="selectOption(${qIdx},'${key}','${letter}','${escapeForJs(txt)}')">
+      <input type="radio" name="${nameAttr}" value="${letter}">
+      <span><span class="opt-letter">${letter}.</span> ${txt}</span>
+    </label></li>`;
+  });
+  html += `</ul>`;
+  return html;
+}
+
+function renderFills(fills, n) {
+  let html = "";
+  fills.forEach(f => {
+    if (f.choices) {
+      html += `<div class="fill-group">
+        <span class="fill-label">${f.label}</span>
+        <select class="fill-input" data-q="${n}" data-k="${f.key}" onchange="onAnswerChange(${n},'${f.key}',this.value)">
+          <option value="">请选择</option>
+          ${f.choices.map(c => `<option value="${c}">${c}</option>`).join("")}
+        </select>
+      </div>`;
+    } else {
+      html += `<div class="fill-group">
+        <span class="fill-label">${f.label}</span>
+        <input type="text" class="fill-input" data-q="${n}" data-k="${f.key}" placeholder="数值" oninput="onAnswerChange(${n},'${f.key}',this.value)">
+        <span class="fill-unit">${f.unit || ""}</span>
+      </div>`;
+    }
+  });
+  return html;
+}
+
+function escapeForJs(s) {
+  return String(s).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+/* ============================================================
+ * 答题事件
+ * ============================================================ */
+function selectOption(qIdx, key, letter, text) {
+  if (!answers[qIdx]) answers[qIdx] = {};
+  answers[qIdx][key] = { letter, text };
+  // 高亮
+  document.querySelectorAll(`#qcard-${qIdx} input[type="radio"]`).forEach(inp => {
+    if (inp.name === (key === "main" ? `q${qIdx}` : `q${qIdx}-${key}`)) {
+      inp.closest("label").classList.toggle("selected", inp.value === letter);
+      if (inp.value === letter) inp.checked = true;
+    }
+  });
+  updateProgress();
+}
+
+function onAnswerChange(qIdx, key, val) {
+  if (!answers[qIdx]) answers[qIdx] = {};
+  answers[qIdx][key] = val;
+  updateProgress();
+}
+
+function updateProgress() {
+  let count = 0;
+  selectedQuestions.forEach((q, idx) => {
+    const n = idx + 1;
+    if (isQuestionAnswered(q, n)) count++;
+  });
+  document.getElementById("progress-text").textContent = `已答 ${count} / 7`;
+  document.getElementById("progress-fill").style.width = `${count / 7 * 100}%`;
+}
+
+function isQuestionAnswered(q, n) {
+  const a = answers[n];
+  if (!a) return false;
+  if (q.type === "choice") return !!a.main;
+  if (q.type === "fill") {
+    return q.fills.every(f => {
+      const v = a[f.key];
+      return v !== undefined && v !== null && String(v).trim() !== "";
+    });
+  }
+  if (q.type === "structured") {
+    return q.parts.every(p => {
+      const v = a[p.key];
+      if (p.kind === "choice") return v && v.letter;
+      return v !== undefined && v !== null && String(v).trim() !== "";
+    });
+  }
+  return false;
+}
+
+/* ============================================================
+ * 启动
+ * ============================================================ */
+function startTest() {
+  const name = document.getElementById("student-name").value.trim();
+  if (!name) {
+    document.getElementById("student-name").style.borderColor = "#e74c3c";
+    document.getElementById("student-name").placeholder = "请输入姓名";
+    return;
+  }
+  studentName = name;
+  pickQuestions();
+  renderQuestions();
+  document.getElementById("entry-screen").classList.add("hidden");
+  document.getElementById("test-screen").classList.remove("hidden");
+}
+
+/* ============================================================
+ * 评分
+ * ============================================================ */
+function parseNumber(str) {
+  if (str === null || str === undefined) return NaN;
+  let s = String(str).trim().replace(/[Jj焦焦耳KkK]/g, "").replace(/\s/g, "");
+  // 容许 "约 270"、"≈300"
+  s = s.replace(/约|≈|＝|=/g, "");
+  return parseFloat(s);
+}
+
+function gradeQuestion(q, n) {
+  const a = answers[n] || {};
+  if (q.type === "choice") {
+    const sa = a.main && a.main.letter;
+    const ok = sa === q.correct;
+    return { correct: ok, studentAnswer: sa ? `${sa}` : "未作答", correctAnswer: q.correct };
+  }
+  if (q.type === "fill") {
+    let allOk = true;
+    const studentParts = [];
+    const correctParts = [];
+    q.fills.forEach(f => {
+      const v = a[f.key];
+      let okThis = false;
+      if (f.choices) {
+        okThis = v === f.correctValue;
+        studentParts.push(`${f.label.replace(/=$/,'').trim()} ${v || "未作答"}`);
+        correctParts.push(`${f.label.replace(/=$/,'').trim()} ${f.correctValue}`);
+      } else {
+        const num = parseNumber(v);
+        okThis = !isNaN(num) && Math.abs(num - f.correctValue) <= f.tol;
+        studentParts.push(`${f.label} ${v || "未作答"} ${f.unit||""}`);
+        correctParts.push(`${f.label} ${f.correctValue} ${f.unit||""}`);
+      }
+      if (!okThis) allOk = false;
+    });
+    return { correct: allOk, studentAnswer: studentParts.join("，"), correctAnswer: correctParts.join("，") };
+  }
+  if (q.type === "structured") {
+    let allOk = true;
+    const studentParts = [];
+    const correctParts = [];
+    q.parts.forEach(p => {
+      const v = a[p.key];
+      let okThis = false;
+      if (p.kind === "choice") {
+        const sa = v && v.letter;
+        // p.correct 是字母 (B/C) 或 答案文字
+        if (p.correct.length === 1 && /^[A-E]$/.test(p.correct)) {
+          okThis = sa === p.correct;
+        } else {
+          okThis = v && v.text === p.correct;
+        }
+        studentParts.push(`(${p.key}) ${sa || "未作答"}`);
+        correctParts.push(`(${p.key}) ${p.correct}`);
+      } else if (p.kind === "text") {
+        const t = (v || "").trim();
+        const kwCount = (p.keywords || []).filter(k => t.includes(k)).length;
+        okThis = t.length >= (p.minLen || 10) && kwCount >= (p.minKeywords || 2);
+        studentParts.push(`(${p.key}) ${t ? t.substring(0,30) + (t.length>30?"...":"") : "未作答"}`);
+        correctParts.push(`(${p.key}) 见参考解析`);
+      } else if (p.kind === "fill") {
+        const num = parseNumber(v);
+        okThis = !isNaN(num) && Math.abs(num - p.correctValue) <= p.tol;
+        studentParts.push(`(${p.key}) ${v || "未作答"} ${p.unit||""}`);
+        correctParts.push(`(${p.key}) ${p.correctValue} ${p.unit||""}`);
+      }
+      if (!okThis) allOk = false;
+    });
+    return { correct: allOk, studentAnswer: studentParts.join("；"), correctAnswer: correctParts.join("；") };
+  }
+}
+
+function submitTest() {
+  let total = 0;
+  const results = [];
+  selectedQuestions.forEach((q, idx) => {
+    const n = idx + 1;
+    const r = gradeQuestion(q, n);
+    if (r.correct) total += q.score;
+    results.push({ q, n, ...r });
+  });
+
+  const passed = total >= 70;
+  const honor = total >= 90;
+  const dateStr = new Date().toLocaleDateString("zh-CN");
+
+  let banner = "fail", verdict = "建议回顾相关知识点后再次抽题检测";
+  if (honor) { banner = "honor"; verdict = "🎉 荣誉通过 — 进入熟练度梳理 + 检测"; }
+  else if (passed) { banner = "pass"; verdict = "✓ 合格通过 — 可进入熟练度梳理 + 检测"; }
+
+  let html = `<div class="result-banner ${banner}">
+    <h2>${escapeHtml(studentName)}，检测完成！</h2>
+    <div class="score">${total} / 100</div>
+    <div class="verdict">${verdict}</div>
+    <div style="font-size:0.85rem; opacity:0.9; margin-top:6px;">${dateStr}</div>
+  </div>`;
+
+  // 本次抽到的题目清单
+  const idList = selectedQuestions.map(q => q.id).join("、");
+  html += `<div class="feedback-box" style="margin-bottom:18px;">
+    <div class="answer-info">本次抽题：${idList}</div>
+    <div class="answer-info">合格线 70 分 / 荣誉线 90 分</div>
+  </div>`;
+
+  // 每题反馈
+  results.forEach((r, idx) => {
+    const cls = r.correct ? "correct" : "wrong";
+    const icon = r.correct ? "✅" : "❌";
+    html += `<div class="question-card ${cls}">
+      <div class="q-header">
+        <span class="q-number">${r.n}</span>
+        <span class="q-meta">${r.q.id}</span>
+        <span class="q-meta diff-${r.q.difficulty}">${r.q.difficulty}</span>
+        <span class="q-meta score">${r.q.score} 分</span>
+        <span style="font-size:1.15rem; margin-left:auto;">${icon}</span>
+      </div>
+      <div class="q-stem">${r.q.stem}</div>
+      ${r.q.figureSvg || ""}
+      <div class="feedback-box">
+        <div class="answer-info">你的答案：<strong>${escapeHtml(r.studentAnswer)}</strong></div>
+        <div class="answer-info">参考答案：<span class="label-correct">${escapeHtml(r.correctAnswer)}</span></div>
+      </div>
+      <button class="detail-toggle" onclick="toggleDetail(${r.n})">▶ 查看三栏解析（考察点 / 解题思路 / 详细答案）</button>
+      <div class="detail-content" id="detail-${r.n}">
+        <div class="col-title">考察点</div>
+        <div class="col-body">${r.q.inspection}</div>
+        <div class="col-title">解题思路</div>
+        <div class="col-body">${r.q.thinking}</div>
+        <div class="col-title">详细答案</div>
+        <div class="col-body">${r.q.answer}</div>
+        ${r.q.mistakes ? `<div class="col-title">易错点</div><div class="col-body">${r.q.mistakes}</div>` : ""}
+        ${r.q.extension ? `<div class="col-title">拓展</div><div class="col-body">${r.q.extension}</div>` : ""}
+      </div>
+    </div>`;
+  });
+
+  html += `<div class="bottom-nav">
+    <button class="reshuffle-btn" onclick="location.reload()">🎲 重新抽题</button>
+    <a href="knowledge-review-v2.html">前往知识点梳理 →</a>
+    <a href="index.html">返回主页</a>
+  </div>`;
+
+  document.getElementById("test-screen").classList.add("hidden");
+  document.getElementById("result-screen").innerHTML = html;
+  document.getElementById("result-screen").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function toggleDetail(n) {
+  const el = document.getElementById(`detail-${n}`);
+  el.classList.toggle("show");
+}
+
+function escapeHtml(s) {
+  const div = document.createElement("div");
+  div.textContent = String(s);
+  return div.innerHTML;
+}
+</script>
+</body>
+</html>

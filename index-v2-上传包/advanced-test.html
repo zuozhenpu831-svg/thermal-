@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>热力学第一定律 · 进阶模块检测</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<style>
+  :root {
+    --primary-blue: #00409A;
+    --secondary-blue: #0055B8;
+    --bright-blue: #006AD6;
+    --light-blue: #E6EEFF;
+    --module-advanced: #6C5CE7;
+    --module-advanced-light: rgba(108, 92, 231, 0.08);
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-light: #86868b;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f7fa;
+    --bg-light: #fafbfc;
+    --border-color: #e5e5e7;
+    --shadow-sm: 0 2px 8px rgba(108, 92, 231, 0.08);
+    --shadow-md: 0 4px 16px rgba(108, 92, 231, 0.12);
+    --shadow-lg: 0 8px 32px rgba(108, 92, 231, 0.16);
+    --shadow-glow: 0 0 20px rgba(108, 92, 231, 0.3);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius: 20px;
+    --radius-sm: 12px;
+    --success: #27ae60;
+    --danger: #c0392b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg-secondary); color: var(--text-primary); line-height: 1.7; min-height: 100vh;
+  }
+  .container { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; }
+
+  .header {
+    text-align: center; padding: 32px 16px;
+    background: linear-gradient(135deg, #5A4BD1 0%, #6C5CE7 50%, #8B7CF0 100%);
+    color: #fff; border-radius: var(--radius); margin-bottom: 24px;
+  
+    position: relative;
+    overflow: hidden;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 4px; 
+    animation: fadeInUp 0.8s ease-out;
+  }
+  .header .subtitle { font-size: 0.9rem; opacity: 0.85; 
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+  }
+  .header .school { font-size: 0.8rem; opacity: 0.65; margin-top: 8px; }
+
+  .entry-card {
+    background: var(--bg-primary); border-radius: var(--radius); padding: 32px 24px;
+    box-shadow: 0 2px 12px rgba(108, 92, 231, 0.08); text-align: center;
+  }
+  .entry-card p { margin-bottom: 16px; color: var(--text-secondary); font-size: 0.95rem; }
+  .entry-card input[type="text"] {
+    width: 100%; max-width: 300px; padding: 12px 16px; border: 2px solid var(--border-color);
+    border-radius: 8px; font-size: 1rem; text-align: center; outline: none; transition: border-color 0.2s;
+  }
+  .entry-card input[type="text"]:focus { border-color: var(--module-advanced); }
+  .entry-card .info-list { text-align: left; max-width: 360px; margin: 20px auto; font-size: 0.88rem; color: var(--text-secondary); }
+  .entry-card .info-list li { margin-bottom: 6px; }
+
+  .btn {
+    display: inline-block; padding: 12px 36px; border: none; border-radius: 8px;
+    font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; color: #fff; margin-top: 16px;
+  }
+  .btn-primary { background: var(--module-advanced); }
+  .btn-primary:hover { background: #7d3c98; }
+  .btn-accent { background: var(--module-advanced); }
+  .btn-accent:hover { background: #7d3c98; }
+
+  .question-card {
+    background: var(--bg-primary); border-radius: var(--radius); padding: 24px 20px;
+    margin-bottom: 20px; box-shadow: 0 2px 12px rgba(108, 92, 231, 0.08);
+    border-left: 4px solid var(--module-advanced);
+  }
+  .question-card.correct { border-left-color: var(--success); }
+  .question-card.wrong { border-left-color: var(--danger); }
+
+  .q-number {
+    display: inline-block; background: var(--module-advanced); color: #fff;
+    width: 28px; height: 28px; border-radius: 50%; text-align: center;
+    line-height: 28px; font-size: 0.85rem; font-weight: 700; margin-right: 8px;
+  }
+  .q-type {
+    display: inline-block; font-size: 0.75rem; color: var(--module-advanced);
+    background: rgba(108, 92, 231,0.1); padding: 2px 10px; border-radius: 12px; margin-left: 4px;
+  }
+  .q-header { margin-bottom: 14px; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+  .q-stem { font-size: 0.95rem; margin-bottom: 16px; white-space: pre-line; }
+
+  .options { list-style: none; }
+  .options li { margin-bottom: 10px; }
+  .options label {
+    display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px;
+    border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer;
+    transition: all 0.15s; font-size: 0.93rem;
+  }
+  .options label:hover { border-color: var(--module-advanced); background: rgba(108, 92, 231,0.03); }
+  .options input[type="radio"], .options input[type="checkbox"] { margin-top: 3px; accent-color: var(--module-advanced); flex-shrink: 0; }
+  .options label.selected { border-color: var(--module-advanced); background: rgba(108, 92, 231,0.06); }
+
+  /* Sortable list */
+  .sort-list { list-style: none; counter-reset: sortitem; }
+  .sort-item {
+    display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+    border: 2px solid var(--border-color); border-radius: 8px; margin-bottom: 8px;
+    background: var(--bg-primary); cursor: grab; font-size: 0.93rem; user-select: none;
+  }
+  .sort-item:active { cursor: grabbing; }
+  .sort-item .drag-handle { color: var(--text-secondary); font-size: 1.2rem; flex-shrink: 0; }
+  .sort-item .step-num {
+    background: var(--module-advanced); color: #fff; width: 24px; height: 24px;
+    border-radius: 50%; text-align: center; line-height: 24px; font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+  }
+  .sort-item.dragging { opacity: 0.5; border-color: var(--module-advanced); }
+  .sort-item.drag-over { border-color: var(--module-advanced); border-style: dashed; }
+
+  .fill-group { margin-bottom: 12px; }
+  .fill-group label { display: block; font-size: 0.9rem; margin-bottom: 4px; font-weight: 500; }
+  .fill-input {
+    width: 100%; max-width: 240px; padding: 10px 14px; border: 2px solid var(--border-color);
+    border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.2s;
+  }
+  .fill-input:focus { border-color: var(--module-advanced); }
+  .fill-unit { font-size: 0.85rem; color: var(--text-secondary); margin-left: 6px; }
+
+  .result-banner {
+    text-align: center; padding: 28px 20px; border-radius: var(--radius); margin-bottom: 24px; color: #fff;
+  }
+  .result-banner.pass { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+  .result-banner.fail { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+  .result-banner h2 { font-size: 1.4rem; margin-bottom: 6px; }
+  .result-banner .score { font-size: 2.4rem; font-weight: 800; }
+
+  .feedback-box {
+    background: #f0f4f8; border-radius: 8px; padding: 14px 16px; margin-top: 16px;
+    font-size: 0.88rem; line-height: 1.7;
+  }
+  .feedback-box .label-correct { color: var(--success); font-weight: 600; }
+  .feedback-box .label-wrong { color: var(--danger); font-weight: 600; }
+
+  .summary-box {
+    background: var(--bg-primary); border: 2px dashed var(--border-color); border-radius: var(--radius);
+    padding: 20px; margin-bottom: 24px;
+    font-family: "SF Mono", "Fira Code", monospace; font-size: 0.85rem; line-height: 1.8;
+    white-space: pre-wrap; word-break: break-all; position: relative;
+  }
+  .copy-btn {
+    position: absolute; top: 10px; right: 10px; padding: 6px 14px;
+    border: 1px solid var(--border-color); border-radius: 6px; background: #fff;
+    cursor: pointer; font-size: 0.8rem; color: var(--text-secondary); transition: all 0.2s;
+  }
+  .copy-btn:hover { border-color: var(--module-advanced); color: var(--module-advanced); }
+
+  .progress-bar { width: 100%; height: 6px; background: var(--border-color); border-radius: 3px; margin-bottom: 24px; overflow: hidden; }
+  .progress-bar .fill { height: 100%; background: var(--module-advanced); border-radius: 3px; transition: width 0.3s; }
+  .progress-text { text-align: right; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 6px; }
+
+  .hidden { display: none !important; }
+
+  /* Detail toggle */
+  .detail-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: none;
+    border: 1.5px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .detail-toggle:hover {
+    border-color: var(--module-advanced);
+    color: var(--module-advanced);
+  }
+  .detail-content {
+    margin-top: 14px;
+    background: #f0f4f8;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 0.88rem;
+    line-height: 1.8;
+  }
+  .option-analysis {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(108, 92, 231, 0.08);
+  }
+  .option-analysis:last-child {
+    border-bottom: none;
+  }
+  .option-mark {
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: 0.9rem;
+    min-width: 36px;
+  }
+  .option-mark.is-correct {
+    color: var(--success);
+  }
+  .option-mark.is-wrong {
+    color: var(--danger);
+  }
+  .process-text {
+    white-space: pre-line;
+    line-height: 1.9;
+  }
+  .sub-part {
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--border-color);
+  }
+  .sub-part:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .sub-part-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+
+  /* ── Bottom nav ── */
+  .bottom-nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 2px solid #d5e8f0;
+  }
+  .bottom-nav a {
+    color: var(--secondary-blue);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .bottom-nav a:hover {
+    background: #eaf2f8;
+    color: var(--primary-blue);
+  }
+
+  @media (max-width: 480px) {
+    .container { padding: 12px 10px 32px; }
+    .header { padding: 24px 12px; }
+    .header h1 { font-size: 1.25rem; }
+    .question-card { padding: 18px 14px; }
+    .sort-item { padding: 10px 12px; font-size: 0.88rem; }
+  }
+
+  /* ── Hero Animations ── */
+  .hero-decoration {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    animation: float 6s ease-in-out infinite;
+  }
+  .hero-decoration:nth-child(1) { width: 60px; height: 60px; top: 20%; left: 10%; animation-delay: 0s; }
+  .hero-decoration:nth-child(2) { width: 40px; height: 40px; top: 60%; right: 15%; animation-delay: 2s; }
+  .hero-decoration:nth-child(3) { width: 80px; height: 80px; bottom: 10%; left: 60%; animation-delay: 4s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
+    50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="hero-decoration">
+    <svg class="hero-wave" viewBox="0 0 1200 120" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;width:100%;height:40px;"><path d="M0,64 C200,100 400,20 600,64 C800,108 1000,20 1200,64 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.95)"></path></svg>
+  </div><div class="hero-decoration"></div><div class="hero-decoration"></div>
+    <h1>热力学第一定律 · 进阶检测</h1>
+    <div class="subtitle">从微观模型到 U = 3/2 nRT</div>
+      </div>
+
+  <!-- Entry -->
+  <div id="entry-screen" class="entry-card">
+    <p>请输入你的姓名开始检测</p>
+    <input type="text" id="student-name" placeholder="你的姓名" maxlength="20">
+    <ul class="info-list">
+      <li>共 <strong>6</strong> 道题，满分 6 分</li>
+      <li>合格标准：≥ 5/6（83%）</li>
+      <li>题型：推导排序、假设识别、概念、计算</li>
+      <li>提交后统一显示结果与解析</li>
+    </ul>
+    <button class="btn btn-primary" onclick="startTest()">开始检测</button>
+  </div>
+
+  <!-- Test -->
+  <div id="test-screen" class="hidden">
+    <div class="progress-text" id="progress-text">已答 0 / 6</div>
+    <div class="progress-bar"><div class="fill" id="progress-fill" style="width:0%"></div></div>
+
+    <!-- Q1: 推导排序题 -->
+    <div class="question-card" id="qcard-1">
+      <div class="q-header">
+        <span class="q-number">1</span>
+        <span class="q-type">推导排序</span>
+      </div>
+      <div class="q-stem">以下是从微观模型推导 $U = \frac{3}{2}nRT$ 的关键步骤，但顺序被打乱了。请拖动排列为正确的推导顺序。</div>
+      <ul class="sort-list" id="sort-list-1">
+        <li class="sort-item" draggable="true" data-id="D"><span class="drag-handle">⋮⋮</span><span class="step-num" id="sn-D">?</span><span>建立立方体容器模型，N 个粒子做随机运动（假设 H1–H4）</span></li>
+        <li class="sort-item" draggable="true" data-id="A"><span class="drag-handle">⋮⋮</span><span class="step-num" id="sn-A">?</span><span>由各向同性 $\bar{v_x^2} = \bar{v^2}/3$，得 $P = Nm\bar{v^2}/(3V)$，即 $3PV = Nm\bar{v^2}$</span></li>
+        <li class="sort-item" draggable="true" data-id="F"><span class="drag-handle">⋮⋮</span><span class="step-num" id="sn-F">?</span><span>代入 $PV = nRT$，得 $U = \frac{3}{2}nRT$</span></li>
+        <li class="sort-item" draggable="true" data-id="C"><span class="drag-handle">⋮⋮</span><span class="step-num" id="sn-C">?</span><span>单粒子碰壁：$\Delta p = 2mv_x$，碰撞间隔 $\Delta t = 2x/v_x$，单粒子压强 $P_1 = mv_x^2/V$</span></li>
+        <li class="sort-item" draggable="true" data-id="B"><span class="drag-handle">⋮⋮</span><span class="step-num" id="sn-B">?</span><span>$\frac{3}{2}PV = N \cdot \frac{1}{2}m\bar{v^2}$ = 系统总动能 = 内能 $U$（单原子理想气体）</span></li>
+        <li class="sort-item" draggable="true" data-id="E"><span class="drag-handle">⋮⋮</span><span class="step-num" id="sn-E">?</span><span>结论：$\Delta U = \frac{3}{2}nR\Delta T$，内能变化只与温度变化有关</span></li>
+      </ul>
+    </div>
+
+    <!-- Q2: 假设识别题 -->
+    <div class="question-card" id="qcard-2">
+      <div class="q-header">
+        <span class="q-number">2</span>
+        <span class="q-type">假设识别</span>
+      </div>
+      <div class="q-stem">以下哪些是推导 $U = \frac{3}{2}nRT$ 过程中实际用到的关键假设？（多选）</div>
+      <ul class="options">
+        <li><label onclick="toggleCheck(2,'A')"><input type="checkbox" name="q2" value="A"> A. 粒子数 N 足够大，统计平均有意义</label></li>
+        <li><label onclick="toggleCheck(2,'B')"><input type="checkbox" name="q2" value="B"> B. 粒子之间无相互作用力（除碰撞外）</label></li>
+        <li><label onclick="toggleCheck(2,'C')"><input type="checkbox" name="q2" value="C"> C. 所有粒子的速度完全相同</label></li>
+        <li><label onclick="toggleCheck(2,'D')"><input type="checkbox" name="q2" value="D"> D. 粒子与容器壁的碰撞为完全弹性碰撞</label></li>
+        <li><label onclick="toggleCheck(2,'E')"><input type="checkbox" name="q2" value="E"> E. 容器必须是立方体形状</label></li>
+        <li><label onclick="toggleCheck(2,'F')"><input type="checkbox" name="q2" value="F"> F. 粒子运动各向同性（各方向等概率）</label></li>
+      </ul>
+    </div>
+
+    <!-- Q3: 概念题——为什么内能只与温度有关 -->
+    <div class="question-card" id="qcard-3">
+      <div class="q-header">
+        <span class="q-number">3</span>
+        <span class="q-type">概念辨析</span>
+      </div>
+      <div class="q-stem">对于理想气体，内能 $U$ 只与温度 $T$ 有关，与体积 $V$ 和压强 $P$ 无关。以下哪个是对此最本质的解释？</div>
+      <ul class="options">
+        <li><label onclick="selectOption(3,'A')"><input type="radio" name="q3" value="A"> A. 因为 $PV = nRT$，所以 $P$ 和 $V$ 不是独立变量</label></li>
+        <li><label onclick="selectOption(3,'B')"><input type="radio" name="q3" value="B"> B. 因为理想气体无分子间作用力，内能只有动能，而平均动能只取决于温度</label></li>
+        <li><label onclick="selectOption(3,'C')"><input type="radio" name="q3" value="C"> C. 因为内能是状态量，只取决于一个状态参量</label></li>
+        <li><label onclick="selectOption(3,'D')"><input type="radio" name="q3" value="D"> D. 因为 $U = \frac{3}{2}nRT$ 这个公式里没有 $V$ 和 $P$</label></li>
+      </ul>
+    </div>
+
+    <!-- Q4: 概念题——为什么只对理想气体成立 -->
+    <div class="question-card" id="qcard-4">
+      <div class="q-header">
+        <span class="q-number">4</span>
+        <span class="q-type">概念辨析</span>
+      </div>
+      <div class="q-stem">为什么 $U = \frac{3}{2}nRT$ 只对**单原子理想气体**严格成立，对双原子分子（如 $\text{N}_2$）不成立？</div>
+      <ul class="options">
+        <li><label onclick="selectOption(4,'A')"><input type="radio" name="q4" value="A"> A. 因为双原子分子质量更大</label></li>
+        <li><label onclick="selectOption(4,'B')"><input type="radio" name="q4" value="B"> B. 因为双原子分子有转动和振动自由度，内能中还包含转动能和振动能</label></li>
+        <li><label onclick="selectOption(4,'C')"><input type="radio" name="q4" value="C"> C. 因为双原子分子之间的作用力更强</label></li>
+        <li><label onclick="selectOption(4,'D')"><input type="radio" name="q4" value="D"> D. 因为双原子分子不遵守理想气体状态方程</label></li>
+      </ul>
+    </div>
+
+    <!-- Q5: 计算题 -->
+    <div class="question-card" id="qcard-5">
+      <div class="q-header">
+        <span class="q-number">5</span>
+        <span class="q-type">计算题</span>
+      </div>
+      <div class="q-stem">2 mol 单原子理想气体（如 He），温度从 300 K 升高到 500 K。
+已知 $R = 8.314$ J/(mol·K)。
+
+求内能的变化 $\Delta U$。</div>
+      <div class="fill-group">
+        <label>$\Delta U$ =</label>
+        <input type="text" class="fill-input" id="q5-answer" placeholder="输入数值（保留整数）"> <span class="fill-unit">J</span>
+      </div>
+    </div>
+
+    <!-- Q6: 假设审查概念题 -->
+    <div class="question-card" id="qcard-6">
+      <div class="q-header">
+        <span class="q-number">6</span>
+        <span class="q-type">假设审查</span>
+      </div>
+      <div class="q-stem">在推导 $P_1 = mv_x^2/V$（单粒子对壁的压强）的过程中，"碰撞为完全弹性碰撞"这个假设起了什么作用？如果碰撞不是弹性的，会导致什么后果？</div>
+      <ul class="options">
+        <li><label onclick="selectOption(6,'A')"><input type="radio" name="q6" value="A"> A. 弹性碰撞保证碰后动量反向，使 $\Delta p = 2mv_x$；若非弹性碰撞，$\Delta p < 2mv_x$，推导出的压强偏小</label></li>
+        <li><label onclick="selectOption(6,'B')"><input type="radio" name="q6" value="B"> B. 弹性碰撞保证粒子速度不变，使碰撞间隔 $\Delta t$ 恒定；若非弹性碰撞，$\Delta t$ 会变大</label></li>
+        <li><label onclick="selectOption(6,'C')"><input type="radio" name="q6" value="C"> C. 弹性碰撞保证碰后粒子动能不变，使 $v_x$ 在每次碰撞后保持不变，推导的力和压强才稳定成立；若非弹性碰撞，粒子每次碰撞损失动能，速度逐渐减小，压强和温度会持续下降</label></li>
+        <li><label onclick="selectOption(6,'D')"><input type="radio" name="q6" value="D"> D. 弹性碰撞只影响热传导的推导，不影响压强的推导</label></li>
+      </ul>
+    </div>
+
+    <div style="text-align:center; margin-top: 12px;">
+      <button class="btn btn-accent" onclick="submitTest()">提交检测</button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="result-screen" class="hidden"></div>
+</div>
+
+<script>
+let studentName = '';
+const answers = {};
+const checkAnswers = {};
+
+// Correct data
+const correct = {
+  1: ['D','C','A','B','F','E'], // sort order
+  2: new Set(['A','B','D','F']), // multi-select
+  3: 'B',
+  4: 'B',
+  5: 4988, // 3/2 * 2 * 8.314 * 200 = 4988.4
+  6: 'C'
+};
+
+const detailedExplanations = {
+
+  1: {
+    summary: "正确顺序：D → C → A → B → F → E",
+    process: "推导逻辑链：\n\n① D：建立模型 — 确定假设（大量粒子、无相互作用、弹性碰撞、各向同性），这是推导的起点。\n\n② C：单粒子碰壁分析 — 用牛顿力学分析一个粒子碰壁的动量变化 Δp = 2mvₓ，结合碰撞频率得到单粒子贡献的压强 P₁ = mvₓ²/V。\n\n③ A：推广到 N 粒子 — 利用各向同性假设 v̄ₓ² = v̄²/3，对 N 个粒子求和得到 P = Nmv̄²/(3V)，即 3PV = Nmv̄²。\n\n④ B：识别内能 — 将 3/2 PV = N·(1/2 mv̄²) 识别为系统总平动动能，对单原子理想气体即为内能 U（无势能、无转动能）。\n\n⑤ F：代入状态方程 — 将 PV = nRT 代入 U = 3/2 PV，得到 U = 3/2 nRT。\n\n⑥ E：得出结论 — ΔU = 3/2 nRΔT，内能变化只与温度变化有关，与体积和压强无关。"
+  },
+
+  2: {
+    summary: "正确选项：A、B、D、F",
+    options: {
+      A: { correct: true,  text: "正确。N 足够大是使用统计平均（如 v̄²）的前提。只有粒子数量足够多，统计量才有意义，宏观压强才是稳定可测量的。" },
+      B: { correct: true,  text: "正确。无分子间作用力是理想气体的核心假设。它保证了内能只包含动能（没有势能），才能得出 U = 纯动能的结论。" },
+      C: { correct: false, text: "错误。推导中不要求所有粒子速度相同。实际上粒子速度服从麦克斯韦分布，推导中只用到了统计平均值 v̄²，不要求每个粒子速度一样。" },
+      D: { correct: true,  text: "正确。弹性碰撞保证粒子碰壁后动能不变、速度大小不变。这使得碰撞间隔 Δt 和每次碰撞的力恒定，压强才能稳定成立。" },
+      E: { correct: false, text: "错误。立方体模型只是为了简化推导过程（方便计算碰撞间隔 Δt = 2L/vₓ）。最终结论中用体积 V 替换了 L³，与容器形状无关。任何形状的容器都能得到相同的结论。" },
+      F: { correct: true,  text: "正确。各向同性假设使得 v̄ₓ² = v̄ᵧ² = v̄ᵤ² = v̄²/3。这是从单方向（x 方向）压强推广到三维总压强的关键步骤。" }
+    }
+  },
+
+  3: {
+    summary: "正确答案 B。最本质的原因是理想气体无分子间作用力。",
+    options: {
+      A: { correct: false, text: "这只是数学上的关系，不是物理本质。PV = nRT 说明 P、V、T 三个量中只有两个独立，但这并不能解释为什么内能只取决于 T 而不取决于 V。真实气体也满足某种状态方程，但内能却依赖于 V。" },
+      B: { correct: true,  text: "正确且最本质。理想气体假设粒子间无相互作用力 → 没有分子间势能 → 内能 = 纯动能 = N·(1/2 mv̄²)。而平均动能只取决于温度（能量均分定理），与体积和压强无关。这才是物理根源。" },
+      C: { correct: false, text: "太笼统且不准确。内能是状态量没错，但状态量可以取决于多个状态参量（如真实气体内能取决于 T 和 V）。'只取决于一个参量'是理想气体的特殊性质，不是因为它是状态量就必然如此。" },
+      D: { correct: false, text: "这是循环论证：用结论来解释结论。U = 3/2 nRT 本身就是需要被解释的公式，不能用'公式里没有 V 和 P'来解释'为什么内能与 V、P 无关'。需要回到推导的物理假设才能找到本质原因。" }
+    }
+  },
+
+  4: {
+    summary: "正确答案 B。双原子分子有额外的转动和振动自由度。",
+    options: {
+      A: { correct: false, text: "错误。质量大小不影响内能公式的形式。内能由自由度数量决定，不由分子质量决定。质量更大只意味着在相同温度下分子平均速度更小，但平均动能（1/2 mv̄²）仍然只取决于温度。" },
+      B: { correct: true,  text: "正确。单原子分子（如 He）只有 3 个平动自由度，U = 3/2 nRT。双原子分子（如 N₂）常温下有 3 个平动 + 2 个转动 = 5 个自由度，U = 5/2 nRT。高温下还会激活振动自由度。公式中的系数'3'对应的就是自由度数。" },
+      C: { correct: false, text: "混淆了'理想气体'假设和分子结构的问题。双原子理想气体仍然假设无分子间作用力。内能公式不同不是因为作用力不同，而是因为分子内部的运动方式（转动、振动）增加了能量储存的通道（自由度）。" },
+      D: { correct: false, text: "错误。双原子分子在低密度、高温条件下也可以近似为理想气体，同样满足 PV = nRT。状态方程和内能公式是两个不同的问题，不能混为一谈。" }
+    }
+  },
+
+  5: {
+    summary: "ΔU ≈ 4988 J",
+    process: "已知：n = 2 mol，T₁ = 300 K，T₂ = 500 K，R = 8.314 J/(mol·K)\n\n公式：ΔU = 3/2 · n · R · ΔT\n\n代入：\n  ΔT = T₂ − T₁ = 500 − 300 = 200 K\n  ΔU = 3/2 × 2 × 8.314 × 200\n  ΔU = 3 × 8.314 × 200\n  ΔU = 4988.4 J\n  ΔU ≈ 4988 J"
+  },
+
+  6: {
+    summary: "正确答案 C。弹性碰撞保证粒子动能不变，维持系统长期稳定。",
+    options: {
+      A: { correct: false, text: "描述本身部分正确：弹性碰撞确实保证 Δp = 2mvₓ，非弹性碰撞时 Δp < 2mvₓ。但这只说明了单次碰撞的动量变化，没有揭示弹性碰撞对系统长期稳定性的关键作用——即粒子速度不会逐次衰减。分析不够全面。" },
+      B: { correct: false, text: "部分正确但不完整。弹性碰撞确实保证碰撞间隔 Δt 恒定（因为速度大小不变），但这只是弹性碰撞作用的一个方面，忽略了对力和动能的影响，不够全面。" },
+      C: { correct: true,  text: "最全面。弹性碰撞保证碰后粒子动能不变，这有两个关键作用：(1) 速度大小不变，碰撞间隔 Δt = 2x/vₓ 恒定；(2) 每次碰壁施加的力恒定，压强稳定。若碰撞非弹性，粒子每次碰壁损失动能，速度逐渐减小，宏观表现为温度持续下降（气体最终'冷却'），热力学平衡无法维持。这是最完整的解释。" },
+      D: { correct: false, text: "完全错误。弹性碰撞直接影响压强推导（通过 Δp 和 Δt），不仅仅影响热传导。事实上推导 P₁ = mvₓ²/V 的过程中弹性碰撞是不可或缺的假设。" }
+    }
+  }
+
+};
+
+function startTest() {
+  const name = document.getElementById('student-name').value.trim();
+  if (!name) { document.getElementById('student-name').style.borderColor = '#e74c3c'; return; }
+  studentName = name;
+  document.getElementById('entry-screen').classList.add('hidden');
+  document.getElementById('test-screen').classList.remove('hidden');
+  initSortable();
+  renderMath();
+}
+
+function selectOption(qId, val) {
+  answers['q' + qId] = val;
+  document.querySelectorAll(`input[name="q${qId}"]`).forEach(inp => {
+    inp.closest('label').classList.toggle('selected', inp.value === val);
+  });
+  updateProgress();
+}
+
+function toggleCheck(qId, val) {
+  if (!checkAnswers['q' + qId]) checkAnswers['q' + qId] = new Set();
+  const s = checkAnswers['q' + qId];
+  if (s.has(val)) s.delete(val); else s.add(val);
+  document.querySelectorAll(`input[name="q${qId}"]`).forEach(inp => {
+    inp.closest('label').classList.toggle('selected', s.has(inp.value));
+  });
+  updateProgress();
+}
+
+// Drag & drop sort
+function initSortable() {
+  const list = document.getElementById('sort-list-1');
+  let dragItem = null;
+  list.querySelectorAll('.sort-item').forEach(item => {
+    item.addEventListener('dragstart', e => { dragItem = item; item.classList.add('dragging'); });
+    item.addEventListener('dragend', () => { dragItem.classList.remove('dragging'); dragItem = null; updateStepNums(); updateProgress(); });
+    item.addEventListener('dragover', e => { e.preventDefault(); item.classList.add('drag-over'); });
+    item.addEventListener('dragleave', () => { item.classList.remove('drag-over'); });
+    item.addEventListener('drop', e => {
+      e.preventDefault(); item.classList.remove('drag-over');
+      if (dragItem !== item) { const items = [...list.children]; const dragIdx = items.indexOf(dragItem); const dropIdx = items.indexOf(item);
+        if (dragIdx < dropIdx) item.after(dragItem); else item.before(dragItem);
+      }
+    });
+    // Touch support
+    let touchStartY = 0;
+    item.addEventListener('touchstart', e => {
+      dragItem = item; touchStartY = e.touches[0].clientY; item.classList.add('dragging');
+    }, { passive: true });
+    item.addEventListener('touchmove', e => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const elBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+      const target = elBelow ? elBelow.closest('.sort-item') : null;
+      list.querySelectorAll('.sort-item').forEach(i => i.classList.remove('drag-over'));
+      if (target && target !== dragItem) target.classList.add('drag-over');
+    }, { passive: false });
+    item.addEventListener('touchend', e => {
+      const touch = e.changedTouches[0];
+      const elBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+      const target = elBelow ? elBelow.closest('.sort-item') : null;
+      list.querySelectorAll('.sort-item').forEach(i => i.classList.remove('drag-over'));
+      if (target && target !== dragItem) {
+        const items = [...list.children]; const dragIdx = items.indexOf(dragItem); const dropIdx = items.indexOf(target);
+        if (dragIdx < dropIdx) target.after(dragItem); else target.before(dragItem);
+      }
+      if (dragItem) dragItem.classList.remove('dragging');
+      dragItem = null; updateStepNums(); updateProgress();
+    });
+  });
+  updateStepNums();
+}
+
+function updateStepNums() {
+  const items = document.querySelectorAll('#sort-list-1 .sort-item');
+  items.forEach((item, i) => {
+    const id = item.dataset.id;
+    document.getElementById('sn-' + id).textContent = i + 1;
+  });
+}
+
+function getSortOrder() {
+  return [...document.querySelectorAll('#sort-list-1 .sort-item')].map(el => el.dataset.id);
+}
+
+function updateProgress() {
+  let count = 0;
+  // Q1: always "answered" (has a sort order)
+  count++;
+  // Q2: at least one checkbox
+  if (checkAnswers.q2 && checkAnswers.q2.size > 0) count++;
+  // Q3-Q4, Q6
+  if (answers.q3) count++;
+  if (answers.q4) count++;
+  if (answers.q6) count++;
+  // Q5
+  if (document.getElementById('q5-answer').value.trim()) count++;
+  document.getElementById('progress-text').textContent = `已答 ${count} / 6`;
+  document.getElementById('progress-fill').style.width = (count / 6 * 100) + '%';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.fill-input').forEach(inp => inp.addEventListener('input', updateProgress));
+});
+
+function parseNumber(str) {
+  if (!str) return NaN;
+  return parseFloat(str.trim().replace(/[Jj焦焦耳]/g, '').replace(/\s/g, ''));
+}
+
+function toggleDetail(n) {
+  const content = document.getElementById('detail-' + n);
+  const btn = document.getElementById('detail-btn-' + n);
+  if (content.style.display === 'none' || !content.style.display) {
+    content.style.display = 'block';
+    btn.innerHTML = '▼ 收起分析';
+    renderMath();
+  } else {
+    content.style.display = 'none';
+    btn.innerHTML = '▶ 查看详细分析';
+  }
+}
+
+function buildDetailHtml(num, data) {
+  let html = '';
+  if (data.options) {
+    for (const [key, opt] of Object.entries(data.options)) {
+      const mark = opt.correct ? '✅' : '✗';
+      const cls = opt.correct ? 'is-correct' : 'is-wrong';
+      html += `<div class="option-analysis">
+        <span class="option-mark ${cls}">${mark} ${key}</span>
+        <span>${opt.text}</span>
+      </div>`;
+    }
+  } else if (data.process) {
+    html += `<div class="process-text">${data.process.replace(/\n/g, '<br>')}</div>`;
+  } else if (data.parts) {
+    for (const [key, part] of Object.entries(data.parts)) {
+      html += `<div class="sub-part">`;
+      html += `<div class="sub-part-title">(${key}) ${part.summary}</div>`;
+      if (part.options) {
+        for (const [okey, opt] of Object.entries(part.options)) {
+          const mark = opt.correct ? '✅' : '✗';
+          const cls = opt.correct ? 'is-correct' : 'is-wrong';
+          html += `<div class="option-analysis">
+            <span class="option-mark ${cls}">${mark} ${okey}</span>
+            <span>${opt.text}</span>
+          </div>`;
+        }
+      } else if (part.text) {
+        html += `<div class="process-text">${part.text.replace(/\n/g, '<br>')}</div>`;
+      }
+      html += `</div>`;
+    }
+  }
+  return html;
+}
+
+function submitTest() {
+  let totalScore = 0;
+  const results = [];
+  const wrongQs = [];
+
+  // Q1: sort order
+  const order = getSortOrder();
+  const q1Correct = JSON.stringify(order) === JSON.stringify(correct[1]);
+  if (q1Correct) totalScore++;
+  else wrongQs.push(1);
+  results.push({ num: 1, correct: q1Correct, studentAnswer: '你的排列: ' + order.map((id, i) => (i+1) + '=' + id).join(', '), correctAnswer: '正确顺序: D→C→A→B→F→E' });
+
+  // Q2: multi-select
+  const q2Set = checkAnswers.q2 || new Set();
+  const q2Correct = q2Set.size === correct[2].size && [...q2Set].every(v => correct[2].has(v));
+  if (q2Correct) totalScore++;
+  else wrongQs.push(2);
+  results.push({ num: 2, correct: q2Correct, studentAnswer: '你的选择: ' + (q2Set.size > 0 ? [...q2Set].sort().join(', ') : '未作答'), correctAnswer: 'A, B, D, F' });
+
+  // Q3
+  const q3Correct = answers.q3 === correct[3];
+  if (q3Correct) totalScore++;
+  else wrongQs.push(3);
+  results.push({ num: 3, correct: q3Correct, studentAnswer: answers.q3 || '未作答', correctAnswer: 'B' });
+
+  // Q4
+  const q4Correct = answers.q4 === correct[4];
+  if (q4Correct) totalScore++;
+  else wrongQs.push(4);
+  results.push({ num: 4, correct: q4Correct, studentAnswer: answers.q4 || '未作答', correctAnswer: 'B' });
+
+  // Q5
+  const q5Val = document.getElementById('q5-answer').value;
+  const q5Num = parseNumber(q5Val);
+  const q5Correct = !isNaN(q5Num) && Math.abs(q5Num - 4988.4) <= 10;
+  if (q5Correct) totalScore++;
+  else wrongQs.push(5);
+  results.push({ num: 5, correct: q5Correct, studentAnswer: q5Val ? q5Val + ' J' : '未作答', correctAnswer: '4988 J' });
+
+  // Q6
+  const q6Correct = answers.q6 === correct[6];
+  if (q6Correct) totalScore++;
+  else wrongQs.push(6);
+  results.push({ num: 6, correct: q6Correct, studentAnswer: answers.q6 || '未作答', correctAnswer: 'C' });
+
+  const passed = totalScore >= 5;
+  const percent = Math.round(totalScore / 6 * 100);
+  const dateStr = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+  let html = '';
+  html += `<div class="result-banner ${passed ? 'pass' : 'fail'}">
+    <h2>${studentName}，检测完成！</h2>
+    <div class="score">${totalScore} / 6</div>
+    <div>${passed ? '进阶模块检测通过' : '建议复习推导过程后重新检测'}</div>
+  </div>`;
+
+  const wrongStr = wrongQs.length > 0 ? wrongQs.map(n => '#' + n).join(', ') : '无';
+  const summaryText = `${studentName} | 进阶检测 | 得分: ${totalScore}/6 (${percent}%) | ${passed ? '通过' : '未通过'} | 错题: ${wrongStr} | 日期: ${dateStr}`;
+  html += `<div class="summary-box" id="summary-box"><button class="copy-btn" onclick="copySummary()">复制</button>\n${summaryText}</div>`;
+
+  results.forEach(r => {
+    const icon = r.correct ? '✅' : '❌';
+    const cls = r.correct ? 'correct' : 'wrong';
+    const detail = detailedExplanations[r.num];
+    html += `<div class="question-card ${cls}">
+      <div class="q-header"><span class="q-number">${r.num}</span><span style="font-size:1.1rem;">${icon}</span></div>
+      <div class="feedback-box">
+        <div>${escHtml(r.studentAnswer)}</div>
+        <div>正确答案：<span class="label-correct">${escHtml(r.correctAnswer)}</span></div>
+      </div>
+      <button class="detail-toggle" id="detail-btn-${r.num}" onclick="toggleDetail(${r.num})">▶ 查看详细分析</button>
+      <div class="detail-content" id="detail-${r.num}" style="display:none">
+        ${buildDetailHtml(r.num, detail)}
+      </div>
+    </div>`;
+  });
+
+  html += `<nav class="bottom-nav">
+    <a href="index.html">&larr; 返回主页</a>
+  </nav>`;
+
+  document.getElementById('test-screen').classList.add('hidden');
+  document.getElementById('result-screen').innerHTML = html;
+  document.getElementById('result-screen').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  renderMath();
+}
+
+function copySummary() {
+  const text = document.getElementById('summary-box').textContent.replace('复制', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    document.querySelector('#summary-box .copy-btn').textContent = '已复制';
+    setTimeout(() => document.querySelector('#summary-box .copy-btn').textContent = '复制', 2000);
+  }).catch(() => {
+    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    document.querySelector('#summary-box .copy-btn').textContent = '已复制';
+    setTimeout(() => document.querySelector('#summary-box .copy-btn').textContent = '复制', 2000);
+  });
+}
+
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function renderMath() {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
+      ],
+      throwOnError: false
+    });
+  } else { setTimeout(renderMath, 200); }
+}
+</script>
+</body>
+</html>

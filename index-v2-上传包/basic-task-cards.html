@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>热力学第一定律 · 基础模块学习任务卡</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<style>
+  :root {
+    --primary-blue: #00409A;
+    --secondary-blue: #0055B8;
+    --bright-blue: #006AD6;
+    --light-blue: #E6EEFF;
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-light: #86868b;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f7fa;
+    --bg-light: #fafbfc;
+    --border-color: #e5e5e7;
+    --shadow-sm: 0 2px 8px rgba(0, 64, 154, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 64, 154, 0.12);
+    --shadow-lg: 0 8px 32px rgba(0, 64, 154, 0.16);
+    --shadow-glow: 0 0 20px rgba(0, 64, 154, 0.3);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius: 20px;
+    --radius-sm: 12px;
+    --success: #27ae60;
+    --danger: #c0392b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+  .breadcrumb a {
+    color: var(--secondary-blue);
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+  .breadcrumb .sep {
+    margin: 0 6px;
+    color: var(--border-color);
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 36px 20px;
+    background: linear-gradient(135deg, #00409A 0%, #0055B8 50%, #006AD6 100%);
+    color: #fff;
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+  
+    position: relative;
+    overflow: hidden;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 6px; font-weight: 700; 
+    animation: fadeInUp 0.8s ease-out;
+  }
+  .header .subtitle { font-size: 0.9rem; opacity: 0.85; 
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+  }
+
+  /* Card base */
+  .card {
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0, 64, 154, 0.08);
+  
+    transition: var(--transition);
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Module info table */
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  .info-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
+  }
+  .info-table td:first-child {
+    font-weight: 600;
+    color: var(--primary-blue);
+    white-space: nowrap;
+    width: 130px;
+  }
+  .info-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Section titles */
+  .section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--secondary-blue);
+  }
+
+  /* Learning objectives */
+  .objectives-list {
+    padding-left: 24px;
+    font-size: 0.92rem;
+  }
+  .objectives-list li {
+    margin-bottom: 8px;
+    line-height: 1.65;
+  }
+  .objectives-list li::marker {
+    color: var(--secondary-blue);
+    font-weight: 700;
+  }
+
+  /* Driving question */
+  .driving-question {
+    background: linear-gradient(135deg, rgba(0, 64, 154,0.06), rgba(0, 64, 154,0.06));
+    border-left: 4px solid var(--secondary-blue);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .driving-question .dq-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 12px;
+  }
+  .driving-question p {
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+    line-height: 1.7;
+  }
+  .driving-question p:last-child {
+    margin-bottom: 0;
+  }
+  .driving-question .hint {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  /* Task card */
+  .task-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+    box-shadow: 0 2px 12px rgba(0, 64, 154, 0.08);
+    overflow: hidden;
+  }
+  .task-card-header {
+    background: linear-gradient(135deg, #00409A 0%, #0055B8 50%, #006AD6 100%);
+    color: #fff;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+  }
+  .task-card-header:hover {
+    opacity: 0.92;
+  }
+  .task-card-number {
+    background: rgba(255,255,255,0.2);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .task-card-header h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    flex-grow: 1;
+  }
+  .task-card-chevron {
+    font-size: 1.1rem;
+    transition: transform 0.3s;
+    opacity: 0.7;
+  }
+  .task-card-header.collapsed .task-card-chevron {
+    transform: rotate(-90deg);
+  }
+  .task-card-body {
+    padding: 20px;
+    transition: max-height 0.3s ease;
+  }
+  .task-card-body.collapsed {
+    display: none;
+  }
+
+  .task-objective {
+    background: rgba(0, 64, 154,0.06);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    color: var(--primary-blue);
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  /* Step */
+  .step {
+    margin-bottom: 20px;
+  }
+  .step:last-of-type {
+    margin-bottom: 16px;
+  }
+  .step-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .step-badge {
+    background: var(--secondary-blue);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .step-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .step-content {
+    font-size: 0.9rem;
+    padding-left: 4px;
+  }
+  .step-content p {
+    margin-bottom: 8px;
+  }
+  .step-content ul,
+  .step-content ol {
+    padding-left: 20px;
+    margin-bottom: 8px;
+  }
+  .step-content li {
+    margin-bottom: 4px;
+  }
+
+  /* Quote / tip blocks */
+  .quote-block {
+    background: rgba(0, 64, 154,0.05);
+    border-left: 3px solid var(--secondary-blue);
+    padding: 10px 14px;
+    margin: 10px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.85rem;
+    color: #34495e;
+    line-height: 1.65;
+  }
+
+  /* Code block */
+  .code-block {
+    background: #1e2a38;
+    color: #e8ecf1;
+    border-radius: 8px;
+    padding: 16px 18px;
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", Menlo, Consolas, monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 10px 0;
+    white-space: pre;
+  }
+  .code-block .comment {
+    color: #7f8c8d;
+  }
+
+  /* Problem block */
+  .problem {
+    background: rgba(230,126,34,0.06);
+    border-left: 3px solid var(--accent-orange);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    margin: 10px 0;
+    font-size: 0.9rem;
+  }
+  .problem strong {
+    color: var(--accent-orange);
+  }
+  .problem p {
+    margin-bottom: 4px;
+  }
+  .problem p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Checkpoint */
+  .checkpoint {
+    background: rgba(39,174,96,0.06);
+    border: 1px solid rgba(39,174,96,0.2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 16px;
+  }
+  .checkpoint-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-green);
+    margin-bottom: 10px;
+  }
+  .checkpoint label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    cursor: pointer;
+    line-height: 1.5;
+  }
+  .checkpoint label:last-child {
+    margin-bottom: 0;
+  }
+  .checkpoint input[type="checkbox"] {
+    margin-top: 4px;
+    flex-shrink: 0;
+    accent-color: var(--accent-green);
+    width: 16px;
+    height: 16px;
+  }
+  .checkpoint label.checked span {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+  }
+
+  /* Literacy tag */
+  .literacy-tag {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border-color);
+  }
+
+  /* Output requirements table */
+  .output-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin-top: 12px;
+  }
+  .output-table th {
+    background: var(--primary-blue);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.82rem;
+  }
+  .output-table th:first-child {
+    border-radius: 8px 0 0 0;
+  }
+  .output-table th:last-child {
+    border-radius: 0 8px 0 0;
+  }
+  .output-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .output-table tr:last-child td {
+    border-bottom: none;
+  }
+  .output-table tr:nth-child(even) {
+    background: rgba(0, 64, 154,0.03);
+  }
+
+  /* Advanced preview card */
+  .preview-card {
+    background: linear-gradient(135deg, rgba(0, 64, 154,0.04), rgba(142,68,173,0.06));
+    border: 1px solid rgba(142,68,173,0.15);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    margin-bottom: 24px;
+  }
+  .preview-card .preview-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent-purple);
+    margin-bottom: 12px;
+  }
+  .preview-card p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
+  .preview-card p:last-child {
+    margin-bottom: 0;
+  }
+  .preview-card .formula-highlight {
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 16px 0;
+    color: var(--primary-blue);
+    font-weight: 600;
+  }
+
+  /* Bottom navigation */
+  .bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+  }
+  .bottom-nav a {
+    color: var(--secondary-blue);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+  .bottom-nav a:hover {
+    background: rgba(0, 64, 154,0.08);
+  }
+  .bottom-nav .nav-right {
+    display: flex;
+    gap: 6px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 24px 16px 8px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.25rem; }
+    .header { padding: 28px 16px; }
+    .task-card-header h3 { font-size: 0.95rem; }
+    .task-card-body { padding: 16px; }
+    .card { padding: 18px 14px; }
+    .info-table td:first-child { width: auto; }
+    .code-block { font-size: 0.72rem; padding: 12px 14px; }
+    .output-table { font-size: 0.78rem; }
+    .output-table th,
+    .output-table td { padding: 8px 8px; }
+    .bottom-nav { flex-direction: column; align-items: stretch; text-align: center; }
+    .bottom-nav .nav-right { justify-content: center; }
+    .driving-question { padding: 16px 18px; }
+    .preview-card .formula-highlight { font-size: 1rem; }
+  }
+
+  /* ── Hero Animations ── */
+  .hero-decoration {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    animation: float 6s ease-in-out infinite;
+  }
+  .hero-decoration:nth-child(1) { width: 60px; height: 60px; top: 20%; left: 10%; animation-delay: 0s; }
+  .hero-decoration:nth-child(2) { width: 40px; height: 40px; top: 60%; right: 15%; animation-delay: 2s; }
+  .hero-decoration:nth-child(3) { width: 80px; height: 80px; bottom: 10%; left: 60%; animation-delay: 4s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
+    50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="index.html">主页</a>
+    <span class="sep">&gt;</span>
+    <span>基础模块</span>
+    <span class="sep">&gt;</span>
+    <span>学习任务卡</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="hero-decoration">
+    <svg class="hero-wave" viewBox="0 0 1200 120" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;width:100%;height:40px;"><path d="M0,64 C200,100 400,20 600,64 C800,108 1000,20 1200,64 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.95)"></path></svg>
+  </div><div class="hero-decoration"></div><div class="hero-decoration"></div>
+    <h1>热力学第一定律 · 基础模块学习任务卡</h1>
+      </div>
+
+  <!-- Module info -->
+  <div class="card">
+    <table class="info-table">
+      <tr>
+        <td>模块名称</td>
+        <td>热力学第一定律 · 基础模块</td>
+      </tr>
+      <tr>
+        <td>预计学习时间</td>
+        <td>4&ndash;6 小时（按自己的节奏）</td>
+      </tr>
+      <tr>
+        <td>所需工具</td>
+        <td>AI 工具（GPT / Gemini / Claude 均可）、纸笔、计算器</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Learning objectives -->
+  <div class="card">
+    <h2 class="section-title">学习目标</h2>
+    <ol class="objectives-list">
+      <li>理解内能(Internal Energy)的定义、微观本质及其状态函数性质，区分"内能"和"热量"这两个容易混淆的概念</li>
+      <li>掌握理想气体模型的基本假设，理解理想气体内能只与温度有关的重要结论，知道 \(U = \frac{3}{2}nRT\)</li>
+      <li>用 \(\Delta U = Q + W\) 和 \(\Delta U = Q - W\) 两种表达分析能量的传递与转化，理解做功与内能变化的关系</li>
+      <li>理解两种符号约定（\(W\) 为外界对系统做功 / \(W\) 为系统对外做功）的区别和等价性</li>
+      <li>从微观粒子碰撞的角度解释热传导和做功的机制</li>
+      <li>在 PV 图上识别功的大小，并用第一定律完成综合计算</li>
+    </ol>
+  </div>
+
+  <!-- Driving question -->
+  <div class="driving-question">
+    <div class="dq-title">驱动问题</div>
+    <p><strong>搓手为什么会发热？</strong></p>
+    <p>你搓手的时候手变热了。热量从哪来？是"创造"出来的吗？</p>
+    <p>如果不是创造出来的，那是从哪里"转化"来的？</p>
+    <p>这个问题看似简单，但要真正回答它，你需要理解物理学中最重要的定律之一。</p>
+    <p style="margin-top: 12px;">更有趣的问题是：我们<strong>能不能说</strong>一个系统"有多少热量"？</p>
+    <p class="hint">（提示：答案可能出乎你的意料。）</p>
+    <p style="margin-top: 12px;">带着这些问题，开始下面的学习任务。</p>
+  </div>
+
+  <!-- ==================== Task Card 1 ==================== -->
+  <div class="task-card" id="task1">
+    <div class="task-card-header" onclick="toggleCard(this)">
+      <div class="task-card-number">1</div>
+      <h3>能量守恒与内能的定义</h3>
+      <span class="task-card-chevron">&#9660;</span>
+    </div>
+    <div class="task-card-body">
+      <div class="task-objective">
+        <strong>学习目标</strong>：理解能量守恒定律；深入建立"内能(Internal Energy)"的概念，理解内能的微观本质与状态函数性质
+      </div>
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 1</span>
+          <span class="step-title">先自己想（5 分钟）</span>
+        </div>
+        <div class="step-content">
+          <p>在和 AI 对话之前，拿出纸笔，用自己的话写下：</p>
+          <ul>
+            <li>你认为"能量守恒(Conservation of Energy)"是什么意思？</li>
+            <li>一个装满气体的密封容器里，有哪些形式的能量？</li>
+            <li>你觉得"内能"和"温度"是一回事吗？它们之间有什么关系？</li>
+          </ul>
+          <div class="quote-block">
+            先自己想，哪怕想错了也没关系——这比直接问 AI 有效 10 倍。
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 2</span>
+          <span class="step-title">与 AI 对话——理解内能</span>
+        </div>
+        <div class="step-content">
+          <p>把你写的内容发给 AI，依次问：</p>
+          <ol>
+            <li>"我对能量守恒的理解对吗？有没有遗漏或错误？"</li>
+            <li>"内能(Internal Energy)的严格定义是什么？它在微观上包含哪些部分？请列举并解释每一种（分子动能、分子势能等）。"</li>
+            <li>"内能 \(U\) 是一个状态量(State Function)。请解释什么是状态量，为什么内能是状态量，而热量 \(Q\) 和功 \(W\) 不是？"</li>
+            <li>"为什么我们说'无法描述一个系统有多少热量'，但可以描述它的'内能'？"</li>
+          </ol>
+          <div class="quote-block">
+            <strong>关键概念</strong>：内能是系统中所有微观粒子的动能和势能之和。它是一个<strong>状态量</strong>——只取决于系统当前的状态（如温度、体积），与系统经历的过程无关。相比之下，热量 \(Q\) 和功 \(W\) 是<strong>过程量</strong>——它们描述的是能量转移的方式，而不是系统本身的属性。
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 3</span>
+          <span class="step-title">深入理解——内能的微观组成</span>
+        </div>
+        <div class="step-content">
+          <p>继续问 AI：</p>
+          <ol>
+            <li>"对于一个气体系统，分子动能和分子势能分别是什么？哪些因素影响它们？"</li>
+            <li>"单原子气体（如 He）和双原子气体（如 O\(_2\)）的内能有什么不同？为什么？"</li>
+            <li>"如果我改变气体的温度但保持体积不变，内能会变吗？如果我改变体积但保持温度不变呢？"</li>
+          </ol>
+          <div class="quote-block">
+            提示：对于理想气体，最后一个问题的答案可能会让你惊讶。这将引出下一个任务卡的内容。
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 4</span>
+          <span class="step-title">批判性审查</span>
+        </div>
+        <div class="step-content">
+          <p>AI 的回答中，有没有你觉得不够清楚或者可能有问题的地方？记录下来。</p>
+          <div class="quote-block">
+            提示：AI 有时会混淆"热量(Heat)"和"内能(Internal Energy)"，你需要自己判断。另外注意 AI 是否清楚区分了"内能"和"温度"——它们相关但不是同一个概念。
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkpoint -->
+      <div class="checkpoint">
+        <div class="checkpoint-title">检查点（自评清单）</div>
+        <label data-key="t1c1">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我能列举内能包含的几种能量形式（分子动能、分子势能）</span>
+        </label>
+        <label data-key="t1c2">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我知道单原子气体（如 He）的内能为什么可以简化为只有动能</span>
+        </label>
+        <label data-key="t1c3">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我能说清"热量"和"内能"的本质区别——一个是过程量，一个是状态量</span>
+        </label>
+        <label data-key="t1c4">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我理解内能是状态函数，它只取决于系统当前的状态</span>
+        </label>
+      </div>
+
+      <div class="literacy-tag">
+        对应素养：①好奇心 · ③思辨力（批判 AI 回答） · ⑤学习力（与 AI 建构概念）
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Task Card 2 ==================== -->
+  <div class="task-card" id="task2">
+    <div class="task-card-header" onclick="toggleCard(this)">
+      <div class="task-card-number">2</div>
+      <h3>理想气体与内能</h3>
+      <span class="task-card-chevron">&#9660;</span>
+    </div>
+    <div class="task-card-body">
+      <div class="task-objective">
+        <strong>学习目标</strong>：理解理想气体模型(Ideal Gas Model)的基本假设；掌握理想气体内能只与温度有关这一重要结论
+      </div>
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 1</span>
+          <span class="step-title">先自己想（5 分钟）</span>
+        </div>
+        <div class="step-content">
+          <p>在纸上写下你的猜测：</p>
+          <ul>
+            <li>什么是"理想气体"？为什么物理学需要这样一个"理想化"的模型？</li>
+            <li>如果把一瓶气体的体积扩大一倍（温度不变），你觉得它的内能会变吗？</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 2</span>
+          <span class="step-title">与 AI 对话——理想气体模型</span>
+        </div>
+        <div class="step-content">
+          <p>依次问 AI：</p>
+          <ol>
+            <li>"理想气体模型有哪些基本假设？请逐条解释。"</li>
+            <li>"理想气体状态方程 \(PV = nRT\) 中，每个符号分别代表什么？这个方程告诉我们什么？"</li>
+            <li>"为什么理想气体的分子势能为零？这和模型的哪个假设有关？"</li>
+          </ol>
+          <div class="quote-block">
+            <strong>理想气体的核心假设</strong>：<br>
+            ① 分子本身的体积可以忽略（相对于容器体积）<br>
+            ② 分子之间没有相互作用力（除了碰撞瞬间）<br>
+            正是因为假设②，理想气体的分子势能为零，内能就只剩下分子动能。
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 3</span>
+          <span class="step-title">关键结论——内能只与温度有关</span>
+        </div>
+        <div class="step-content">
+          <p>问 AI：</p>
+          <ol>
+            <li>"对于理想气体，为什么内能只与温度有关，而与体积和压强无关？请从微观角度解释。"</li>
+            <li>"单原子理想气体的内能公式 \(U = \frac{3}{2}nRT\) 是怎么来的？请从分子动能的平均值出发简要解释。"</li>
+            <li>"如果不是理想气体（真实气体），内能还只跟温度有关吗？为什么？"</li>
+          </ol>
+          <div class="quote-block">
+            <strong>核心公式</strong>：对于单原子理想气体，\(U = \frac{3}{2}nRT\)。这个公式的深意是：无数粒子的混乱运动的总能量，竟然只由一个数——温度——来决定。这里 \(n\) 是物质的量（mol），\(R\) 是气体常数。
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 4</span>
+          <span class="step-title">思考与验证</span>
+        </div>
+        <div class="step-content">
+          <p>用你学到的知识，在纸上回答以下问题：</p>
+          <div class="problem">
+            <p><strong>思考题</strong>：一个理想气体进行<strong>等温膨胀</strong>（温度不变，体积增大）。在这个过程中：</p>
+            <p>(a) 内能 \(\Delta U\) 等于多少？为什么？</p>
+            <p>(b) 如果气体在膨胀过程中对外做了功 \(W\)，那么根据第一定律，\(Q\) 等于多少？</p>
+            <p>(c) 这意味着什么？气体必须从外界吸收热量——吸收的热量全部转化为了什么？</p>
+          </div>
+          <p>做完后，把你的答案发给 AI 核对。</p>
+        </div>
+      </div>
+
+      <!-- Checkpoint -->
+      <div class="checkpoint">
+        <div class="checkpoint-title">检查点（自评清单）</div>
+        <label data-key="t2c1">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我能说出理想气体模型的两个核心假设</span>
+        </label>
+        <label data-key="t2c2">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我理解为什么理想气体的内能只与温度有关</span>
+        </label>
+        <label data-key="t2c3">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我知道单原子理想气体的内能公式 \(U = \frac{3}{2}nRT\)</span>
+        </label>
+        <label data-key="t2c4">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我能分析理想气体等温过程中内能、热量和功的关系</span>
+        </label>
+      </div>
+
+      <div class="literacy-tag">
+        对应素养：①好奇心（追问反直觉结论） · ③思辨力（模型与现实的区别） · ⑤学习力（从微观推导宏观结论）
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Task Card 3 ==================== -->
+  <div class="task-card" id="task3">
+    <div class="task-card-header" onclick="toggleCard(this)">
+      <div class="task-card-number">3</div>
+      <h3>热力学第一定律(First Law of Thermodynamics)</h3>
+      <span class="task-card-chevron">&#9660;</span>
+    </div>
+    <div class="task-card-body">
+      <div class="task-objective">
+        <strong>学习目标</strong>：理解热力学第一定律的两种表达形式 \(\Delta U = Q + W\) 与 \(\Delta U = Q - W\)，掌握两种符号约定(Sign Convention)的区别与等价性
+      </div>
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 1</span>
+          <span class="step-title">银行账户类比（先理解后提问）</span>
+        </div>
+        <div class="step-content">
+          <p>你的老师提出了一个类比：</p>
+          <div class="code-block">&Delta;银行余额 = 转账收入/支出 + 支票收入/支出
+   &Delta;U     =      Q       +       W</div>
+          <p>请先理解这个类比，然后向 AI 解释它，并问：</p>
+          <ol>
+            <li>"这个类比中，\(Q\) 对应什么？\(W\) 对应什么？'正'和'负'分别代表什么？"</li>
+            <li>"请你再给我一个不同的类比来理解 \(\Delta U = Q + W\)。"</li>
+            <li>你觉得哪个类比更好？为什么？把你的判断记录下来。</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 2</span>
+          <span class="step-title">两种公式、两种视角（重点！）</span>
+        </div>
+        <div class="step-content">
+          <p>热力学第一定律有两种常见的写法，它们是<strong>完全等价</strong>的，只是看问题的角度不同：</p>
+
+          <div class="quote-block" style="margin-bottom: 12px;">
+            <strong>写法一（外界视角）</strong>：\(\Delta U = Q + W\)<br>
+            这里 \(W\) 表示<strong>外界对系统做的功</strong>。系统被压缩时 \(W > 0\)（外界给系统"注入"能量），系统膨胀时 \(W < 0\)。<br>
+            <em>常见于中国高中物理教材、部分工程教材。</em>
+          </div>
+
+          <div class="quote-block" style="margin-bottom: 12px;">
+            <strong>写法二（系统视角）</strong>：\(\Delta U = Q - W\)<br>
+            这里 \(W\) 表示<strong>系统对外做的功</strong>。系统膨胀对外做功时 \(W > 0\)，系统被压缩时 \(W < 0\)。<br>
+            <em>含义</em>：内能变化 = 吸收的热量 − 系统对外做的功。吸热增加内能，对外做功消耗内能。<br>
+            <em>常见于大学物理、国际教材（如 Halliday）。</em>
+          </div>
+
+          <p><strong>它们为什么等价？</strong>因为"外界对系统做的功"和"系统对外做的功"大小相等、符号相反。设 \(W_{\text{外}}\) 为外界对系统做的功，\(W_{\text{系}}\) 为系统对外做的功，则 \(W_{\text{外}} = -W_{\text{系}}\)，代入即可得到两种写法完全一致。</p>
+
+          <p style="margin-top: 12px;">问 AI：</p>
+          <ol>
+            <li>"请用同一个具体场景来演示两种写法：一个气体吸收了 10 J 的热，同时对外膨胀做了 10 J 的功。请分别用 \(\Delta U = Q + W\) 和 \(\Delta U = Q - W\) 算出 \(\Delta U\)，验证结果一致。"</li>
+            <li>"为什么物理学界会存在两种不同的符号约定？这是不是说物理不严谨？"</li>
+            <li>"在解题时，我应该怎么判断题目用的是哪种约定？有什么技巧？"</li>
+          </ol>
+
+          <div class="problem">
+            <p><strong>练一练</strong>：一个系统释放了 20 J 的热量，同时被外界压缩做了 8 J 的功。</p>
+            <p>分别用两种公式计算 \(\Delta U\)，验证结果一致：</p>
+            <p>· 写法一（\(\Delta U = Q + W\)）：\(Q = \)？ \(W = \)？ \(\Delta U = \)？</p>
+            <p>· 写法二（\(\Delta U = Q - W\)）：\(Q = \)？ \(W = \)？ \(\Delta U = \)？</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 3</span>
+          <span class="step-title">做功与内能的关系——更深的理解</span>
+        </div>
+        <div class="step-content">
+          <p>现在你已经掌握了两种公式。让我们从 \(\Delta U = Q - W\) 的视角，更深入地思考做功与内能的关系：</p>
+          <ol>
+            <li>问 AI："从 \(\Delta U = Q - W\) 出发，如果一个过程是绝热的（\(Q=0\)），那么 \(\Delta U = -W\)。这意味着什么？系统对外做功时，能量从哪里来？"</li>
+            <li>"一个气体自由膨胀（对外做功 \(W=0\)，也没有热交换 \(Q=0\)），\(\Delta U\) 等于多少？温度会变化吗？"</li>
+            <li>用你自己的话总结：做功和热传递是改变系统内能的两种途径，它们在公式中各扮演什么角色？</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 4</span>
+          <span class="step-title">自己出题考 AI</span>
+        </div>
+        <div class="step-content">
+          <p>编一道关于热力学第一定律的题目，<strong>要求同时用两种写法求解</strong>，发给 AI 让它解答。然后你判断 AI 的解答是否正确。</p>
+          <div class="quote-block">
+            出题比解题更考验理解——如果你能出一道好题，说明你真懂了。
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkpoint -->
+      <div class="checkpoint">
+        <div class="checkpoint-title">检查点（自评清单）</div>
+        <label data-key="t3c1">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我能用银行账户类比解释 \(\Delta U = Q + W\)</span>
+        </label>
+        <label data-key="t3c2">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我理解 \(\Delta U = Q + W\) 和 \(\Delta U = Q - W\) 的区别——关键在于 \(W\) 的定义方向（外界对系统 vs. 系统对外）</span>
+        </label>
+        <label data-key="t3c3">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我能用同一个场景分别套用两种公式，并验证结果一致</span>
+        </label>
+        <label data-key="t3c4">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我能独立判断一道题中 \(Q\)、\(W\)、\(\Delta U\) 的正负号</span>
+        </label>
+        <label data-key="t3c5">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我理解做功和热传递是改变内能的两种途径</span>
+        </label>
+      </div>
+
+      <div class="literacy-tag">
+        对应素养：③思辨力（符号约定辨析、双视角理解） · ⑩协作与表达（向 AI 解释类比）
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Task Card 4 ==================== -->
+  <div class="task-card" id="task4">
+    <div class="task-card-header" onclick="toggleCard(this)">
+      <div class="task-card-number">4</div>
+      <h3>热传导(Heat Conduction)与做功(Work)的微观理解</h3>
+      <span class="task-card-chevron">&#9660;</span>
+    </div>
+    <div class="task-card-body">
+      <div class="task-objective">
+        <strong>学习目标</strong>：理解热传导和做功的微观机制；掌握 \(W = P\Delta V\) 的推导和 PV 图分析
+      </div>
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 1</span>
+          <span class="step-title">热传导——从粒子角度理解</span>
+        </div>
+        <div class="step-content">
+          <p>想象两个系统：系统 1 温度 300 K，系统 2 温度 1000 K，中间有一堵墙。</p>
+          <svg viewBox="0 0 360 160" style="max-width:360px;width:100%;height:auto;display:block;margin:8px auto;">
+            <!-- 左侧低温区域 -->
+            <rect x="20" y="20" width="140" height="120" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+            <text x="90" y="16" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">300 K</text>
+            <!-- 慢速粒子（短箭头） -->
+            <line x1="50" y1="55" x2="65" y2="50" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)"/>
+            <line x1="100" y1="85" x2="110" y2="90" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)"/>
+            <line x1="70" y1="110" x2="80" y2="105" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)"/>
+            <circle cx="50" cy="55" r="4" fill="#3b82f6"/><circle cx="100" cy="85" r="4" fill="#3b82f6"/><circle cx="70" cy="110" r="4" fill="#3b82f6"/>
+            <!-- 墙壁 -->
+            <rect x="165" y="20" width="10" height="120" fill="#6b7280" rx="2"/>
+            <text x="170" y="155" text-anchor="middle" font-size="11" fill="#6b7280">墙壁</text>
+            <!-- 右侧高温区域 -->
+            <rect x="180" y="20" width="160" height="120" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+            <text x="260" y="16" text-anchor="middle" font-size="13" font-weight="bold" fill="#b91c1c">1000 K</text>
+            <!-- 快速粒子（长箭头） -->
+            <line x1="210" y1="50" x2="240" y2="40" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowRed)"/>
+            <line x1="280" y1="80" x2="310" y2="95" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowRed)"/>
+            <line x1="230" y1="110" x2="255" y2="100" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowRed)"/>
+            <circle cx="210" cy="50" r="4" fill="#ef4444"/><circle cx="280" cy="80" r="4" fill="#ef4444"/><circle cx="230" cy="110" r="4" fill="#ef4444"/>
+            <!-- 能量传递箭头 -->
+            <line x1="250" y1="65" x2="190" y2="65" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrowGold)" stroke-dasharray="6,3"/>
+            <text x="220" y="60" text-anchor="middle" font-size="10" fill="#d97706">能量传递</text>
+            <defs>
+              <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#3b82f6"/></marker>
+              <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#ef4444"/></marker>
+              <marker id="arrowGold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#f59e0b"/></marker>
+            </defs>
+          </svg>
+          <p>问 AI：</p>
+          <ol>
+            <li>"从微观（粒子层面）解释：当高温系统的粒子碰到墙壁时，发生了什么？能量是怎么从高温传到低温的？"</li>
+            <li>"为什么热量总是从高温传向低温，而不是反过来？从粒子角度怎么解释？"</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 2</span>
+          <span class="step-title">做功——推导 \(W = P\Delta V\)</span>
+        </div>
+        <div class="step-content">
+          <p>一个活塞式容器里的气体膨胀了。</p>
+          <p>问 AI：</p>
+          <ol>
+            <li>"从微观角度解释：气体膨胀时为什么对活塞做了功？粒子在干什么？"</li>
+            <li>"请推导 \(W = P\Delta V\) 这个公式。提示：从 \(W = F \cdot x\) 和 \(P = F/A\) 出发。"</li>
+            <li><strong>自己在纸上推导一遍</strong>，对比 AI 的推导过程。</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 3</span>
+          <span class="step-title">PV 图</span>
+        </div>
+        <div class="step-content">
+          <svg viewBox="0 0 360 180" style="max-width:360px;width:100%;height:auto;display:block;margin:8px auto;">
+            <!-- 坐标轴 -->
+            <line x1="40" y1="150" x2="340" y2="150" stroke="#2c3e50" stroke-width="2"/>
+            <line x1="40" y1="150" x2="40" y2="15" stroke="#2c3e50" stroke-width="2"/>
+            <text x="190" y="172" text-anchor="middle" font-size="13" fill="#2c3e50">V</text>
+            <text x="18" y="82" text-anchor="middle" font-size="13" fill="#2c3e50">P</text>
+            <!-- 等压过程（水平线） -->
+            <line x1="70" y1="55" x2="170" y2="55" stroke="#e74c3c" stroke-width="2.5"/>
+            <text x="120" y="45" text-anchor="middle" font-size="11" fill="#e74c3c">等压过程</text>
+            <!-- 等压面积 -->
+            <rect x="70" y="55" width="100" height="95" fill="#e74c3c" fill-opacity="0.15"/>
+            <text x="120" y="108" text-anchor="middle" font-size="11" fill="#c0392b">W = P\u0394V</text>
+            <!-- 等容过程（竖直线） -->
+            <line x1="250" y1="45" x2="250" y2="130" stroke="#3498db" stroke-width="2.5"/>
+            <text x="290" y="85" text-anchor="middle" font-size="11" fill="#3498db">等容过程</text>
+            <text x="290" y="100" text-anchor="middle" font-size="11" fill="#0055B8">W = 0</text>
+            <!-- 点标注 -->
+            <circle cx="70" cy="55" r="4" fill="#2c3e50"/><circle cx="170" cy="55" r="4" fill="#2c3e50"/>
+            <circle cx="250" cy="45" r="4" fill="#2c3e50"/><circle cx="250" cy="130" r="4" fill="#2c3e50"/>
+          </svg>
+          <p>问 AI：</p>
+          <ol>
+            <li>"为什么 PV 图中曲线下的面积等于功？请从 \(W = \int P \, dV\) 的角度解释。"</li>
+            <li>"如果一个过程在 PV 图上是一条水平线（等压过程），功怎么计算？如果是一条竖直线（等容过程）呢？"</li>
+            <li>画出至少两种不同过程的 PV 图草图，标注功的大小。</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Checkpoint -->
+      <div class="checkpoint">
+        <div class="checkpoint-title">检查点（自评清单）</div>
+        <label data-key="t4c1">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我能从粒子碰撞的角度解释热传导</span>
+        </label>
+        <label data-key="t4c2">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我能在纸上推导出 \(W = P\Delta V\)</span>
+        </label>
+        <label data-key="t4c3">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我能在 PV 图上识别功的大小（面积）</span>
+        </label>
+      </div>
+
+      <div class="literacy-tag">
+        对应素养：③思辨力（从宏观到微观的还原论） · ⑨问题解决（PV 图分析） · ⑤学习力（推导公式）
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Task Card 5 ==================== -->
+  <div class="task-card" id="task5">
+    <div class="task-card-header" onclick="toggleCard(this)">
+      <div class="task-card-number">5</div>
+      <h3>综合应用</h3>
+      <span class="task-card-chevron">&#9660;</span>
+    </div>
+    <div class="task-card-body">
+      <div class="task-objective">
+        <strong>学习目标</strong>：综合运用热力学第一定律解决多步骤问题
+      </div>
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 1</span>
+          <span class="step-title">独立解题（先不要问 AI！）</span>
+        </div>
+        <div class="step-content">
+          <p>拿出纸笔，独立完成以下三道题：</p>
+
+          <div class="problem">
+            <p><strong>题 1</strong>：一个系统吸收了 10 J 的热，同时对外做了 10 J 的功。\(\Delta U = \) ？</p>
+          </div>
+
+          <div class="problem">
+            <p><strong>题 2</strong>：5 J 的热量从系统中被取走，同时外界对系统做了 1 J 的功。\(\Delta U = \) ？</p>
+          </div>
+
+          <div class="problem">
+            <p><strong>题 3</strong>：一个绝热容器（不能传热）中的气体被迅速压缩。</p>
+            <p>(a) \(Q = \) ？为什么？</p>
+            <p>(b) \(W\) 是正还是负？（注意你用的是哪种符号约定）</p>
+            <p>(c) \(\Delta U\) 是正还是负？这意味着气体温度怎么变化？</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 2</span>
+          <span class="step-title">与 AI 核对</span>
+        </div>
+        <div class="step-content">
+          <p>把你的解答发给 AI，问：</p>
+          <div class="quote-block">
+            "请检查我的解答是否正确。如果有错，请告诉我哪一步出了问题，但<strong>不要直接给我正确答案</strong>，给我一个提示让我自己修正。"
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-header">
+          <span class="step-badge">STEP 3</span>
+          <span class="step-title">费曼检验</span>
+        </div>
+        <div class="step-content">
+          <p>选择题 1-3 中你最初觉得最难的一道，向 AI <strong>完整地讲解</strong>你的解题过程。</p>
+          <p>问 AI："作为一个刚开始学物理的学生，我的解释里有没有不清楚或有歧义的地方？"</p>
+          <div class="quote-block">
+            如果你能把一个概念清楚地讲给别人听，说明你真正理解了。——理查德·费曼
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkpoint -->
+      <div class="checkpoint">
+        <div class="checkpoint-title">检查点（自评清单）</div>
+        <label data-key="t5c1">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>三道题我都能独立正确解答</span>
+        </label>
+        <label data-key="t5c2">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我能清晰地向别人（或 AI）解释我的解题思路</span>
+        </label>
+        <label data-key="t5c3">
+          <input type="checkbox" onchange="saveCheckbox(this)">
+          <span>我理解绝热过程中 \(\Delta U\) 和温度变化的关系</span>
+        </label>
+      </div>
+
+      <div class="literacy-tag">
+        对应素养：⑨问题解决 · ⑩协作与表达（费曼检验） · ②自我认知（识别自己的薄弱点）
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Output Requirements ==================== -->
+  <div class="card">
+    <h2 class="section-title">产出物要求</h2>
+    <table class="output-table">
+      <thead>
+        <tr>
+          <th>产出物</th>
+          <th>格式要求</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>AI 对话记录（精选 3 段）</td>
+          <td>截图或导出 + 手写批注</td>
+          <td>选择你觉得最有价值的 3 段对话。在截图旁用笔标注：你提了什么好问题？AI 的回答有什么问题？你怎么修正的？</td>
+        </tr>
+        <tr>
+          <td>概念关系图</td>
+          <td>手绘拍照（A4 纸）</td>
+          <td>画出 \(Q\)、\(W\)、\(\Delta U\)、\(U\)（内能）之间的关系。要求包含：箭头方向、正负号含义、至少一个具体例子。</td>
+        </tr>
+        <tr>
+          <td>学习反思日志</td>
+          <td>手写或打字，200&ndash;300 字</td>
+          <td>回答："我最初对热力学第一定律最大的误解是什么？我是怎么发现并纠正这个误解的？"</td>
+        </tr>
+        <tr>
+          <td>C 检测成绩</td>
+          <td>HTML 检测页面截图</td>
+          <td>完成在线检测后截图保存。</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="quote-block" style="margin-top: 16px;">
+      提示：学习反思必须是<strong>你自己的思考</strong>，这是唯一不能让 AI 代写的东西。
+    </div>
+  </div>
+
+  <!-- ==================== Advanced Preview ==================== -->
+  <div class="preview-card">
+    <div class="preview-title">进阶预告</div>
+    <p>你已经知道了热力学第一定律的两种表达：\(\Delta U = Q + W\) 和 \(\Delta U = Q - W\)。</p>
+    <p>你也学到了理想气体的内能公式 \(U = \frac{3}{2}nRT\)。</p>
+    <p>但这个公式是怎么<strong>推导</strong>出来的？答案藏在牛顿力学里。</p>
+    <p>你已经学过的 \(F = ma\)、\(p = mv\)，加上一点巧妙的建模——"气体动理论(Kinetic Theory of Gases)"，就能从微观粒子的碰撞严格推导出：</p>
+    <div class="formula-highlight">
+      \[PV = \frac{1}{3}Nm\overline{v^2}\]
+    </div>
+    <p>这个推导将宏观的压强和体积，与微观的粒子质量和速度联系在一起——这是物理学中最美的桥梁之一。</p>
+    <p>如果你想亲手完成这个推导，并进一步探索等温、等压、绝热等热力学过程的深入分析，完成基础模块的评价后，进入进阶模块。</p>
+  </div>
+
+  <!-- ==================== Bottom Navigation ==================== -->
+  <div class="bottom-nav">
+    <a href="index.html">&larr; 返回主页</a>
+    <div class="nav-right">
+      <a href="basic-ai-guide.html">AI交互指南 &rarr;</a>
+      <a href="basic-test.html">基础检测 &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+  </div>
+
+</div>
+
+<script>
+// ===== KaTeX Auto-Render =====
+document.addEventListener("DOMContentLoaded", function() {
+  if (typeof renderMathInElement !== "undefined") {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "\\[", right: "\\]", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+
+  // Restore checkbox states
+  restoreCheckboxes();
+});
+
+// ===== Task Card Collapse/Expand =====
+function toggleCard(header) {
+  var body = header.nextElementSibling;
+  var chevron = header.querySelector('.task-card-chevron');
+  if (body.classList.contains('collapsed')) {
+    body.classList.remove('collapsed');
+    header.classList.remove('collapsed');
+  } else {
+    body.classList.add('collapsed');
+    header.classList.add('collapsed');
+  }
+}
+
+// ===== Checkbox Persistence =====
+var STORAGE_KEY = 'task-cards-basic-checkpoints';
+
+function getCheckboxState() {
+  try {
+    var data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveCheckbox(checkbox) {
+  var label = checkbox.closest('label');
+  var key = label.getAttribute('data-key');
+  if (!key) return;
+
+  var state = getCheckboxState();
+  state[key] = checkbox.checked;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    // localStorage unavailable
+  }
+
+  // Toggle strikethrough style
+  if (checkbox.checked) {
+    label.classList.add('checked');
+  } else {
+    label.classList.remove('checked');
+  }
+}
+
+function restoreCheckboxes() {
+  var state = getCheckboxState();
+  var labels = document.querySelectorAll('.checkpoint label[data-key]');
+  labels.forEach(function(label) {
+    var key = label.getAttribute('data-key');
+    if (state[key]) {
+      var cb = label.querySelector('input[type="checkbox"]');
+      if (cb) {
+        cb.checked = true;
+        label.classList.add('checked');
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
