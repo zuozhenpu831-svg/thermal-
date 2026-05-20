@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>如何有效地与 AI 学习物理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+    <style>
+  :root {
+    --primary-blue: #00409A;
+    --secondary-blue: #0055B8;
+    --bright-blue: #006AD6;
+    --light-blue: #E6EEFF;
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-light: #86868b;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f7fa;
+    --bg-light: #fafbfc;
+    --border-color: #e5e5e7;
+    --shadow-sm: 0 2px 8px rgba(0, 64, 154, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 64, 154, 0.12);
+    --shadow-lg: 0 8px 32px rgba(0, 64, 154, 0.16);
+    --shadow-glow: 0 0 20px rgba(0, 64, 154, 0.3);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius: 20px;
+    --radius-sm: 12px;
+    --success: #27ae60;
+    --danger: #c0392b;
+  }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 20px 16px 40px;
+        }
+
+        /* ── Breadcrumb ── */
+        .breadcrumb {
+            padding: 16px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .breadcrumb a {
+            color: var(--secondary-blue);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb .sep {
+            margin: 0 6px;
+            color: var(--border-color);
+        }
+
+        .breadcrumb .current {
+            color: var(--text-secondary);
+        }
+
+        /* ── Header ── */
+        .hero {
+            background: linear-gradient(135deg, #00409A 0%, #0055B8 50%, #006AD6 100%);
+            color: #fff;
+            padding: 36px 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 20px rgba(0, 64, 154, 0.25);
+        
+    position: relative;
+    overflow: hidden;
+  }
+
+        .hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+        .hero .subtitle {
+            font-size: 15px;
+            opacity: 0.88;
+            font-weight: 400;
+        
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+  }
+
+        /* ── Section headings ── */
+        .section-heading {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--secondary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-heading .icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        /* ── Core principle card ── */
+        .core-principle {
+            background: linear-gradient(135deg, #eaf2f8 0%, #d4e6f1 100%);
+            border: 2px solid var(--secondary-blue);
+            border-left: 6px solid var(--primary-blue);
+            border-radius: 10px;
+            padding: 28px 28px;
+            margin-bottom: 36px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .core-principle::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 64, 154, 0.1);
+            border-radius: 50%;
+        }
+
+        .core-principle .label {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--secondary-blue);
+            margin-bottom: 12px;
+        }
+
+        .core-principle .highlight {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .core-principle p {
+            color: var(--text-primary);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* ── DO cards ── */
+        .do-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 24px 24px 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #27ae60;
+            box-shadow: 0 2px 8px rgba(0, 64, 154, 0.08);
+            transition: box-shadow 0.2s;
+        }
+
+        .do-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 64, 154, 0.12);
+        }
+
+        .do-card .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .do-card .num-badge {
+            width: 32px;
+            height: 32px;
+            background: #27ae60;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .do-card .card-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .do-card .card-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            padding-left: 44px;
+        }
+
+        /* ── DON'T cards ── */
+        .dont-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 24px 24px 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #e74c3c;
+            box-shadow: 0 2px 8px rgba(0, 64, 154, 0.08);
+            transition: box-shadow 0.2s;
+        }
+
+        .dont-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 64, 154, 0.12);
+        }
+
+        .dont-card .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .dont-card .num-badge {
+            width: 32px;
+            height: 32px;
+            background: #e74c3c;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .dont-card .card-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .dont-card .card-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            padding-left: 44px;
+        }
+
+        .dont-card .card-desc:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ── Example dialog boxes ── */
+        .example-box {
+            background: #f8fafb;
+            border: 1px solid #dce6ec;
+            border-radius: 8px;
+            padding: 16px 18px;
+            margin: 10px 0 6px 44px;
+            font-size: 14px;
+        }
+
+        .example-box .ex-line {
+            padding: 6px 0;
+            line-height: 1.6;
+        }
+
+        .example-box .ex-bad {
+            color: #b03a2e;
+        }
+
+        .example-box .ex-good {
+            color: #1e8449;
+        }
+
+        .example-box .ex-ai {
+            color: #2471a3;
+            font-style: italic;
+        }
+
+        .example-box .ex-note {
+            color: #666;
+            font-size: 13px;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px dashed #dce6ec;
+        }
+
+        .marker-bad, .marker-good {
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        /* ── Template section ── */
+        .template-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 22px 24px;
+            margin-bottom: 18px;
+            border: 1px solid #d5e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .template-card .template-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--secondary-blue);
+            margin-bottom: 10px;
+        }
+
+        .template-text {
+            background: #f0f7fb;
+            border: 1px solid #c5dde8;
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.7;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--secondary-blue);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 7px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-blue);
+        }
+
+        .copy-btn.copied {
+            background: #27ae60;
+        }
+
+        /* ── AI tools table ── */
+        .tools-table-wrapper {
+            overflow-x: auto;
+            margin: 16px 0 10px;
+        }
+
+        .tools-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 64, 154, 0.08);
+        }
+
+        .tools-table thead {
+            background: var(--primary-blue);
+            color: #fff;
+        }
+
+        .tools-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .tools-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #ecf0f1;
+            vertical-align: top;
+        }
+
+        .tools-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tools-table tbody tr:hover {
+            background: #f8fafb;
+        }
+
+        .tools-summary {
+            background: #eaf2f8;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-top: 14px;
+            font-size: 15px;
+            color: var(--primary-blue);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .tools-summary strong {
+            color: var(--secondary-blue);
+        }
+
+        /* ── Bottom nav ── */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 2px solid #d5e8f0;
+        }
+
+        .bottom-nav a {
+            color: var(--secondary-blue);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .bottom-nav a:hover {
+            background: #eaf2f8;
+            color: var(--primary-blue);
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            padding: 32px 0 24px;
+            color: #95a5a6;
+            font-size: 13px;
+        }
+
+        /* ── KaTeX overrides ── */
+        .katex {
+            font-size: 1em !important;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 480px) {
+            body {
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 12px 12px 40px;
+            }
+
+            .hero {
+                padding: 28px 16px;
+                border-radius: var(--radius-sm);
+            }
+
+            .hero h1 {
+                font-size: 22px;
+            }
+
+            .hero .subtitle {
+                font-size: 13px;
+            }
+
+            .section-heading {
+                font-size: 19px;
+            }
+
+            .core-principle {
+                padding: 20px 18px;
+            }
+
+            .core-principle .highlight {
+                font-size: 15px;
+            }
+
+            .do-card, .dont-card {
+                padding: 18px 16px 16px;
+            }
+
+            .do-card .card-desc,
+            .dont-card .card-desc {
+                padding-left: 0;
+            }
+
+            .example-box {
+                margin-left: 0;
+                padding: 12px 14px;
+            }
+
+            .template-card {
+                padding: 16px 16px;
+            }
+
+            .tools-table th, .tools-table td {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .bottom-nav a {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+        }
+    
+  /* ── Hero Animations ── */
+  .hero-decoration {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    animation: float 6s ease-in-out infinite;
+  }
+  .hero-decoration:nth-child(1) { width: 60px; height: 60px; top: 20%; left: 10%; animation-delay: 0s; }
+  .hero-decoration:nth-child(2) { width: 40px; height: 40px; top: 60%; right: 15%; animation-delay: 2s; }
+  .hero-decoration:nth-child(3) { width: 80px; height: 80px; bottom: 10%; left: 60%; animation-delay: 4s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
+    50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="index.html">主页</a>
+        <span class="sep">&gt;</span>
+        <span class="current">基础模块</span>
+        <span class="sep">&gt;</span>
+        <span class="current">AI交互指南</span>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="hero">
+        <h1>如何有效地与 AI 学习物理</h1>
+        <div class="subtitle">学生用指南</div>
+    <svg class="hero-wave" viewBox="0 0 1200 120" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;width:100%;height:40px;"><path d="M0,64 C200,100 400,20 600,64 C800,108 1000,20 1200,64 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.95)"></path></svg>
+    </header>
+
+    <!-- Core Principle -->
+    <div class="core-principle">
+        <div class="label">核心原则</div>
+        <div class="highlight">你是学习者，不是提问机器。AI 是你的学习伙伴，不是答案生成器。</div>
+        <p>你和 AI 对话的目的不是获取答案，而是通过对话让自己的理解变得更清晰、更深入。最有价值的对话是你主动质疑和解释的对话，而不是 AI 单方面输出的对话。</p>
+    </div>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- DO Section -->
+    <!-- ════════════════════════════════════════ -->
+    <h2 class="section-heading"><span class="icon">&#10003;</span> DO — 好的做法</h2>
+
+    <!-- DO 1 -->
+    <div class="do-card">
+        <div class="card-header">
+            <div class="num-badge">1</div>
+            <div class="card-title">先想再问</div>
+        </div>
+        <div class="card-desc">每次问 AI 之前，先花 2 分钟自己想，哪怕想错了也没关系。</div>
+        <div class="example-box">
+            <div class="ex-line ex-bad"><span class="marker-bad">&#10060;</span>"什么是内能？"</div>
+            <div class="ex-line ex-good"><span class="marker-good">&#9989;</span>"我认为内能就是系统内所有粒子动能的总和。这个理解对吗？有没有遗漏？"</div>
+            <div class="ex-note">把你的想法告诉 AI，让它帮你检查，比直接要答案有效 10 倍。</div>
+        </div>
+    </div>
+
+    <!-- DO 2 -->
+    <div class="do-card">
+        <div class="card-header">
+            <div class="num-badge">2</div>
+            <div class="card-title">让 AI 当"挑刺者"</div>
+        </div>
+        <div class="card-desc">主动请 AI 找你理解中的漏洞。</div>
+        <div class="example-box">
+            <div class="ex-line ex-good"><span class="marker-good">&#9989;</span>"我的理解是：热量就是内能的变化。请指出我的错误。"</div>
+            <div class="ex-line ex-ai">AI 可能会回答："热量是能量传递的方式，不等于内能变化。内能变化还受做功影响……"</div>
+        </div>
+    </div>
+
+    <!-- DO 3 -->
+    <div class="do-card">
+        <div class="card-header">
+            <div class="num-badge">3</div>
+            <div class="card-title">追问"为什么"</div>
+        </div>
+        <div class="card-desc">如果 AI 给了你一个回答，至少追问一次。</div>
+        <div class="example-box">
+            <div class="ex-line ex-ai">AI："热量总是从高温传向低温。"</div>
+            <div class="ex-line ex-good"><span class="marker-good">&#9989;</span>"为什么？从粒子运动的角度怎么解释？如果粒子运动是随机的，有没有可能热量从低温传到高温？"</div>
+        </div>
+    </div>
+
+    <!-- DO 4 -->
+    <div class="do-card">
+        <div class="card-header">
+            <div class="num-badge">4</div>
+            <div class="card-title">自己出题考 AI</div>
+        </div>
+        <div class="card-desc">编一道你觉得有陷阱的题目让 AI 做，然后判断它做得对不对。</div>
+        <div class="example-box">
+            <div class="ex-line ex-good"><span class="marker-good">&#9989;</span>"请做这道题：一个系统吸收了 10 J 的热，同时外界对系统做了 5 J 的功。用 <span class="katex-inline">\(\Delta U = Q - W\)</span> 计算 <span class="katex-inline">\(\Delta U\)</span>。"</div>
+            <div class="ex-note">然后检查 AI 有没有搞错符号约定。</div>
+        </div>
+    </div>
+
+    <!-- DO 5 -->
+    <div class="do-card">
+        <div class="card-header">
+            <div class="num-badge">5</div>
+            <div class="card-title">让 AI 用不同方式解释</div>
+        </div>
+        <div class="card-desc">同一个概念，多个角度理解更扎实。</div>
+        <div class="example-box">
+            <div class="ex-line ex-good"><span class="marker-good">&#9989;</span>"请用一个生活中的例子解释 <span class="katex-inline">\(\Delta U = Q + W\)</span>。"</div>
+            <div class="ex-line ex-good"><span class="marker-good">&#9989;</span>"能不能用更数学化的方式解释 <span class="katex-inline">\(PV\)</span> 图下面积为什么等于功？"</div>
+        </div>
+    </div>
+
+    <!-- DO 6 -->
+    <div class="do-card">
+        <div class="card-header">
+            <div class="num-badge">6</div>
+            <div class="card-title">质疑 AI</div>
+        </div>
+        <div class="card-desc">AI 不是永远正确的。如果 AI 的回答和你的直觉冲突，不要自动放弃你的想法。</div>
+        <div class="example-box">
+            <div class="ex-line ex-ai">AI："绝热膨胀过程中温度不变。"</div>
+            <div class="ex-line ex-good"><span class="marker-good">&#9989;</span>"你确定吗？我觉得绝热膨胀温度应该降低，因为气体对外做功消耗了内能。能不能再想想？"</div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- DON'T Section -->
+    <!-- ════════════════════════════════════════ -->
+    <h2 class="section-heading"><span class="icon">&#10007;</span> DON'T — 避免的做法</h2>
+
+    <!-- DON'T 1 -->
+    <div class="dont-card">
+        <div class="card-header">
+            <div class="num-badge">1</div>
+            <div class="card-title">不要直接复制粘贴题目让 AI 解答</div>
+        </div>
+        <div class="card-desc"><span class="marker-bad">&#10060;</span> [复制题目] &rarr; "帮我做这道题"</div>
+        <div class="card-desc">你学到的为零。正确做法：先自己做，做完后再让 AI 核对。</div>
+    </div>
+
+    <!-- DON'T 2 -->
+    <div class="dont-card">
+        <div class="card-header">
+            <div class="num-badge">2</div>
+            <div class="card-title">不要只看答案不看推理过程</div>
+        </div>
+        <div class="card-desc"><span class="marker-bad">&#10060;</span> AI 给了一长段推导，你直接跳到最后一行看答案。</div>
+        <div class="card-desc">物理不是记住答案，是理解推理。逐步看 AI 的推导，每一步问自己"为什么"。</div>
+    </div>
+
+    <!-- DON'T 3 -->
+    <div class="dont-card">
+        <div class="card-header">
+            <div class="num-badge">3</div>
+            <div class="card-title">不要一次问太多问题</div>
+        </div>
+        <div class="card-desc"><span class="marker-bad">&#10060;</span> "内能是什么？热量是什么？功是什么？<span class="katex-inline">\(\Delta U = Q + W\)</span> 什么意思？<span class="katex-inline">\(PV\)</span> 图怎么看？"</div>
+        <div class="card-desc">一次聚焦一个概念，深入理解后再进入下一个。</div>
+    </div>
+
+    <!-- DON'T 4 -->
+    <div class="dont-card">
+        <div class="card-header">
+            <div class="num-badge">4</div>
+            <div class="card-title">不要让 AI 写你的学习反思</div>
+        </div>
+        <div class="card-desc"><span class="marker-bad">&#10060;</span> "帮我写一段 200 字的学习反思。"</div>
+        <div class="card-desc">反思必须是你自己的思考。这是你唯一不能外包给 AI 的东西。</div>
+    </div>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- Templates Section -->
+    <!-- ════════════════════════════════════════ -->
+    <h2 class="section-heading"><span class="icon">&#128172;</span> 推荐开场白模板</h2>
+
+    <!-- Template A -->
+    <div class="template-card">
+        <div class="template-label">模板 A：概念检查型</div>
+        <div class="template-text" id="template-a">我正在学习热力学第一定律。我目前的理解是 [你的理解]。请帮我检查这个理解是否正确，如果有问题，给我提示但不要直接告诉我答案。</div>
+        <button class="copy-btn" onclick="copyTemplate('template-a', this)">&#128203; 复制</button>
+    </div>
+
+    <!-- Template B -->
+    <div class="template-card">
+        <div class="template-label">模板 B：解题核对型</div>
+        <div class="template-text" id="template-b">我做了一道关于 [题目主题] 的题。我的解法是 [你的解法]。请检查我的解答是否正确。如果有错，请告诉我哪一步出了问题，但不要直接给我正确答案，给我一个提示让我自己修正。</div>
+        <button class="copy-btn" onclick="copyTemplate('template-b', this)">&#128203; 复制</button>
+    </div>
+
+    <!-- Template C -->
+    <div class="template-card">
+        <div class="template-label">模板 C：深度探究型</div>
+        <div class="template-text" id="template-c">我有一个关于 [概念] 的疑问：[你的问题]。请从 [微观粒子 / 数学推导 / 生活类比] 的角度帮我理解。如果我的问题本身有问题，请指出来。</div>
+        <button class="copy-btn" onclick="copyTemplate('template-c', this)">&#128203; 复制</button>
+    </div>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- AI Tools Table -->
+    <!-- ════════════════════════════════════════ -->
+    <h2 class="section-heading"><span class="icon">&#128736;</span> 不同 AI 工具的简要提示</h2>
+
+    <div class="tools-table-wrapper">
+        <table class="tools-table">
+            <thead>
+                <tr>
+                    <th>工具</th>
+                    <th>特点</th>
+                    <th>注意事项</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>ChatGPT</strong></td>
+                    <td>擅长类比和通俗解释</td>
+                    <td>物理公式偶尔会有符号错误，计算结果需自行验证</td>
+                </tr>
+                <tr>
+                    <td><strong>Gemini</strong></td>
+                    <td>搜索能力强，可以引用资料</td>
+                    <td>回答有时偏长，注意提取关键信息</td>
+                </tr>
+                <tr>
+                    <td><strong>Claude</strong></td>
+                    <td>推理严谨，擅长分步分析</td>
+                    <td>如果学校推荐 Claude Code，可以让它写代码做数值模拟和画图</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="tools-summary">
+        无论用哪个工具，核心方法都一样：<strong>先想 &rarr; 再问 &rarr; 质疑 &rarr; 总结</strong>。
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <a href="index.html">&larr; 返回主页</a>
+        <a href="basic-ai-guide-claude-code.html">Claude Code 补充 &rarr;</a>
+    </nav>
+
+    <!-- Footer -->
+    <div class="footer">
+    </div>
+
+</div>
+
+<script>
+    // ── KaTeX auto-render ──
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            throwOnError: false
+        });
+    });
+
+    // ── Copy template text ──
+    function copyTemplate(id, btn) {
+        var el = document.getElementById(id);
+        var text = el.textContent.trim();
+        navigator.clipboard.writeText(text).then(function () {
+            var original = btn.innerHTML;
+            btn.innerHTML = "&#10003; 已复制!";
+            btn.classList.add("copied");
+            setTimeout(function () {
+                btn.innerHTML = original;
+                btn.classList.remove("copied");
+            }, 1500);
+        }).catch(function () {
+            // Fallback for older browsers
+            var textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand("copy");
+                var original = btn.innerHTML;
+                btn.innerHTML = "&#10003; 已复制!";
+                btn.classList.add("copied");
+                setTimeout(function () {
+                    btn.innerHTML = original;
+                    btn.classList.remove("copied");
+                }, 1500);
+            } catch (e) {
+                // silently fail
+            }
+            document.body.removeChild(textarea);
+        });
+    }
+</script>
+
+</body>
+</html>

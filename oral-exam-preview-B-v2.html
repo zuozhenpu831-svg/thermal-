@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>热力学第一定律 · 板块 B 深度口试预览 v2</title>
+<style>
+  :root {
+    --primary: #8B6914;
+    --primary-dark: #6B5210;
+    --primary-deep: #A07E1A;
+    --primary-darker: #4E3B0A;
+    --primary-light: #F5EDDA;
+    --primary-soft: #FBF6E8;
+
+    --accent: #B85820;
+    --success: #2D7A40;
+    --honor: #6B3FB8;
+    --warn: #d97706;
+    --danger: #B33A2F;
+
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-light: #86868b;
+
+    --bg-primary: #ffffff;
+    --bg-secondary: #FAF6EC;
+
+    --border-color: #e8e0c8;
+
+    --radius: 20px;
+    --radius-sm: 12px;
+
+    --shadow-sm: 0 2px 8px rgba(139, 105, 20, 0.08);
+    --shadow-md: 0 4px 16px rgba(139, 105, 20, 0.14);
+
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  .header {
+    text-align: center;
+    padding: 36px 20px 32px;
+    background: linear-gradient(135deg, #4E3B0A 0%, #8B6914 45%, #C9A227 100%);
+    color: #fff;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 30%, rgba(255,255,255,0.10) 0%, transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(255,255,255,0.08) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .header .badge {
+    display: inline-block;
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    background: rgba(255,255,255,0.16);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .header h1 {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+    position: relative;
+  }
+  .header .subtitle {
+    font-size: 0.95rem;
+    opacity: 0.92;
+    position: relative;
+  }
+  .header .school {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-top: 8px;
+    position: relative;
+  }
+
+  .intro-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--primary);
+  }
+  .intro-card h2 {
+    font-size: 1.05rem;
+    color: var(--primary-dark);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .intro-card h2::before { content: '🔬'; font-size: 1.1rem; }
+  .intro-card p {
+    font-size: 0.93rem;
+    color: var(--text-secondary);
+    line-height: 1.85;
+    margin-bottom: 10px;
+  }
+  .intro-card p:last-child { margin-bottom: 0; }
+  .intro-card strong { color: var(--primary-dark); }
+  .intro-card .highlight {
+    background: linear-gradient(180deg, transparent 60%, #fff3a8 60%);
+    padding: 0 2px;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin: 28px 0 14px;
+    padding-left: 12px;
+    border-left: 4px solid var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .count {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    background: var(--primary-light);
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+
+  .q-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-sm);
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+    border-left: 3px solid var(--primary);
+    transition: var(--transition);
+  }
+  .q-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateX(2px);
+  }
+  .q-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .q-no {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-deep));
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .difficulty {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .difficulty.基础 { color: #1e8449; background: rgba(39,174,96,0.12); }
+  .difficulty.中等 { color: #c0660e; background: rgba(230,126,34,0.12); }
+  .difficulty.较难 { color: var(--danger); background: rgba(192,57,43,0.12); }
+  .v21-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 10px;
+    color: var(--honor);
+    background: rgba(142,68,173,0.12);
+    font-weight: 500;
+  }
+
+  .q-stem {
+    font-size: 0.97rem;
+    line-height: 1.8;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+  }
+  .q-stem code {
+    font-family: "SF Mono", "Cascadia Code", "Consolas", monospace;
+    font-size: 0.92em;
+    background: var(--primary-soft);
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--primary-deep);
+  }
+
+  .q-focus {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: var(--primary-soft);
+    border-left: 3px solid var(--primary);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+  }
+  .q-focus strong {
+    color: var(--primary-dark);
+    margin-right: 4px;
+  }
+
+  .self-check {
+    background: linear-gradient(135deg, #fff 0%, var(--primary-soft) 100%);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    margin-top: 30px;
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--primary);
+  }
+  .self-check h3 {
+    font-size: 1.1rem;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+  }
+  .self-check .sub {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+  .check-list { list-style: none; padding: 0; margin: 0; }
+  .check-list li {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border-color);
+  }
+  .check-list li:last-child { border-bottom: none; }
+  .check-list label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 0.93rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    transition: color 0.2s;
+  }
+  .check-list label:hover { color: var(--primary-dark); }
+  .check-list input[type="checkbox"] {
+    width: 20px; height: 20px;
+    accent-color: var(--primary);
+    margin-top: 1px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .check-list input[type="checkbox"]:checked + .ck-text {
+    color: var(--text-light);
+    text-decoration: line-through;
+  }
+  .ck-text { transition: color 0.2s; }
+
+  .check-progress {
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: var(--primary-light);
+    border-radius: 8px;
+    font-size: 0.86rem;
+    color: var(--primary-dark);
+    text-align: center;
+    font-weight: 500;
+  }
+  .check-progress.complete {
+    background: linear-gradient(135deg, #e8f7ec, #d4f3df);
+    color: var(--success);
+  }
+
+  .bottom-nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 2px solid var(--primary-light);
+    flex-wrap: wrap;
+  }
+  .bottom-nav a {
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: var(--primary-soft);
+    transition: var(--transition);
+  }
+  .bottom-nav a:hover {
+    background: var(--primary-light);
+    transform: translateY(-1px);
+  }
+  .bottom-nav a.back::before { content: '↩ '; }
+  .bottom-nav a.forward::after { content: ' →'; }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.35rem; }
+    .header .subtitle { font-size: 0.88rem; }
+    .q-card { padding: 16px 16px; }
+    .intro-card { padding: 20px 18px; }
+    .self-check { padding: 20px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="badge">板块 B · 推导专题口试</div>
+    <h1>板块 B · 深度口试 · 考察范围预览</h1>
+    <div class="subtitle">板块 B · 微观推导（E 段）· 学生备考参考 · 10 道考察方向 · 教师抽 2-3 题做深度对话</div>
+    <div class="school">蓝色诺瓦学院 · 物化融合大主题"热力学"</div>
+  </div>
+
+  <div class="intro-card">
+    <h2>怎么使用这一页</h2>
+    <p><strong>这不是题库，是考察范围告知。</strong>板块 B 完成后，教师会从下面 10 个考察方向中抽 2-3 道，与你做 15-20 分钟的深度对话。</p>
+    <p>板块 B 的口试和板块 A 不同——更看重<strong>推导链的完整性</strong>、<strong>假设审查能力</strong>和<strong>审美反思的真实感</strong>。<span class="highlight">教师会要求你即兴推导一段、追问"如果去掉这条假设会怎样"</span>，所以背公式没用。</p>
+    <p>正确的备考方式是：<strong>能闭着眼默写一遍从 Δp = 2mvₓ 到 U = ³⁄₂ nRT 的完整推导链</strong>；并对每条假设都做过一次反事实思想实验。</p>
+    <p style="margin-top:12px; color: var(--text-light); font-size: 0.86rem;">评分维度：概念准确性（25%） / 推理过程（30%） / 应对追问（25%） / 批判性（20%）</p>
+  </div>
+
+  <div class="section-title">
+    考察方向题目
+    <span class="count">共 10 道 · 教师抽 2-3 道</span>
+  </div>
+
+  <!-- Q1 (v2.1 §10 第 6 题逐字搬运) -->
+  <div class="q-card">
+    <div class="q-head">
+      <div class="q-no">1</div>
+      <span class="difficulty 较难">较难</span>
+      <span class="v21-tag">v2.1 §10 第 6 题</span>
+    </div>
+    <div class="q-stem">推导 <code>ΔU = ³⁄₂ nRΔT</code> 中"无分子间作用力"（H4）假设的必要性。如果去掉这条假设，结论应该改成什么？</div>
+    <div class="q-focus"><strong>考察方向：</strong>E 段核心推导的假设审查（v2.1 §10 第 6 题原题）。能不能说出：如果有分子间作用力，则内能 = 总动能 + 分子势能，势能依赖于 V，那么 U 不再只与 T 有关——这就破坏了"内能只是温度函数"。范德瓦尔斯气体 U = ³⁄₂ nRT − a·n²/V 就是修正情形。</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card">
+    <div class="q-head">
+      <div class="q-no">2</div>
+      <span class="difficulty 较难">较难</span>
+    </div>
+    <div class="q-stem">理想气体推导依赖 4 条核心假设（H1 大量粒子 / H2 各向同性 / H3 弹性碰撞 / H4 无分子间作用力）。请逐条说明每条假设在推导链中<strong>首先</strong>被用到的步骤。</div>
+    <div class="q-focus"><strong>考察方向：</strong>假设审查综合能力。H1 → ④ N 粒子叠加；H2 → ⑤ ⟨vₓ²⟩ = ⟨v²⟩/3；H3 → ① 弹性碰撞 Δp = 2mvₓ；H4 → ⑧ U = 总平动动能（去掉势能项）。能不能讲清楚假设和推导步骤的依赖关系。</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card">
+    <div class="q-head">
+      <div class="q-no">3</div>
+      <span class="difficulty 较难">较难</span>
+    </div>
+    <div class="q-stem">单粒子→单壁推导：闭着眼默写从 <code>Δp = 2m·vₓ</code> 到 <code>P₁ = m·vₓ²/V</code> 的完整推导链，说明每一步用了什么物理原理。</div>
+    <div class="q-focus"><strong>考察方向：</strong>核心推导的"白板默写"。Δp = 2m·vₓ（弹性）→ Δt = 2L/vₓ（运动学）→ F = Δp/Δt = m·vₓ²/L（牛顿第二）→ P₁ = F/A = m·vₓ²/V（压强定义）。教师会卡某一步追问"为什么不是 L/vₓ"。</div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card">
+    <div class="q-head">
+      <div class="q-no">4</div>
+      <span class="difficulty 中等">中等</span>
+    </div>
+    <div class="q-stem">统计平均与各向同性：解释为什么 <code>⟨vₓ²⟩ = ⟨v²⟩/3</code>，而<strong>不是</strong>速度大小的 1/3。你能想象一个反例（不满足各向同性）的物理情境吗？</div>
+    <div class="q-focus"><strong>考察方向：</strong>各向同性的数学含义 + 反事实想象。关键：均方对所有粒子取平均，由对称性 ⟨vₓ²⟩ = ⟨vᵧ²⟩ = ⟨vᵤ²⟩，三者之和 = ⟨v²⟩，所以各为 ⟨v²⟩/3。反例：分子束（所有粒子向同一方向）、重力场下竖直方向轻微偏离。</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card">
+    <div class="q-head">
+      <div class="q-no">5</div>
+      <span class="difficulty 较难">较难</span>
+    </div>
+    <div class="q-stem">联立 PV = nRT 推 U = ³⁄₂ nRT 的关键一跳：从 <code>(³⁄₂)nRT = (½)Nm⟨v²⟩</code> 到 <code>U = (³⁄₂)nRT</code>，"内能 = 总平动动能"这一步需要哪些假设？为什么？</div>
+    <div class="q-focus"><strong>考察方向：</strong>U = ³⁄₂ nRT 闭环依赖的关键假设（D4-2 的口语版）。H4（无势能）让"总能量 = 总动能"；单原子假设让"总动能 = 总平动动能"。两条同时成立才有 U = (³⁄₂) nRT。</div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card">
+    <div class="q-head">
+      <div class="q-no">6</div>
+      <span class="difficulty 中等">中等</span>
+    </div>
+    <div class="q-stem">审美反思：在整条微观推导链里，你觉得哪一步<strong>最优美</strong>？哪一步<strong>最难懂</strong>？为什么？</div>
+    <div class="q-focus"><strong>考察方向：</strong>审美力（素养 ⑥）+ 真实学习体验。教师听的是"具体到哪一步、为什么"——不要堆"物理之美""数学之妙"空话。常见好答案："vₓ² = v²/3 那个对称性步骤——三个方向的对称性自动生成 3 这个系数，是整条推导里唯一不靠代数的地方。"</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card">
+    <div class="q-head">
+      <div class="q-no">7</div>
+      <span class="difficulty 中等">中等</span>
+    </div>
+    <div class="q-stem">双原子分子的修正：为什么 N₂ 在常温下的内能是 (⁵⁄₂) nRT 而不是 (³⁄₂) nRT？哪几个自由度被激活了？为什么绕分子键轴的转动不算？</div>
+    <div class="q-focus"><strong>考察方向：</strong>能量均分定理 + 量子能级激发。3 平动 + 2 转动（绕两个垂直轴）= 5 自由度。绕分子键轴的转动惯量近乎 0，量子化能级很高，常温下激发不到。能量均分定理：每自由度 (½) k_B T。</div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card">
+    <div class="q-head">
+      <div class="q-no">8</div>
+      <span class="difficulty 较难">较难</span>
+    </div>
+    <div class="q-stem">范德瓦尔斯方程：<code>(P + an²/V²)(V − nb) = nRT</code> 中 a 和 b 分别在物理上修正了哪条假设？真实气体的内能比 (³⁄₂) nRT 多了什么项？</div>
+    <div class="q-focus"><strong>考察方向：</strong>真实气体的修正。a 修正 H4（分子间引力 ⇒ 压强比理想化小）；b 修正 H3 中"分子大小可忽略"的隐含假设（n 个分子占了 nb 体积）。真实气体 U = ³⁄₂ nRT − a·n²/V（多了势能项，通常为负——吸引）。</div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card">
+    <div class="q-head">
+      <div class="q-no">9</div>
+      <span class="difficulty 中等">中等</span>
+    </div>
+    <div class="q-stem">温度的微观本质：如果一个学生问你"温度到底是什么？"，你怎么用一句话回答，让他理解？</div>
+    <div class="q-focus"><strong>考察方向：</strong>能不能把推导结果转化为可教学的一句话。准确答："温度是单粒子平均平动动能的量度——精确来说 ⟨E_平动⟩ = (³⁄₂) k_B T。" 还要顶住追问："那为什么是 ³⁄₂ 不是其他系数？"（答：来自三个空间方向的对称性）</div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card">
+    <div class="q-head">
+      <div class="q-no">10</div>
+      <span class="difficulty 较难">较难</span>
+    </div>
+    <div class="q-stem">N=10 涨落与 H1：如果容器内只有 10 个粒子，PV = nRT 还成立吗？瞬时压强和时间平均压强的关系是什么？这说明 H1（大量粒子）假设的本质作用是什么？</div>
+    <div class="q-focus"><strong>考察方向：</strong>H1 的统计意义。N=10 时时间平均仍然有意义，但瞬时压强偏离时间平均的相对涨落约 1/√10 ≈ 32%。N=10²³ 时涨落 ~ 10⁻¹²，完全不可观测。H1 的本质作用：把"统计涨落"压到宏观可观察量之下；N→∞ 是宏观量"看起来稳定"的根本原因。</div>
+  </div>
+
+  <div class="self-check">
+    <h3>📝 备考自查清单</h3>
+    <div class="sub">勾选你已经做到的项。全勾再去找教师约口试时间。</div>
+    <ul class="check-list">
+      <li>
+        <label>
+          <input type="checkbox" onchange="updateProgress()">
+          <span class="ck-text">我能闭着眼默写从 Δp = 2m·vₓ 到 U = (³⁄₂) nRT 的完整推导链</span>
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox" onchange="updateProgress()">
+          <span class="ck-text">每一步我都能说出依据哪条假设（H1/H2/H3/H4 或单原子）</span>
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox" onchange="updateProgress()">
+          <span class="ck-text">我能用反事实想象解释"去掉这条假设会怎样"（每条假设至少演练 1 次）</span>
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox" onchange="updateProgress()">
+          <span class="ck-text">我有一段不空洞的审美反思（不用"物理之美"空话，能具体到推导某一步）</span>
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox" onchange="updateProgress()">
+          <span class="ck-text">我能解释温度的微观定义和压强的微观定义</span>
+        </label>
+      </li>
+    </ul>
+    <div class="check-progress" id="progress">已勾选 0 / 5 项</div>
+  </div>
+
+  <div class="bottom-nav">
+    <a class="back" href="index-v2.html">返回主页</a>
+    <a class="forward" href="derivation-test-v2.html">板块 B 基础检测</a>
+    <a class="forward" href="derivation-task-cards-v2.html">任务卡 A1-A6</a>
+  </div>
+
+</div>
+
+<script>
+function updateProgress() {
+  const boxes = document.querySelectorAll('.check-list input[type="checkbox"]');
+  const checked = Array.from(boxes).filter(b => b.checked).length;
+  const total = boxes.length;
+  const el = document.getElementById('progress');
+  el.textContent = `已勾选 ${checked} / ${total} 项`;
+  el.classList.toggle('complete', checked === total);
+  if (checked === total) {
+    el.textContent = `✓ 已勾选 ${checked} / ${total} 项 — 可以去找教师约口试时间了`;
+  }
+}
+</script>
+
+</body>
+</html>

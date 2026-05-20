@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>热力学 · 物理化学融合主题</title>
+<style>
+  :root {
+    /* 通用 */
+    --text-primary: #1d1d1f;
+    --text-secondary: #5a5a60;
+    --text-light: #86868b;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f7fa;
+    --bg-light: #fafbfc;
+    --border-color: #e5e5e7;
+    --radius: 20px;
+    --radius-sm: 12px;
+    --radius-xs: 8px;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* 板块 A · 蓝 */
+    --A-primary: #00409A;
+    --A-secondary: #0055B8;
+    --A-bright: #006AD6;
+    --A-light: #E6EEFF;
+    --A-bg-soft: rgba(0, 64, 154, 0.06);
+
+    /* 板块 B · 金棕 */
+    --B-primary: #8B6914;
+    --B-secondary: #b8860b;
+    --B-bright: #D4A015;
+    --B-light: #fef5dc;
+    --B-bg-soft: rgba(184, 134, 11, 0.08);
+
+    /* A5 三步流程 · 浅色微差 */
+    --step1-bg: #f3f0ff;
+    --step1-accent: #6C5CE7;
+    --step1-border: rgba(108, 92, 231, 0.25);
+    --step2-bg: #E6EEFF;
+    --step2-accent: #0055B8;
+    --step2-border: rgba(0, 85, 184, 0.25);
+    --step3-bg: #fff1dc;
+    --step3-accent: #c0660e;
+    --step3-border: rgba(230, 126, 34, 0.3);
+
+    /* 状态 */
+    --disabled-text: #a0a0a8;
+    --disabled-bg: #f0f0f3;
+    --disabled-border: #dcdce0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  .container { max-width: 980px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  /* ── Hero ── */
+  .hero {
+    text-align: center;
+    padding: 48px 24px 44px;
+    background: linear-gradient(135deg, #00409A 0%, #0055B8 30%, #5b4fc9 65%, #b8860b 100%);
+    color: #fff;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 18% 40%, rgba(255,255,255,0.10) 0%, transparent 50%),
+      radial-gradient(circle at 82% 70%, rgba(255,255,255,0.08) 0%, transparent 50%);
+  }
+  .hero > * { position: relative; z-index: 1; }
+  .hero .school {
+    font-size: 0.78rem;
+    letter-spacing: 3px;
+    opacity: 0.85;
+    margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .hero .subtitle {
+    font-size: 1rem;
+    opacity: 0.92;
+  }
+
+  /* ── 顶部说明卡 ── */
+  .intro-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    border: 1px solid var(--border-color);
+  }
+  .intro-card h2 {
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .intro-card h2::before {
+    content: '';
+    display: inline-block;
+    width: 18px; height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--A-primary), var(--B-secondary));
+  }
+  .intro-card ul {
+    list-style: none;
+    font-size: 0.93rem;
+    color: var(--text-secondary);
+  }
+  .intro-card ul li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .intro-card ul li::before {
+    content: '';
+    position: absolute;
+    left: 4px; top: 14px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--text-light);
+  }
+  .intro-card .tag-A { color: var(--A-secondary); font-weight: 600; }
+  .intro-card .tag-B { color: var(--B-secondary); font-weight: 600; }
+
+  /* ── 板块大卡 通用 ── */
+  .module {
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+  }
+  .module-bar { height: 5px; }
+  .module.A .module-bar { background: linear-gradient(90deg, var(--A-primary), var(--A-bright)); }
+  .module.B .module-bar { background: linear-gradient(90deg, var(--B-primary), var(--B-bright)); }
+
+  .module-head {
+    padding: 26px 28px 18px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .module-head .label-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .stage-tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+  }
+  .module.A .stage-tag { background: var(--A-light); color: var(--A-primary); }
+  .module.B .stage-tag { background: var(--B-light); color: var(--B-primary); }
+  .module-head h2 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .module.A .module-head h2 { color: var(--A-primary); }
+  .module.B .module-head h2 { color: var(--B-primary); }
+  .module-head .meta-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 22px;
+    margin-top: 12px;
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+  }
+  .module-head .meta-line .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .module-head .meta-line .meta-item .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .module.A .meta-line .meta-item .dot { background: var(--A-bright); }
+  .module.B .meta-line .meta-item .dot { background: var(--B-bright); }
+  .module-head .meta-line strong { color: var(--text-primary); font-weight: 600; }
+
+  .module-body { padding: 24px 28px 28px; }
+
+  /* ── 子卡 grid ── */
+  .sub-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .sub-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+  /* 通用子卡 */
+  .sub-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-sm);
+    padding: 20px 20px 18px;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    cursor: pointer;
+  }
+  .sub-card.linkable:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+  .module.A .sub-card.linkable:hover {
+    border-color: var(--A-bright);
+    box-shadow: 0 6px 18px rgba(0, 64, 154, 0.14);
+  }
+  .module.B .sub-card.linkable:hover {
+    border-color: var(--B-bright);
+    box-shadow: 0 6px 18px rgba(184, 134, 11, 0.15);
+  }
+
+  /* 灰显（v3 制作中） */
+  .sub-card.disabled {
+    background: var(--disabled-bg);
+    border-color: var(--disabled-border);
+    color: var(--disabled-text);
+    cursor: not-allowed;
+  }
+  .sub-card.disabled .sub-title { color: var(--disabled-text); }
+  .sub-card.disabled .sub-desc { color: #b0b0b8; }
+  .sub-card.disabled .sub-foot { color: #b0b0b8; }
+  .sub-card.disabled .sub-list { color: #b0b0b8; }
+  .badge-coming {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: #c8c8d0;
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .sub-card .sub-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .sub-card .sub-no {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .module.A .sub-card.linkable .sub-no { background: linear-gradient(135deg, var(--A-secondary), var(--A-bright)); }
+  .module.A .sub-card.disabled .sub-no { background: #c8c8d0; }
+  .module.B .sub-card.linkable .sub-no { background: linear-gradient(135deg, var(--B-primary), var(--B-bright)); }
+  .module.B .sub-card.disabled .sub-no { background: #c8c8d0; }
+
+  .sub-card .sub-title {
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .module.A .sub-card.linkable .sub-title { color: var(--A-primary); }
+  .module.B .sub-card.linkable .sub-title { color: var(--B-primary); }
+
+  .sub-card .sub-desc {
+    font-size: 0.87rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 10px;
+    flex-grow: 1;
+  }
+  .sub-card .sub-list {
+    list-style: none;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  .sub-card .sub-list li {
+    padding: 2px 0 2px 14px;
+    position: relative;
+    line-height: 1.65;
+  }
+  .sub-card .sub-list li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    font-weight: 700;
+    color: var(--text-light);
+  }
+  .sub-card .sub-list li.note {
+    color: var(--text-light);
+    font-size: 0.78rem;
+    font-style: italic;
+  }
+  .sub-card .sub-foot {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+  .sub-card .sub-foot .arrow {
+    font-size: 1.1rem;
+    opacity: 0.5;
+    transition: var(--transition);
+  }
+  .sub-card.linkable:hover .sub-foot .arrow {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+  .module.A .sub-card.linkable .sub-foot .arrow { color: var(--A-bright); }
+  .module.B .sub-card.linkable .sub-foot .arrow { color: var(--B-bright); }
+
+  /* 关联工具行 */
+  .related-tool {
+    margin-top: 4px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.65);
+    border-radius: 6px;
+    font-size: 0.82rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px dashed rgba(0, 64, 154, 0.25);
+  }
+  .related-tool a {
+    color: var(--A-secondary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .related-tool a:hover { text-decoration: underline; }
+  .related-tool .related-label { color: var(--text-light); font-size: 0.76rem; }
+
+  /* ── A5 标化考试备考三步链 ── */
+  .a5-block {
+    margin-top: 8px;
+    background: linear-gradient(135deg, #fafbff 0%, #fef9ec 100%);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 22px 22px 24px;
+    position: relative;
+  }
+  .a5-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .a5-head .a5-no {
+    background: linear-gradient(135deg, var(--A-primary), var(--A-bright));
+    color: #fff;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.82rem;
+  }
+  .a5-head .a5-title {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: var(--A-primary);
+  }
+  .a5-head .a5-pill {
+    background: #fff3cd;
+    color: #856404;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+  }
+  .a5-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 18px;
+  }
+  .a5-steps {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: stretch;
+    gap: 0;
+  }
+  .a5-step {
+    border-radius: var(--radius-sm);
+    padding: 18px 16px 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  .a5-step.step-1 { background: var(--step1-bg); border-color: var(--step1-border); }
+  .a5-step.step-2 { background: var(--step2-bg); border-color: var(--step2-border); }
+  .a5-step.step-3 { background: var(--step3-bg); border-color: var(--step3-border); }
+  .a5-step:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  }
+  .a5-step .step-num {
+    display: inline-block;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    line-height: 26px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+  .a5-step.step-1 .step-num { background: var(--step1-accent); }
+  .a5-step.step-2 .step-num { background: var(--step2-accent); }
+  .a5-step.step-3 .step-num { background: var(--step3-accent); }
+  .a5-step .step-name {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .a5-step.step-1 .step-name { color: var(--step1-accent); }
+  .a5-step.step-2 .step-name { color: var(--step2-accent); }
+  .a5-step.step-3 .step-name { color: var(--step3-accent); }
+  .a5-step .step-desc {
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 10px;
+    flex-grow: 1;
+  }
+  .a5-step .step-hint {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    padding-top: 8px;
+    border-top: 1px dashed rgba(0,0,0,0.08);
+    line-height: 1.55;
+  }
+  .a5-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    font-size: 1.5rem;
+    color: var(--text-light);
+    font-weight: 300;
+  }
+
+  /* ── 其他主题（占位）── */
+  .topics-section {
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+    padding: 26px 28px 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    border: 1px solid var(--border-color);
+  }
+  .topics-section .topics-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .topics-section h2 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topics-section h2::before {
+    content: '';
+    display: inline-block;
+    width: 18px; height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--A-primary), var(--B-secondary));
+  }
+  .topics-section .topics-hint {
+    font-size: 0.8rem;
+    color: var(--text-light);
+  }
+  .topics-section .topics-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin: 8px 0 18px;
+  }
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .topic-card {
+    background: var(--bg-light);
+    border: 1.5px dashed var(--disabled-border);
+    border-radius: var(--radius-sm);
+    padding: 22px 18px 18px;
+    text-align: left;
+    transition: var(--transition);
+    cursor: default;
+    position: relative;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .topic-card:hover {
+    border-color: #b8b8c0;
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .topic-card .topic-no {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .topic-card .topic-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .topic-card .topic-foot {
+    margin-top: 14px;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .topic-card .topic-foot::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #c8c8d0;
+  }
+
+  /* ── 底部流程图 ── */
+  .flow-section {
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+    padding: 26px 28px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    border: 1px solid var(--border-color);
+  }
+  .flow-section h2 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .flow-section h2::before {
+    content: '';
+    display: inline-block;
+    width: 18px; height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--A-primary), var(--B-secondary));
+  }
+  .flow-svg-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .flow-svg-wrap svg {
+    display: block;
+    margin: 0 auto;
+    min-width: 720px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 28px 20px 0;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    border-top: 1px solid var(--border-color);
+    margin-top: 16px;
+  }
+  .footer .school-name {
+    color: var(--A-primary);
+    font-weight: 600;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) and (min-width: 761px) {
+    .topics-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .topics-grid { grid-template-columns: 1fr; }
+    .hero { padding: 36px 18px 32px; }
+    .hero h1 { font-size: 1.4rem; }
+    .hero .subtitle { font-size: 0.9rem; }
+    .module-head, .module-body { padding-left: 18px; padding-right: 18px; }
+    .module-head h2 { font-size: 1.2rem; }
+    .sub-grid, .sub-grid.cols-3 { grid-template-columns: 1fr; }
+    .a5-block { padding: 18px 14px 20px; }
+    .a5-steps {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .a5-arrow {
+      transform: rotate(90deg);
+      padding: 4px 0;
+      font-size: 1.3rem;
+    }
+    .flow-svg-wrap svg { min-width: 640px; }
+    .container { padding: 16px 10px 40px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="school">蓝色诺瓦学院</div>
+      <h1>热力学</h1>
+      <div class="subtitle">物理化学融合主题</div>
+    </div>
+
+    <!-- 顶部说明卡 -->
+    <div class="intro-card">
+      <h2>主题结构</h2>
+      <ul>
+        <li>本主题以热力学第一定律为起点，涵盖<span class="tag-A">概念建构（E 段必修）</span>与<span class="tag-B">微观推导（E 段升学方向必修）</span>两条主干路径，并向卡诺循环、热力学第二定律、熵、焓、盖斯定律等子主题延伸。</li>
+        <li>概念建构是基础，必须完成后才能开微观推导；概念建构通过得 E 段学分，微观推导通过得 E 段学分（双学分独立计算）。</li>
+        <li>概念建构内的「标化考试备考」涵盖三个环节，按顺序进行：知识点梳理 → 熟练度考试 → 错题对话。</li>
+        <li>两条主干均设深度口试预备区，由教师组织 15–20 分钟深度对话；微观推导不做熟练度考试与错题对话（推导不是高考考点）。</li>
+        <li>下方「其他主题」为大主题内尚待建设的子主题，待开放后会逐张点亮。</li>
+      </ul>
+    </div>
+
+    <!-- ═══════════ 板块 A ═══════════ -->
+    <div class="module A">
+      <div class="module-bar"></div>
+      <div class="module-head">
+        <div class="label-row">
+          <span class="stage-tag">E 段 · 必修核心</span>
+        </div>
+        <h2>热力学第一定律 · 概念建构</h2>
+        <div class="meta-line">
+          <span class="meta-item"><span class="dot"></span>通过线：<strong>70 通过 / 90 荣誉</strong></span>
+          <span class="meta-item"><span class="dot"></span>共 <strong>5 个子区块</strong>，含三步标化备考链</span>
+        </div>
+      </div>
+      <div class="module-body">
+
+        <!-- A1 ~ A4 网格 -->
+        <div class="sub-grid">
+
+          <!-- A1 学习任务 -->
+          <a class="sub-card linkable" href="basic-task-cards.html">
+            <div class="sub-head">
+              <div class="sub-no">A1</div>
+              <div class="sub-title">学习任务</div>
+            </div>
+            <div class="sub-desc">与 AI 协作完成 5 张任务卡，从能量守恒到综合应用，建立第一定律的物理图像。</div>
+            <ul class="sub-list">
+              <li>任务卡 1：能量守恒与内能</li>
+              <li>任务卡 2：第一定律 ΔU = Q + W</li>
+              <li>任务卡 3：热传导与做功的微观理解</li>
+              <li>任务卡 4：理想气体状态方程 PV = nRT</li>
+              <li>任务卡 5：综合应用 + 实验复盘</li>
+              <li class="note">任务卡 4 的 v3 单卡建设中，当前可在本页查阅相关章节</li>
+            </ul>
+            <div class="related-tool">
+              <span class="related-label">关联工具</span>
+              <a href="basic-ai-guide.html" onclick="event.stopPropagation();">AI 交互指南 ›</a>
+            </div>
+            <div class="sub-foot">
+              <span>已开放</span>
+              <span class="arrow">›</span>
+            </div>
+          </a>
+
+          <!-- A2 实验 -->
+          <a class="sub-card linkable" href="experiment-bubble-fruit.html">
+            <div class="sub-head">
+              <div class="sub-no">A2</div>
+              <div class="sub-title">实验</div>
+            </div>
+            <div class="sub-desc">气泡水果跨学科探究实验（物理 + 化学融合）· 集体活动 · 教师在场</div>
+            <ul class="sub-list">
+              <li>Day 1 装箱 40–50 分钟</li>
+              <li>夜间等待静置</li>
+              <li>Day 2 测量与分析 80–100 分钟</li>
+              <li>前置：prelab 任务卡完成 + 安全规则签字</li>
+              <li>跨学科：用第一定律分析干冰升华 + 用亨利定律解释碳酸化</li>
+            </ul>
+            <div class="sub-foot">
+              <span>已开放</span>
+              <span class="arrow">›</span>
+            </div>
+          </a>
+
+          <!-- A3 基础检测 -->
+          <a class="sub-card linkable" href="basic-test-v2.html">
+            <div class="sub-head">
+              <div class="sub-no">A3</div>
+              <div class="sub-title">基础检测</div>
+            </div>
+            <div class="sub-desc">28 题题库 / 7 类型 × 4 道 / 每次随机抽 7 道 · 无限时 · 考察概念理解。</div>
+            <ul class="sub-list">
+              <li>题型：内能本质 / 符号约定 / 四过程 / PV 图</li>
+              <li>题型：单步计算 / 多步计算 / 真实情境</li>
+              <li>通过线 70 · 荣誉 90</li>
+              <li>三栏答案：考察点 + 解题思路 + 详细答案</li>
+            </ul>
+            <div class="sub-foot">
+              <span>已开放</span>
+              <span class="arrow">›</span>
+            </div>
+          </a>
+
+          <!-- A4 深度口试预备 -->
+          <a class="sub-card linkable" href="oral-exam-preview-A-v2.html">
+            <div class="sub-head">
+              <div class="sub-no">A4</div>
+              <div class="sub-title">深度口试预备</div>
+            </div>
+            <div class="sub-desc">教师 15–20 分钟深度对话 · 抽 2–3 题考察方向 · 备考预习区。</div>
+            <ul class="sub-list">
+              <li>不是题库，而是考察方向告知</li>
+              <li>必须能「用自己的话讲清楚物理图像」——不是背答案</li>
+              <li>11 题方向涵盖：状态量 vs 过程量 / 自由膨胀 / 循环 / 真实情境应用等</li>
+            </ul>
+            <div class="sub-foot">
+              <span>已开放</span>
+              <span class="arrow">›</span>
+            </div>
+          </a>
+
+        </div>
+
+        <!-- A5 标化考试备考 · 三步链（重要章节） -->
+        <div class="a5-block">
+          <div class="a5-head">
+            <span class="a5-no">A5</span>
+            <span class="a5-title">标化考试备考</span>
+            <span class="a5-pill">三步顺序流程</span>
+          </div>
+          <div class="a5-desc">基础检测通过后进入「熟练度训练尾段」备考标化考试 · 以下三个环节按顺序完成，缺一不可。</div>
+
+          <div class="a5-steps">
+
+            <!-- Step 1 -->
+            <a class="a5-step step-1" href="knowledge-review-v2.html">
+              <span class="step-num">1</span>
+              <div class="step-name">知识点梳理</div>
+              <div class="step-desc">7 个考察点 + 自评矩阵 + AI 辅助梳理 · 把「被动答题」前置为「主动梳理」。</div>
+              <div class="step-hint">勾任一项「还需复习」→ 回任务卡复学；全部「基本掌握」以上 → 解锁第 2 步</div>
+            </a>
+
+            <div class="a5-arrow">→</div>
+
+            <!-- Step 2 -->
+            <a class="a5-step step-2" href="fluency-test-v2.html">
+              <span class="step-num">2</span>
+              <div class="step-name">熟练度考试</div>
+              <div class="step-desc">高考题型 28 题库 / 抽 7 / 限时 35 分钟 · 考察应用熟练度。</div>
+              <div class="step-hint">通过 70 / 荣誉 90；交卷后必须进入第 3 步错题对话。题型方向：理想气体应用 / 循环过程 / 绝热 / 图像 / 能量守恒拓展 / 变质量 / 高考真题改编</div>
+            </a>
+
+            <div class="a5-arrow">→</div>
+
+            <!-- Step 3 -->
+            <a class="a5-step step-3" href="error-analysis-v2.html">
+              <span class="step-num">3</span>
+              <div class="step-name">错题对话</div>
+              <div class="step-desc">每错题与 AI 深度对话 ≥ 5 轮 + AI 出新题验证 + 元反思。</div>
+              <div class="step-hint">五项检核全勾才算合规提交；这是「错」转「懂」的关键步骤</div>
+            </a>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════════ 板块 B ═══════════ -->
+    <div class="module B">
+      <div class="module-bar"></div>
+      <div class="module-head">
+        <div class="label-row">
+          <span class="stage-tag">E 段 · 升学方向选修扩展 / 非升学方向 GE</span>
+        </div>
+        <h2>热力学第一定律 · 微观推导</h2>
+        <div class="meta-line">
+          <span class="meta-item"><span class="dot"></span>前置：<strong>概念建构 100% 完成 + 分子动理论基础</strong></span>
+          <span class="meta-item"><span class="dot"></span>通过线：<strong>70 通过 / 90 荣誉</strong></span>
+          <span class="meta-item"><span class="dot"></span>不做熟练度考试与错题对话</span>
+        </div>
+      </div>
+      <div class="module-body">
+
+        <div class="sub-grid cols-3">
+
+          <!-- B1 学习任务 -->
+          <a class="sub-card linkable" href="advanced-task-cards.html">
+            <div class="sub-head">
+              <div class="sub-no">B1</div>
+              <div class="sub-title">学习任务</div>
+            </div>
+            <div class="sub-desc">从分子运动论推出 U = 3/2 nRT · 重走理想气体推导路径 · 6 张推导任务卡。</div>
+            <ul class="sub-list">
+              <li>A1 假设审查（4 条核心假设）</li>
+              <li>A2 单粒子→单壁压强（Δp = 2mvₓ → P₁ = mvₓ²/V）</li>
+              <li>A3 统计平均（vₓ² = v²/3）</li>
+              <li>A4 联立 PV = nRT → U = 3/2 nRT</li>
+              <li>A5 审美反思（推导过程哪一步最优美）</li>
+              <li>A6 边界讨论（双原子 + 真实气体 + 范德瓦尔斯）</li>
+            </ul>
+            <div class="sub-foot">
+              <span>已开放</span>
+              <span class="arrow">›</span>
+            </div>
+          </a>
+
+          <!-- B2 基础检测 -->
+          <a class="sub-card linkable" href="advanced-test.html">
+            <div class="sub-head">
+              <div class="sub-no">B2</div>
+              <div class="sub-title">基础检测</div>
+            </div>
+            <div class="sub-desc">28 题题库 / 7 类型 × 4 道 / 每次随机抽 7 道 · 考察微观推导逻辑。</div>
+            <ul class="sub-list">
+              <li>题型：假设辨析 / 单粒子压强 / 统计平均</li>
+              <li>题型：推导步骤 / 边界讨论 / 自由度</li>
+              <li>题型：微观宏观对应</li>
+              <li>通过线 70 · 荣誉 90</li>
+              <li>不做熟练度考试，不做错题对话</li>
+            </ul>
+            <div class="sub-foot">
+              <span>已开放</span>
+              <span class="arrow">›</span>
+            </div>
+          </a>
+
+          <!-- B3 深度口试预备 -->
+          <a class="sub-card linkable" href="oral-exam-preview-B-v2.html">
+            <div class="sub-head">
+              <div class="sub-no">B3</div>
+              <div class="sub-title">深度口试预备</div>
+            </div>
+            <div class="sub-desc">教师抽 2–3 题做 15–20 分钟深度对话 · 重点考察推导逻辑、假设理解、边界讨论。</div>
+            <ul class="sub-list">
+              <li>8–10 题方向：4 条核心假设 / vₓ²=v²/3 论证</li>
+              <li>无分子间作用力假设的必要性</li>
+              <li>双原子分子内能 / 真实气体修正 / 学生原创追问</li>
+              <li>白纸上独立完成微观→ U=3/2nRT 完整推导</li>
+              <li>产出物：推导手稿 + 原创追问 + 可选讲解录音</li>
+            </ul>
+            <div class="sub-foot">
+              <span>已开放</span>
+              <span class="arrow">›</span>
+            </div>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════════ 其他主题（占位 · 待建设） ═══════════ -->
+    <div class="topics-section">
+      <div class="topics-head">
+        <h2>其他主题</h2>
+        <span class="topics-hint">物理化学融合大主题 · 待建设</span>
+      </div>
+      <div class="topics-desc">以下子主题尚未上线，建好后会逐张点亮并接入学习路径。</div>
+      <div class="topics-grid">
+        <div class="topic-card">
+          <div>
+            <div class="topic-no">主题 01</div>
+            <div class="topic-title">卡诺循环</div>
+          </div>
+          <div class="topic-foot">待建设</div>
+        </div>
+        <div class="topic-card">
+          <div>
+            <div class="topic-no">主题 02</div>
+            <div class="topic-title">状态函数与非状态函数</div>
+          </div>
+          <div class="topic-foot">待建设</div>
+        </div>
+        <div class="topic-card">
+          <div>
+            <div class="topic-no">主题 03</div>
+            <div class="topic-title">热力学第二定律</div>
+          </div>
+          <div class="topic-foot">待建设</div>
+        </div>
+        <div class="topic-card">
+          <div>
+            <div class="topic-no">主题 04</div>
+            <div class="topic-title">熵的物理意义</div>
+          </div>
+          <div class="topic-foot">待建设</div>
+        </div>
+        <div class="topic-card">
+          <div>
+            <div class="topic-no">主题 05</div>
+            <div class="topic-title">焓与焓变的意义</div>
+          </div>
+          <div class="topic-foot">待建设</div>
+        </div>
+        <div class="topic-card">
+          <div>
+            <div class="topic-no">主题 06</div>
+            <div class="topic-title">盖斯定律</div>
+          </div>
+          <div class="topic-foot">待建设</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ 底部学习路径流程图 ═══════════ -->
+    <div class="flow-section">
+      <h2>学习路径流程图</h2>
+      <div class="flow-svg-wrap">
+        <svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#0055B8"/>
+            </marker>
+            <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#b8860b"/>
+            </marker>
+            <marker id="arrGate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#5a5a60"/>
+            </marker>
+          </defs>
+
+          <!-- 板块 A 标签 -->
+          <text x="40" y="36" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#00409A">热力学第一定律 · 概念建构（E 段）</text>
+
+          <!-- A 第一行：学习任务 → 实验 → 基础检测 → 深度口试预备 -->
+          <g font-family="-apple-system, sans-serif" font-size="13" fill="#00409A">
+            <rect x="40"  y="58" width="140" height="44" rx="8" fill="#E6EEFF" stroke="#0055B8" stroke-width="1.2"/>
+            <text x="110" y="85" text-anchor="middle">A1 学习任务</text>
+
+            <rect x="220" y="58" width="120" height="44" rx="8" fill="#E6EEFF" stroke="#0055B8" stroke-width="1.2"/>
+            <text x="280" y="85" text-anchor="middle">A2 实验</text>
+
+            <rect x="380" y="58" width="140" height="44" rx="8" fill="#E6EEFF" stroke="#0055B8" stroke-width="1.2"/>
+            <text x="450" y="85" text-anchor="middle">A3 基础检测</text>
+
+            <rect x="560" y="58" width="160" height="44" rx="8" fill="#E6EEFF" stroke="#0055B8" stroke-width="1.2"/>
+            <text x="640" y="85" text-anchor="middle">A4 深度口试预备</text>
+
+            <line x1="180" y1="80" x2="218" y2="80" stroke="#0055B8" stroke-width="1.5" marker-end="url(#arrA)"/>
+            <line x1="340" y1="80" x2="378" y2="80" stroke="#0055B8" stroke-width="1.5" marker-end="url(#arrA)"/>
+            <line x1="520" y1="80" x2="558" y2="80" stroke="#0055B8" stroke-width="1.5" marker-end="url(#arrA)"/>
+          </g>
+
+          <!-- 从 A3 向下分支到 A5 三步链 -->
+          <line x1="450" y1="104" x2="450" y2="140" stroke="#0055B8" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrA)"/>
+          <text x="464" y="128" font-family="-apple-system, sans-serif" font-size="11" fill="#5a5a60">基础检测通过 → 标化备考</text>
+
+          <!-- A5 三步链 -->
+          <g font-family="-apple-system, sans-serif" font-size="13">
+            <rect x="100" y="148" width="170" height="44" rx="8" fill="#f3f0ff" stroke="#6C5CE7" stroke-width="1.4"/>
+            <text x="185" y="175" text-anchor="middle" fill="#6C5CE7">A5.1 知识点梳理</text>
+
+            <rect x="350" y="148" width="170" height="44" rx="8" fill="#E6EEFF" stroke="#0055B8" stroke-width="1.4"/>
+            <text x="435" y="175" text-anchor="middle" fill="#0055B8">A5.2 熟练度考试</text>
+
+            <rect x="600" y="148" width="170" height="44" rx="8" fill="#fff1dc" stroke="#c0660e" stroke-width="1.4"/>
+            <text x="685" y="175" text-anchor="middle" fill="#c0660e">A5.3 错题对话</text>
+
+            <line x1="270" y1="170" x2="348" y2="170" stroke="#5a5a60" stroke-width="1.5" marker-end="url(#arrGate)"/>
+            <line x1="520" y1="170" x2="598" y2="170" stroke="#5a5a60" stroke-width="1.5" marker-end="url(#arrGate)"/>
+          </g>
+
+          <!-- 解锁分隔 -->
+          <line x1="40" y1="220" x2="840" y2="220" stroke="#dcdce0" stroke-width="1" stroke-dasharray="6,5"/>
+          <rect x="320" y="208" width="240" height="24" rx="12" fill="#fff" stroke="#dcdce0" stroke-width="1"/>
+          <text x="440" y="225" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" fill="#5a5a60">概念建构 100% 通过 · 解锁微观推导</text>
+
+          <!-- 板块 B 标签 -->
+          <text x="40" y="262" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#8B6914">热力学第一定律 · 微观推导（E 段）</text>
+
+          <!-- B 行 -->
+          <g font-family="-apple-system, sans-serif" font-size="13" fill="#8B6914">
+            <rect x="80"  y="284" width="160" height="44" rx="8" fill="#fef5dc" stroke="#b8860b" stroke-width="1.2"/>
+            <text x="160" y="311" text-anchor="middle">B1 学习任务</text>
+
+            <rect x="300" y="284" width="160" height="44" rx="8" fill="#fef5dc" stroke="#b8860b" stroke-width="1.2"/>
+            <text x="380" y="311" text-anchor="middle">B2 基础检测</text>
+
+            <rect x="520" y="284" width="180" height="44" rx="8" fill="#fef5dc" stroke="#b8860b" stroke-width="1.2"/>
+            <text x="610" y="311" text-anchor="middle">B3 深度口试预备</text>
+
+            <line x1="240" y1="306" x2="298" y2="306" stroke="#b8860b" stroke-width="1.5" marker-end="url(#arrB)"/>
+            <line x1="460" y1="306" x2="518" y2="306" stroke="#b8860b" stroke-width="1.5" marker-end="url(#arrB)"/>
+          </g>
+
+          <!-- 后续解锁标签 -->
+          <line x1="40" y1="358" x2="840" y2="358" stroke="#dcdce0" stroke-width="1" stroke-dasharray="6,5"/>
+          <text x="440" y="382" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#5a5a60">后续解锁</text>
+          <g font-family="-apple-system, sans-serif" font-size="12" fill="#5a5a60">
+            <rect x="180" y="392" width="140" height="22" rx="11" fill="#fafbfc" stroke="#dcdce0"/>
+            <text x="250" y="408" text-anchor="middle">热力学第二定律</text>
+
+            <rect x="340" y="392" width="140" height="22" rx="11" fill="#fafbfc" stroke="#dcdce0"/>
+            <text x="410" y="408" text-anchor="middle">化学反应原理</text>
+
+            <rect x="500" y="392" width="200" height="22" rx="11" fill="#fafbfc" stroke="#dcdce0" stroke-dasharray="3,2"/>
+            <text x="600" y="408" text-anchor="middle">焦耳进阶板块（可选）</text>
+          </g>
+
+        </svg>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <span class="school-name">蓝色诺瓦学院</span> · 物理 + 化学 学科 · 自主学习节奏 + AI 学习伙伴
+    </div>
+
+  </div>
+
+</body>
+</html>

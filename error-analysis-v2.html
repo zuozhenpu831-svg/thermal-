@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>热力学第一定律 · 错题分析对话指引</title>
+<style>
+  :root {
+    --primary-blue: #00409A;
+    --secondary-blue: #0055B8;
+    --bright-blue: #006AD6;
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f7fa;
+    --border-color: #e5e5e7;
+    --radius: 20px;
+    --accent: #e67e22;
+    --honor: #8e44ad;
+    --success: #27ae60;
+    --warn: #d97706;
+    --danger: #c0392b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 20px 16px 60px; }
+  .header {
+    text-align: center;
+    padding: 32px 16px;
+    background: linear-gradient(135deg, #6a1b9a 0%, #8e44ad 50%, #c479ec 100%);
+    color: #fff;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+  }
+  .header h1 { font-size: 1.5rem; margin-bottom: 6px; }
+  .header .subtitle { font-size: 0.95rem; opacity: 0.92; }
+  .header .school { font-size: 0.8rem; opacity: 0.7; margin-top: 8px; }
+
+  .intro {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    font-size: 0.95rem;
+    line-height: 1.85;
+  }
+  .intro strong { color: var(--honor); }
+  .intro .stage-list {
+    margin-top: 10px;
+    padding-left: 1.5em;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+  }
+  .intro .stage-list li { margin-bottom: 4px; }
+
+  .section-title {
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--primary-blue);
+    margin: 28px 0 14px;
+    padding-left: 12px;
+    border-left: 4px solid var(--honor);
+  }
+
+  /* 对话模板卡 */
+  .template-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    position: relative;
+  }
+  .template-card .label {
+    display: inline-block;
+    background: rgba(142,68,173,0.12);
+    color: var(--honor);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .template-card pre {
+    background: #faf7fd;
+    border-left: 3px solid #c879ec;
+    border-radius: 0 10px 10px 0;
+    padding: 18px 20px;
+    font-family: "SF Mono", "Cascadia Code", "Consolas", monospace;
+    font-size: 0.88rem;
+    line-height: 1.95;
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+  .template-card .actions {
+    margin-top: 14px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 22px; border: none;
+    border-radius: 8px; font-size: 0.93rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+    color: #fff; font-family: inherit; text-decoration: none;
+  }
+  .btn-primary { background: linear-gradient(90deg, #6a1b9a, #c479ec); }
+  .btn-primary:hover { filter: brightness(1.05); }
+  .btn-outline {
+    background: #fff; color: var(--honor);
+    border: 1.5px solid var(--honor);
+  }
+  .btn-outline:hover { background: #f5ecfa; }
+  .btn-accent { background: var(--accent); }
+  .btn-accent:hover { background: #d35400; }
+
+  /* validators 清单 */
+  .validator-list {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .validator-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .validator-item:last-child { border-bottom: none; }
+  .validator-item input[type="checkbox"] {
+    width: 22px; height: 22px;
+    margin-top: 2px;
+    accent-color: var(--honor);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .validator-item .v-body {
+    flex: 1;
+  }
+  .validator-item .v-field {
+    font-family: "SF Mono", "Cascadia Code", "Consolas", monospace;
+    font-size: 0.85rem;
+    color: var(--honor);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .validator-item .v-desc {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .validator-item.checked .v-desc { color: var(--text-secondary); text-decoration: line-through; }
+
+  .progress-card {
+    margin-top: 18px;
+    background: linear-gradient(135deg, #f5ecfa, #ede0fa);
+    border-radius: 14px;
+    padding: 16px 22px;
+    font-size: 0.95rem;
+    border-left: 4px solid var(--honor);
+  }
+  .progress-card .num { font-size: 1.6rem; font-weight: 800; color: var(--honor); }
+  .progress-card .label { font-size: 0.85rem; color: var(--text-secondary); }
+  .progress-card.complete { background: linear-gradient(135deg, #e8f7ec, #d4f3df); border-left-color: var(--success); }
+  .progress-card.complete .num { color: var(--success); }
+
+  /* 工作流图 */
+  .workflow {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+  }
+  .workflow .step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+  .workflow .step:last-child { margin-bottom: 0; }
+  .workflow .step-num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: var(--honor); color: #fff;
+    border-radius: 50%;
+    text-align: center; line-height: 28px;
+    font-weight: 700; font-size: 0.88rem;
+  }
+  .workflow .step-body { flex: 1; font-size: 0.93rem; }
+  .workflow .step-body strong { color: var(--primary-blue); }
+
+  .ai-list {
+    margin-top: 28px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 22px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    font-size: 0.93rem;
+  }
+  .ai-list h3 { font-size: 1rem; color: var(--primary-blue); margin-bottom: 10px; }
+  .ai-list .ai-tools {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .ai-list .ai-tools a {
+    color: var(--secondary-blue);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .ai-list .ai-tools a:hover {
+    border-color: var(--secondary-blue);
+    background: #eaf2f8;
+  }
+
+  .meta-reflection {
+    margin-top: 20px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 22px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    border-left: 3px solid var(--accent);
+  }
+  .meta-reflection h3 { color: var(--accent); margin-bottom: 10px; font-size: 1rem; }
+  .meta-reflection .example {
+    background: #fff8e6;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    color: #92400e;
+    margin-top: 8px;
+    line-height: 1.7;
+  }
+  .meta-reflection .example::before {
+    content: "示例：";
+    font-weight: 700;
+  }
+
+  .bottom-nav {
+    display: flex; justify-content: center; gap: 16px;
+    margin-top: 36px; padding-top: 24px;
+    border-top: 2px solid #d5e8f0; flex-wrap: wrap;
+  }
+  .bottom-nav a {
+    color: var(--secondary-blue);
+    text-decoration: none; font-size: 15px; font-weight: 600;
+    padding: 10px 18px; border-radius: 8px;
+  }
+  .bottom-nav a:hover { background: #eaf2f8; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>错题分析对话指引</h1>
+    <div class="subtitle">板块 A · 概念建构（M 段）· 熟练度检测尾段 · 每错题一份对话记录</div>
+    <div class="school">蓝色诺瓦学院 · 物化融合大主题"热力学"</div>
+  </div>
+
+  <div class="intro">
+    <p>熟练度检测交卷后，<strong>每一道错题</strong>都必须与 AI 完成一次错题对话，导出记录提交给教师。</p>
+    <p>这不是惩罚，是把「错」转化为「真懂」的关键步骤——避免你下次遇到同类题再次错。</p>
+    <ul class="stage-list">
+      <li>对话不少于 5 轮（学生发言 ≥ 3 次）</li>
+      <li>必须做一道 AI 出的新题（不只是听 AI 讲解）</li>
+      <li>每错题写一句元反思「我犯这个错误的根源是…」</li>
+    </ul>
+  </div>
+
+  <div class="section-title">一、错题对话工作流（每错题独立完成）</div>
+  <div class="workflow">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>从熟练度检测结果页找到一道错题</strong>，把题目、自己写的答案、参考答案三栏复制下来。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        打开 AI 工具（ChatGPT / Claude / Gemini），<strong>复制下方对话模板</strong>，把题目、答案信息填入。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        与 AI 至少对话 <strong>5 轮</strong>：先让它分析你的错因 → 再让它出一道<strong>类似但不同</strong>的新题。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        把你做新题的过程发给 AI，让它判断你是不是<strong>真懂了</strong>。如果它说还有漏洞，继续追问。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        保存这份完整对话记录（导出为 PDF / 截图），并写一句「<strong>元反思</strong>」概括你犯这个错的根源。
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">二、对话模板（点击复制）</div>
+  <div class="template-card">
+    <div class="label">§9.1 标准对话模板</div>
+    <pre id="dialog-template">我刚做完热力学第一定律的熟练度检测。以下是我错的一道题：
+
+【题目】[贴题目]
+【我的答案】[贴自己写的答案]
+【正确答案】[贴对照表给出的考察点 + 解题思路 + 详细答案]
+
+请你作为物理老师，帮我做错题分析：
+1. 我做错的原因最可能是什么？是概念不清、计算出错、还是审题失误？
+2. 这道题考察的核心知识点（参考"考察点"栏）我是否真的掌握了？请你出一道类似但不同的题给我做，检验我是否真的会了。
+3. 我做你出的新题，把过程发给你。请你判断我现在是真懂了，还是还有漏洞。</pre>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="copyTemplate('dialog-template', this)">📋 复制对话模板</button>
+      <button class="btn btn-outline" onclick="downloadTemplate()">💾 下载为 .txt</button>
+    </div>
+  </div>
+
+  <div class="ai-list">
+    <h3>推荐 AI 工具（任选其一）</h3>
+    <p style="color: var(--text-secondary); font-size: 0.88rem;">本页不连 AI，需要自己打开外部网页对话。建议优先用你熟悉的：</p>
+    <div class="ai-tools">
+      <a href="https://chat.openai.com" target="_blank" rel="noopener">ChatGPT</a>
+      <a href="https://claude.ai" target="_blank" rel="noopener">Claude</a>
+      <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a>
+      <a href="https://chat.deepseek.com" target="_blank" rel="noopener">DeepSeek</a>
+      <a href="https://yuanbao.tencent.com" target="_blank" rel="noopener">腾讯元宝</a>
+    </div>
+  </div>
+
+  <div class="section-title">三、提交前自查（5 项 validators）</div>
+  <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 14px;">
+    每错题对话完成后，请逐项勾选确认。这就是教师后台仪表盘检测的 5 个 validator 字段。
+  </p>
+  <div class="validator-list" id="validator-list"></div>
+
+  <div class="progress-card" id="progress-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+      <div>
+        <span class="num" id="progress-num">0 / 5</span>
+        <div class="label">已完成自查项</div>
+      </div>
+      <div id="progress-msg" style="font-size: 0.93rem;">完成全部 5 项后，本次错题对话才算合规提交</div>
+    </div>
+  </div>
+
+  <div class="meta-reflection">
+    <h3>💡 元反思（meta_reflection_text）撰写参考</h3>
+    <p style="font-size: 0.92rem;">每错题的元反思 ≥ 30 字，回答 <strong>「我犯这个错误的根源是…」</strong>。要直指认知漏洞，不要泛泛说「粗心」。</p>
+    <div class="example">「我把『系统对外做功』直接写成 W > 0，没有切换到本板块『外界对系统做功』的约定——根源是我对符号约定的<strong>方向意识</strong>没有内化，只是背了公式形式。」</div>
+    <div class="example">「我把绝热自由膨胀当成了绝热可逆膨胀来算，所以以为温度会下降——根源是我没意识到『对真空膨胀 W = 0』和『推活塞 W ≠ 0』是两个本质不同的物理过程。」</div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="fluency-test-v2.html">↩ 回熟练度检测</a>
+    <a href="knowledge-review-v2.html">知识点梳理</a>
+    <a href="basic-test-v2.html">基础检测</a>
+    <a href="index.html">主页</a>
+  </div>
+</div>
+
+<script>
+const VALIDATORS = [
+  {
+    field: "dialog_record_uploaded",
+    desc: "我为<strong>每一道错题</strong>都保存了一份独立的 AI 对话记录（PDF / 截图 / 文本）"
+  },
+  {
+    field: "dialog_round_count",
+    desc: "对话轮数 <strong>≥ 5 轮</strong>，其中我作为学生发言 ≥ 3 次（不只是听 AI 讲）"
+  },
+  {
+    field: "new_problem_attempted",
+    desc: "我做了 AI 出的<strong>新题</strong>，并把我的解题过程发给了 AI 让它评判"
+  },
+  {
+    field: "meta_reflection_text",
+    desc: "我为每错题写了一句「<strong>我犯这个错误的根源是…</strong>」的元反思（≥ 30 字）"
+  },
+  {
+    field: "self_judgement_real_understood",
+    desc: "对话结束时 AI 判断我「真懂了」（如果它说还有漏洞，我继续追问直到弄懂）"
+  }
+];
+
+function renderValidators() {
+  const root = document.getElementById("validator-list");
+  let html = "";
+  VALIDATORS.forEach((v, i) => {
+    html += `<div class="validator-item" id="v-item-${i}">
+      <input type="checkbox" id="v-${i}" onchange="updateProgress()">
+      <div class="v-body">
+        <div class="v-field">${v.field}</div>
+        <div class="v-desc">${v.desc}</div>
+      </div>
+    </div>`;
+  });
+  root.innerHTML = html;
+}
+
+function updateProgress() {
+  let count = 0;
+  VALIDATORS.forEach((v, i) => {
+    const cb = document.getElementById(`v-${i}`);
+    const item = document.getElementById(`v-item-${i}`);
+    if (cb.checked) {
+      count++;
+      item.classList.add("checked");
+    } else {
+      item.classList.remove("checked");
+    }
+  });
+  document.getElementById("progress-num").textContent = `${count} / 5`;
+  const card = document.getElementById("progress-card");
+  const msg = document.getElementById("progress-msg");
+  if (count === 5) {
+    card.classList.add("complete");
+    msg.innerHTML = "✓ 全部自查项完成，可向教师提交对话记录";
+  } else {
+    card.classList.remove("complete");
+    msg.textContent = "完成全部 5 项后，本次错题对话才算合规提交";
+  }
+}
+
+function copyTemplate(id, btn) {
+  const txt = document.getElementById(id).textContent.trim();
+  navigator.clipboard.writeText(txt).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = "✓ 已复制";
+    setTimeout(() => btn.textContent = orig, 1800);
+  }).catch(() => {
+    const ta = document.createElement("textarea");
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    document.execCommand("copy"); document.body.removeChild(ta);
+    btn.textContent = "✓ 已复制";
+    setTimeout(() => btn.textContent = "📋 复制对话模板", 1800);
+  });
+}
+
+function downloadTemplate() {
+  const txt = document.getElementById("dialog-template").textContent.trim();
+  const blob = new Blob([txt], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "错题对话模板.txt";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+renderValidators();
+updateProgress();
+</script>
+</body>
+</html>
